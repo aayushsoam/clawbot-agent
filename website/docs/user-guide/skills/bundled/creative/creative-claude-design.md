@@ -17,7 +17,7 @@ Design one-off HTML artifacts (landing, deck, prototype).
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/claude-design` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `design`, `html`, `prototype`, `ux`, `ui`, `creative`, `artifact`, `deck`, `motion`, `design-system` |
@@ -607,5 +607,3 @@ You are running in CLI/API mode, not hosted Claude Design. Ignore references to 
 - Do not under-ask for high-fidelity work with no brand context.
 - Do not produce generic SaaS layouts and call them designed.
 - Do not claim browser verification unless it actually happened.
-
-

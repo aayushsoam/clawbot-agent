@@ -17,7 +17,7 @@ Control Blender directly from Clawbot via socket connection to the blender-mcp a
 | Source | Optional — install with `clawbot skills install official/creative/blender-mcp` |
 | Path | `optional-skills/creative/blender-mcp` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | Platforms | linux, macos, windows |
 
 ## Reference: full SKILL.md
@@ -133,5 +133,3 @@ Use this inside execute_code tool calls:
 - Break complex scenes into multiple smaller execute_code calls to avoid timeouts
 - Render output path must be absolute (/tmp/...) not relative
 - shade_smooth() requires object to be selected and in object mode
-
-

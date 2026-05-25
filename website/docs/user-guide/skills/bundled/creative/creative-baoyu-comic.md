@@ -17,7 +17,7 @@ Knowledge comics (知识漫画): educational, biography, tutorial.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/baoyu-comic` |
 | Version | `1.56.1` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `comic`, `knowledge-comic`, `creative`, `image-generation` |
@@ -262,6 +262,3 @@ Full step-by-step workflow (analysis, storyboard, review gates, regeneration var
 - **Steps 4/6 conditional** - only if user requested in Step 2
 - **Step 7.1 character sheet** - recommended for multi-page comics, optional for simple presets. The PNG is a review/regeneration aid; page prompts (written in Step 5) use the text descriptions in `characters/characters.md`, not the PNG. `image_generate` does not accept images as visual input
 - **Strip secrets** — scan source content for API keys, tokens, or credentials before writing any output file
-
-
-

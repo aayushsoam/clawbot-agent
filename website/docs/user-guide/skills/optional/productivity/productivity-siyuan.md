@@ -17,7 +17,7 @@ SiYuan Note API for searching, reading, creating, and managing blocks and docume
 | Source | Optional — install with `clawbot skills install official/productivity/siyuan` |
 | Path | `optional-skills/productivity/siyuan` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `SiYuan`, `Notes`, `Knowledge Base`, `PKM`, `API` |
@@ -303,5 +303,3 @@ mcp_servers:
       SIYUAN_TOKEN: "your_token"
       SIYUAN_URL: "http://127.0.0.1:6806"
 ```
-
-

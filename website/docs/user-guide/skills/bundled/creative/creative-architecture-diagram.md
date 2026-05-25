@@ -17,7 +17,7 @@ Dark-themed SVG architecture/cloud/infra diagrams as HTML.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/architecture-diagram` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `architecture`, `diagrams`, `SVG`, `HTML`, `visualization`, `infrastructure`, `cloud` |
@@ -163,5 +163,3 @@ skill_view(name="architecture-diagram", file_path="templates/template.html")
 ```
 
 The template contains working examples of every component type (frontend, backend, database, cloud, security), arrow styles (standard, dashed, curved), security groups, region boundaries, and the legend — use it as your structural reference when generating diagrams.
-
-

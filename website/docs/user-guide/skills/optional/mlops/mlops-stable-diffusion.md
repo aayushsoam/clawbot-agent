@@ -17,7 +17,7 @@ State-of-the-art text-to-image generation with Stable Diffusion models via Huggi
 | Source | Optional — install with `clawbot skills install official/mlops/stable-diffusion` |
 | Path | `optional-skills/mlops/stable-diffusion` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `diffusers>=0.30.0`, `transformers>=4.41.0`, `accelerate>=0.31.0`, `torch>=2.0.0` |
 | Platforms | linux, macos, windows |
@@ -540,5 +540,3 @@ image = pipe(prompt, num_inference_steps=20).images[0]
 - **Repository**: https://github.com/huggingface/diffusers
 - **Model Hub**: https://huggingface.co/models?library=diffusers
 - **Discord**: https://discord.gg/diffusers
-
-

@@ -17,7 +17,7 @@ Manage Apple Notes via memo CLI: create, search, edit.
 | Source | Bundled (installed by default) |
 | Path | `skills/apple/apple-notes` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | macos |
 | Tags | `Notes`, `Apple`, `macOS`, `note-taking` |
@@ -104,5 +104,3 @@ memo notes -ex                    # Export to HTML/Markdown
 1. Prefer Apple Notes when user wants cross-device sync (iPhone/iPad/Mac)
 2. Use the `memory` tool for agent-internal notes that don't need to sync
 3. Use the `obsidian` skill for Markdown-native knowledge management
-
-

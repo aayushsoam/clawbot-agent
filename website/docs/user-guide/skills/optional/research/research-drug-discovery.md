@@ -17,7 +17,7 @@ Pharmaceutical research assistant for drug discovery workflows. Search bioactive
 | Source | Optional — install with `clawbot skills install official/research/drug-discovery` |
 | Path | `optional-skills/research/drug-discovery` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `science`, `chemistry`, `pharmacology`, `research`, `health` |
@@ -235,5 +235,3 @@ For ADMET questions, reason through Absorption, Distribution, Metabolism, Excret
 | Drug interactions | OpenFDA | `/drug/label.json?search=drug_interactions:` |
 | Adverse events | OpenFDA | `/drug/event.json?search=...&count=reaction` |
 | Gene-disease | OpenTargets | GraphQL POST `/api/v4/graphql` |
-
-

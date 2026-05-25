@@ -17,7 +17,7 @@ Extract text from PDFs/scans (pymupdf, marker-pdf).
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/ocr-and-documents` |
 | Version | `2.3.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `PDF`, `Documents`, `Research`, `Arxiv`, `Text-Extraction`, `OCR` |
@@ -188,5 +188,3 @@ No extra dependencies needed — pymupdf covers split, merge, search, and text e
 - marker-pdf downloads ~2.5GB of models to `~/.cache/huggingface/` on first use
 - For Word docs: `pip install python-docx` (better than OCR — parses actual structure)
 - For PowerPoint: see the `powerpoint` skill (uses python-pptx)
-
-

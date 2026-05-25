@@ -17,7 +17,7 @@ description: "4-phase root cause debugging: understand bugs before fixing"
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/systematic-debugging` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `debugging`, `troubleshooting`, `problem-solving`, `root-cause`, `investigation` |
@@ -383,5 +383,3 @@ From debugging sessions:
 - New bugs introduced: Near zero vs common
 
 **No shortcuts. No guessing. Systematic always wins.**
-
-

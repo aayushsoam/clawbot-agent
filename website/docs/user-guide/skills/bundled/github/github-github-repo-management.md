@@ -17,7 +17,7 @@ Clone/create/fork repos; manage remotes, releases.
 | Source | Bundled (installed by default) |
 | Path | `skills/github/github-repo-management` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `GitHub`, `Repositories`, `Git`, `Releases`, `Secrets`, `Configuration` |
@@ -532,5 +532,3 @@ for g in json.load(sys.stdin):
 | List workflows | `gh workflow list` | `curl GET /repos/o/r/actions/workflows` |
 | Rerun CI | `gh run rerun ID` | `curl POST /repos/o/r/actions/runs/ID/rerun` |
 | Set secret | `gh secret set KEY` | `curl PUT /repos/o/r/actions/secrets/KEY` (+ encryption) |
-
-

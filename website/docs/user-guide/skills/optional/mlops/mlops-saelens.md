@@ -17,7 +17,7 @@ Provides guidance for training and analyzing Sparse Autoencoders (SAEs) using SA
 | Source | Optional — install with `clawbot skills install official/mlops/saelens` |
 | Path | `optional-skills/mlops/saelens` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `sae-lens>=6.0.0`, `transformer-lens>=2.0.0`, `torch>=2.0.0` |
 | Platforms | linux, macos, windows |
@@ -405,5 +405,3 @@ cfg = LanguageModelSAERunnerConfig(
     activation_fn_kwargs={"k": 50},
 )
 ```
-
-

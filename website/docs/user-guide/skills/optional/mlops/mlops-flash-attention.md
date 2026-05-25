@@ -17,7 +17,7 @@ Optimizes transformer attention with Flash Attention for 2-4x speedup and 10-20x
 | Source | Optional — install with `clawbot skills install official/mlops/flash-attention` |
 | Path | `optional-skills/mlops/flash-attention` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `flash-attn`, `torch`, `transformers` |
 | Platforms | linux, macos |
@@ -379,5 +379,3 @@ Flash Attention uses float16/bfloat16 for speed. Float32 not supported.
 - Blog: https://tridao.me/blog/2024/flash3/
 - GitHub: https://github.com/Dao-AILab/flash-attention
 - PyTorch docs: https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html
-
-

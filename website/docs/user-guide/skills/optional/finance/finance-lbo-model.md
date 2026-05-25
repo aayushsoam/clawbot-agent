@@ -17,7 +17,7 @@ Build leveraged buyout models in Excel — sources & uses, debt schedule, cash s
 | Source | Optional — install with `clawbot skills install official/finance/lbo-model` |
 | Path | `optional-skills/finance/lbo-model` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | Apache-2.0 |
 | Platforms | linux, macos, windows |
 | Tags | `finance`, `valuation`, `lbo`, `private-equity`, `excel`, `openpyxl`, `modeling` |
@@ -307,5 +307,3 @@ Many passages below say "use the S&P Kensho MCP / Daloopa MCP / FactSet MCP". Th
 ## Attribution
 
 This skill is adapted from Anthropic's Claude for Financial Services plugin suite (Apache-2.0). The Office-JS / Cowork live-Excel paths have been removed; this version targets headless openpyxl via the `excel-author` skill's conventions. Original: https://github.com/anthropics/financial-services
-
-

@@ -17,7 +17,7 @@ lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/evaluation/lm-evaluation-harness` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `lm-eval`, `transformers`, `vllm` |
 | Platforms | linux, macos |
@@ -510,5 +510,3 @@ lm_eval --model hf \
 - Docs: https://github.com/EleutherAI/lm-evaluation-harness/tree/main/docs
 - Task library: 60+ tasks including MMLU, GSM8K, HumanEval, TruthfulQA, HellaSwag, ARC, WinoGrande, etc.
 - Leaderboard: https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard (uses this harness)
-
-

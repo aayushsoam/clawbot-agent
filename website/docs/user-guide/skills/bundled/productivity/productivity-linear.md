@@ -17,7 +17,7 @@ Linear: manage issues, projects, teams via GraphQL + curl.
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/linear` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Linear`, `Project Management`, `Issues`, `GraphQL`, `API`, `Productivity` |
@@ -393,5 +393,3 @@ Combine filters with `or: [...]` for OR logic (default is AND within a filter ob
 - If `stateId` is omitted when creating issues, Linear defaults to the first backlog state
 - The `description` field supports Markdown
 - Use `python3 -m json.tool` or `jq` to format JSON responses for readability
-
-

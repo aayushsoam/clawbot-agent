@@ -17,7 +17,7 @@ Free web search via DuckDuckGo — text, news, images, videos. No API key needed
 | Source | Optional — install with `clawbot skills install official/research/duckduckgo-search` |
 | Path | `optional-skills/research/duckduckgo-search` |
 | Version | `1.3.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `search`, `duckduckgo`, `web-search`, `free`, `fallback` |
@@ -253,5 +253,3 @@ Then extract the best URL with `web_extract` or another content-retrieval tool.
 ## Validated With
 
 Validated examples against `ddgs==9.11.2` semantics. Skill guidance now treats CLI availability and Python import availability as separate concerns so the documented workflow matches actual runtime behavior.
-
-

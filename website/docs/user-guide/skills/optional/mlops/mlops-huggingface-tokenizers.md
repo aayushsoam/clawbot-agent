@@ -17,7 +17,7 @@ Fast tokenizers optimized for research and production. Rust-based implementation
 | Source | Optional — install with `clawbot skills install official/mlops/huggingface-tokenizers` |
 | Path | `optional-skills/mlops/huggingface-tokenizers` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `tokenizers`, `transformers`, `datasets` |
 | Platforms | linux, macos, windows |
@@ -533,5 +533,3 @@ Browse all: https://huggingface.co/models?library=tokenizers
 - **Version**: 0.20.0+
 - **Course**: https://huggingface.co/learn/nlp-course/chapter6/1
 - **Paper**: BPE (Sennrich et al., 2016), WordPiece (Schuster & Nakajima, 2012)
-
-

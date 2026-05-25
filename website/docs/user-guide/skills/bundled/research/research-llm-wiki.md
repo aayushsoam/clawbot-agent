@@ -17,7 +17,7 @@ Karpathy's LLM Wiki: build/query interlinked markdown KB.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/llm-wiki` |
 | Version | `2.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `wiki`, `knowledge-base`, `research`, `notes`, `markdown`, `rag-alternative` |
@@ -524,5 +524,3 @@ so users who want a scheduled/CLI-driven compile pipeline can point it at the sa
 skill maintains. Trade-offs: it owns page generation (replaces the agent's judgment on page
 creation) and is tuned for small corpora. Use this skill when you want agent-in-the-loop curation;
 use llmwiki when you want batch compile of a source directory.
-
-

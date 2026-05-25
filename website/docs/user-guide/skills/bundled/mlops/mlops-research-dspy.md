@@ -17,7 +17,7 @@ DSPy: declarative LM programs, auto-optimize prompts, RAG.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/research/dspy` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `dspy`, `openai`, `anthropic` |
 | Platforms | linux, macos, windows |
@@ -607,5 +607,3 @@ for call in dspy.settings.trace:
 - `references/modules.md` - Detailed module guide (Predict, ChainOfThought, ReAct, ProgramOfThought)
 - `references/optimizers.md` - Optimization algorithms (BootstrapFewShot, MIPRO, BootstrapFinetune)
 - `references/examples.md` - Real-world examples (RAG, agents, classifiers)
-
-

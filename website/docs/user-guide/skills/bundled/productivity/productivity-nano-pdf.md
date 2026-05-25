@@ -17,7 +17,7 @@ Edit PDF text/typos/titles via nano-pdf CLI (NL prompts).
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/nano-pdf` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `PDF`, `Documents`, `Editing`, `NLP`, `Productivity` |
@@ -67,5 +67,3 @@ nano-pdf edit contract.pdf 2 "Change the client name from 'Acme Corp' to 'Acme I
 - Always verify the output PDF after editing (use `read_file` to check file size, or open it)
 - The tool uses an LLM under the hood — requires an API key (check `nano-pdf --help` for config)
 - Works well for text changes; complex layout modifications may need a different approach
-
-

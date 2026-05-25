@@ -17,7 +17,7 @@ Himalaya CLI: IMAP/SMTP email from terminal.
 | Source | Bundled (installed by default) |
 | Path | `skills/email/himalaya` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Email`, `IMAP`, `SMTP`, `CLI`, `Communication` |
@@ -312,5 +312,3 @@ RUST_LOG=trace RUST_BACKTRACE=1 himalaya envelope list
 - Message IDs are relative to the current folder; re-list after folder changes.
 - For composing rich emails with attachments, use MML syntax (see `references/message-composition.md`).
 - Store passwords securely using `pass`, system keyring, or a command that outputs the password.
-
-

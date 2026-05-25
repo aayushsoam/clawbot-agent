@@ -17,7 +17,7 @@ Infographics: 21 layouts x 21 styles (信息图, 可视化).
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/baoyu-infographic` |
 | Version | `1.56.1` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `infographic`, `visual-summary`, `creative`, `image-generation` |
@@ -254,6 +254,3 @@ Report: topic, layout, style, aspect, language, output path, files created.
 3. **One message per section** — each infographic section should convey one clear concept. Overloading sections reduces readability.
 4. **Style consistency** — the style definition from the references file must be applied consistently across the entire infographic. Don't mix styles.
 5. **image_generate aspect ratios** — the tool only supports `landscape`, `portrait`, and `square`. Custom ratios like `3:4` should map to the nearest option (portrait in that case).
-
-
-

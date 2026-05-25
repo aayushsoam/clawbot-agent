@@ -17,7 +17,7 @@ Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM.
 | Source | Optional — install with `clawbot skills install official/mlops/unsloth` |
 | Path | `optional-skills/mlops/training/unsloth` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `unsloth`, `torch`, `transformers`, `trl`, `datasets`, `peft` |
 | Platforms | linux, macos |
@@ -96,5 +96,3 @@ To refresh this skill with updated documentation:
 2. The skill will be rebuilt with the latest information
 
 <!-- Trigger re-upload 1763621536 -->
-
-

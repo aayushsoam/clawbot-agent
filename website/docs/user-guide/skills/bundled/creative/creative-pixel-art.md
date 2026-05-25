@@ -17,7 +17,7 @@ Pixel art w/ era palettes (NES, Game Boy, PICO-8).
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/pixel-art` |
 | Version | `2.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `creative`, `pixel-art`, `arcade`, `snes`, `nes`, `gameboy`, `retro`, `image`, `video` |
@@ -231,5 +231,3 @@ Quantizing before would waste error-diffusion on detail that disappears.
 Named hardware palettes and the procedural animation loops in `pixel_art_video.py`
 are ported from [pixel-art-studio](https://github.com/Synero/pixel-art-studio)
 (MIT). See `ATTRIBUTION.md` in this skill directory for details.
-
-

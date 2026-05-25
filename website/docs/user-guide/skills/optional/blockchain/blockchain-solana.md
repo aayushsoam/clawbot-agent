@@ -17,7 +17,7 @@ Query Solana blockchain data with USD pricing — wallet balances, token portfol
 | Source | Optional — install with `clawbot skills install official/blockchain/solana` |
 | Path | `optional-skills/blockchain/solana` |
 | Version | `0.2.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Solana`, `Blockchain`, `Crypto`, `Web3`, `RPC`, `DeFi`, `NFT` |
@@ -223,5 +223,3 @@ PYTH, HNT, RNDR, WEN, W, TNSR, DRIFT, bSOL, JLP, WIF, MEW, BOME, PENGU.
 # Should print current Solana slot, TPS, and SOL price
 python3 ~/.clawbot/skills/blockchain/solana/scripts/solana_client.py stats
 ```
-
-

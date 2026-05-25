@@ -17,7 +17,7 @@ Reserved and on-demand GPU cloud instances for ML training and inference. Use wh
 | Source | Optional — install with `clawbot skills install official/mlops/lambda-labs` |
 | Path | `optional-skills/mlops/lambda-labs` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `lambda-cloud-client>=1.0.0` |
 | Platforms | linux, macos, windows |
@@ -566,5 +566,3 @@ python inference.py \
 - **Pricing**: https://lambda.ai/instances
 - **Support**: https://support.lambdalabs.com
 - **Blog**: https://lambda.ai/blog
-
-

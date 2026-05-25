@@ -17,7 +17,7 @@ Evolve prompts/regex/SQL/code with Imbue's evolution loop.
 | Source | Optional — install with `clawbot skills install official/research/darwinian-evolver` |
 | Path | `optional-skills/research/darwinian-evolver` |
 | Version | `0.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `evolution`, `optimization`, `prompt-engineering`, `research` |
@@ -215,5 +215,3 @@ echo "darwinian-evolver: OK"
 - [imbue-ai/darwinian_evolver](https://github.com/imbue-ai/darwinian_evolver) (AGPL-3.0)
 - [Darwin Gödel Machines](https://arxiv.org/abs/2505.22954)
 - [PromptBreeder](https://arxiv.org/abs/2309.16797)
-
-

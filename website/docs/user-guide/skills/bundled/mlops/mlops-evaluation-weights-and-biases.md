@@ -17,7 +17,7 @@ W&B: log ML experiments, sweeps, model registry, dashboards.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/evaluation/weights-and-biases` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `wandb` |
 | Platforms | linux, macos, windows |
@@ -607,5 +607,3 @@ print(f"Share this URL: {run.url}")
 - `references/sweeps.md` - Comprehensive hyperparameter optimization guide
 - `references/artifacts.md` - Data and model versioning patterns
 - `references/integrations.md` - Framework-specific examples
-
-

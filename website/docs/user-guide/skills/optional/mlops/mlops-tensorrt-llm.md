@@ -17,7 +17,7 @@ Optimizes LLM inference with NVIDIA TensorRT for maximum throughput and lowest l
 | Source | Optional — install with `clawbot skills install official/mlops/tensorrt-llm` |
 | Path | `optional-skills/mlops/tensorrt-llm` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `tensorrt-llm`, `torch` |
 | Platforms | linux, macos |
@@ -204,5 +204,3 @@ outputs = llm.generate(
 - **Docs**: https://nvidia.github.io/TensorRT-LLM/
 - **GitHub**: https://github.com/NVIDIA/TensorRT-LLM
 - **Models**: https://huggingface.co/models?library=tensorrt_llm
-
-

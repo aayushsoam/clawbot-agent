@@ -17,7 +17,7 @@ Run 150+ AI apps via inference.sh CLI (infsh) — image generation, video creati
 | Source | Optional — install with `clawbot skills install official/devops/cli` |
 | Path | `optional-skills/devops/cli` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `AI`, `image-generation`, `video`, `LLM`, `search`, `inference`, `FLUX`, `Veo`, `Claude` |
@@ -171,5 +171,3 @@ infsh app list --search twitter
 - `references/app-discovery.md` — Searching and browsing the app catalog
 - `references/running-apps.md` — Running apps, input formats, output handling
 - `references/cli-reference.md` — Complete CLI command reference
-
-

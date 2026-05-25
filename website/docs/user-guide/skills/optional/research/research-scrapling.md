@@ -17,7 +17,7 @@ Web scraping with Scrapling - HTTP fetching, stealth browser automation, Cloudfl
 | Source | Optional — install with `clawbot skills install official/research/scrapling` |
 | Path | `optional-skills/research/scrapling` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Web Scraping`, `Browser`, `Cloudflare`, `Stealth`, `Crawling`, `Spider` |
@@ -349,5 +349,3 @@ spider.start()  # Ctrl+C to pause, re-run to resume from checkpoint
 - **Resource usage**: StealthyFetcher runs a real browser -- limit concurrent usage
 - **Legal**: always check robots.txt and website ToS before scraping. This library is for educational and research purposes
 - **Python version**: requires Python 3.10+
-
-

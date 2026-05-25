@@ -115,4 +115,3 @@ All queries are **passive** — no port scanning, no vulnerability testing:
 ---
 
 *Contributed by [@aayushsoam](https://github.com/aayushsoam)*
-

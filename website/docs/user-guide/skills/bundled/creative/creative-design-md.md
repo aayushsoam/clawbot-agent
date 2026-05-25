@@ -17,7 +17,7 @@ Author/validate/export Google's DESIGN.md token spec files.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/design-md` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `design`, `design-system`, `tokens`, `ui`, `accessibility`, `wcag`, `tailwind`, `dtcg`, `google` |
@@ -215,5 +215,3 @@ summary — WCAG findings are the most load-bearing reason to use the CLI.
 - CLI: `@google/design.md` on npm
 - License of generated DESIGN.md files: whatever the user's project uses;
   the spec itself is Apache-2.0.
-
-

@@ -276,6 +276,11 @@ def sanitize_yaml_string(s: str) -> str:
     return s
 
 
+def mdx_table_cell(value: str) -> str:
+    """Escape generated Markdown table cell content for MDX."""
+    return mdx_escape_body(str(value)).replace("|", "\\|").replace("\n", " ")
+
+
 def derive_skill_meta(skill_path: Path, source_dir: Path, source_kind: str) -> dict[str, Any]:
     """Extract category + skill slug from filesystem layout.
 
@@ -406,7 +411,7 @@ def render_skill_page(
                 link_parts.append(f"`{r}`")
         info_rows.append(("Related skills", ", ".join(link_parts)))
 
-    info_block = "\n".join(f"| {k} | {v} |" for k, v in info_rows)
+    info_block = "\n".join(f"| {k} | {mdx_table_cell(v)} |" for k, v in info_rows)
     info_table = (
         "| | |\n|---|---|\n" + info_block
     )

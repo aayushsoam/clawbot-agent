@@ -17,7 +17,7 @@ X/Twitter via xurl CLI: post, search, DM, media, v2 API.
 | Source | Bundled (installed by default) |
 | Path | `skills/social-media/xurl` |
 | Version | `1.1.1` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `twitter`, `x`, `social-media`, `xurl`, `official-api` |
@@ -426,5 +426,3 @@ xurl --app staging /2/users/me             # one-off against staging
 - Upstream CLI: https://github.com/xdevplatform/xurl (X developer platform team, Chris Park et al.)
 - Upstream agent skill: https://github.com/openclaw/openclaw/blob/main/skills/xurl/SKILL.md
 - Clawbot adaptation: reformatted for Clawbot skill conventions; safety guardrails preserved verbatim.
-
-

@@ -17,7 +17,7 @@ Generate project ideas via creative constraints.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/creative-ideation` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Creative`, `Ideation`, `Projects`, `Brainstorming`, `Inspiration` |
@@ -165,5 +165,3 @@ After the user picks one, start building — create the project, write the code,
 ## Attribution
 
 Constraint approach inspired by [wttdotm.com/prompts.html](https://wttdotm.com/prompts.html). Adapted and expanded for software development and general-purpose ideation.
-
-

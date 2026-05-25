@@ -17,7 +17,7 @@ Pre-commit review: security scan, quality gates, auto-fix.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/requesting-code-review` |
 | Version | `2.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `code-review`, `security`, `verification`, `quality`, `pre-commit`, `auto-fix` |
@@ -296,5 +296,3 @@ tests exist, tests pass, no regressions.
 - **No test framework found** — skip regression check, reviewer verdict still runs
 - **Lint tools not installed** — skip that check silently, don't fail
 - **Auto-fix introduces new issues** — counts as a new failure, cycle continues
-
-

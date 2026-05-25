@@ -17,7 +17,7 @@ MCP client: connect servers, register tools (stdio/HTTP).
 | Source | Bundled (installed by default) |
 | Path | `skills/mcp/native-mcp` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `MCP`, `Tools`, `Integrations` |
@@ -373,5 +373,3 @@ Disable sampling for untrusted servers with `sampling: { enabled: false }`.
 - The native MCP client is independent of `mcporter` -- you can use both simultaneously
 - Server connections are persistent and shared across all conversations in the same agent process
 - Adding or removing servers requires restarting the agent (no hot-reload currently)
-
-

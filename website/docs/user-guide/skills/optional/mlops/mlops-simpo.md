@@ -17,7 +17,7 @@ Simple Preference Optimization for LLM alignment. Reference-free alternative to 
 | Source | Optional — install with `clawbot skills install official/mlops/simpo` |
 | Path | `optional-skills/mlops/simpo` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `torch`, `transformers`, `datasets`, `trl`, `accelerate` |
 | Platforms | linux, macos, windows |
@@ -235,5 +235,3 @@ gradient_checkpointing: true
 - GitHub: https://github.com/princeton-nlp/SimPO
 - Models: https://huggingface.co/princeton-nlp
 - Alignment Handbook: https://github.com/huggingface/alignment-handbook
-
-

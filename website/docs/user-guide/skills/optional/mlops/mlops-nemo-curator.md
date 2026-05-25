@@ -17,7 +17,7 @@ GPU-accelerated data curation for LLM training. Supports text/image/video/audio.
 | Source | Optional — install with `clawbot skills install official/mlops/nemo-curator` |
 | Path | `optional-skills/mlops/nemo-curator` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `nemo-curator`, `cudf`, `dask`, `rapids` |
 | Platforms | linux, macos |
@@ -399,5 +399,3 @@ cluster.close()
 - **Docs**: https://docs.nvidia.com/nemo-framework/user-guide/latest/datacuration/
 - **Version**: 0.4.0+
 - **License**: Apache 2.0
-
-

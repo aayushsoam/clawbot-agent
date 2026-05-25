@@ -17,7 +17,7 @@ Simplest distributed training API. 4 lines to add distributed support to any PyT
 | Source | Optional — install with `clawbot skills install official/mlops/accelerate` |
 | Path | `optional-skills/mlops/accelerate` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `accelerate`, `torch`, `transformers` |
 | Platforms | linux, macos, windows |
@@ -348,5 +348,3 @@ set_seed(42)
 - Tutorial: "Accelerate your scripts"
 - Examples: https://github.com/huggingface/accelerate/tree/main/examples
 - Used by: HuggingFace Transformers, TRL, PEFT, all HF libraries
-
-

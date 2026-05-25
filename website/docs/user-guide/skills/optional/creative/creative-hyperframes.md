@@ -17,7 +17,7 @@ Create HTML-based video compositions, animated title cards, social overlays, cap
 | Source | Optional — install with `clawbot skills install official/creative/hyperframes` |
 | Path | `optional-skills/creative/hyperframes` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | Apache-2.0 |
 | Platforms | linux, macos, windows |
 | Tags | `creative`, `video`, `animation`, `html`, `gsap`, `motion-graphics` |
@@ -203,5 +203,3 @@ If `hyperframes render` fails, run `npx hyperframes doctor` and attach its outpu
 - [features.md](https://github.com/aayushsoam/clawbot-agent/blob/main/optional-skills/creative/hyperframes/references/features.md) — captions, TTS, audio-reactive, marker highlighting, transitions (load on demand)
 - [website-to-video.md](https://github.com/aayushsoam/clawbot-agent/blob/main/optional-skills/creative/hyperframes/references/website-to-video.md) — 7-step capture-to-video workflow
 - [troubleshooting.md](https://github.com/aayushsoam/clawbot-agent/blob/main/optional-skills/creative/hyperframes/references/troubleshooting.md) — OpenClaw fix, env vars, common render errors
-
-

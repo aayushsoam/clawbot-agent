@@ -17,7 +17,7 @@ Debug Python: pdb REPL + debugpy remote (DAP).
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/python-debugpy` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `debugging`, `python`, `pdb`, `debugpy`, `breakpoints`, `dap`, `post-mortem` |
@@ -391,5 +391,3 @@ Trigger the handler. `nc 127.0.0.1 4444`, then `w` to see the suspended frame, `
 PYTHONFAULTHANDLER=1 python -m pdb -c continue path/to/entrypoint.py
 # On crash, pdb lands at the frame of the exception with full locals
 ```
-
-

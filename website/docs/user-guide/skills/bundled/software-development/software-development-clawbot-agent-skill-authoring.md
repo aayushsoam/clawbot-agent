@@ -17,7 +17,7 @@ Author in-repo SKILL.md: frontmatter, validator, structure.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/clawbot-agent-skill-authoring` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `skills`, `authoring`, `clawbot-agent`, `conventions`, `skill-md` |
@@ -181,5 +181,3 @@ Pick the closest existing category. Don't invent new top-level categories casual
 - [ ] Structure: `# Title` → `## Overview` → `## When to Use` → body → `## Common Pitfalls` → `## Verification Checklist`
 - [ ] `related_skills` references resolve in-repo (or are explicitly OK to be user-local)
 - [ ] `git add skills/<category>/<name>/ && git commit` completed on the intended branch
-
-

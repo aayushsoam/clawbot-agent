@@ -17,7 +17,7 @@ High-level PyTorch framework with Trainer class, automatic distributed training 
 | Source | Optional — install with `clawbot skills install official/mlops/pytorch-lightning` |
 | Path | `optional-skills/mlops/pytorch-lightning` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `lightning`, `torch`, `transformers` |
 | Platforms | linux, macos, windows |
@@ -363,5 +363,3 @@ trainer = L.Trainer(accelerator='gpu', devices=1)
 - Examples: https://github.com/Lightning-AI/pytorch-lightning/tree/master/examples
 - Discord: https://discord.gg/lightning-ai
 - Used by: Kaggle winners, research labs, production teams
-
-

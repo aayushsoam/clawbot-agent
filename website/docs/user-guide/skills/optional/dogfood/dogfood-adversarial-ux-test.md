@@ -17,7 +17,7 @@ Roleplay the most difficult, tech-resistant user for your product. Browse the ap
 | Source | Optional — install with `clawbot skills install official/dogfood/adversarial-ux-test` |
 | Path | `optional-skills/dogfood/adversarial-ux-test` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `qa`, `ux`, `testing`, `adversarial`, `dogfood`, `personas`, `user-testing` |
@@ -207,5 +207,3 @@ These are starting points — customize for your specific product:
 - Max 10 tickets per session
 - Test on staging/deployed app, not local dev
 - One persona, one session, one report
-
-

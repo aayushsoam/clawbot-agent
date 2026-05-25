@@ -17,7 +17,7 @@ Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/excalidraw` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Excalidraw`, `Diagrams`, `Flowcharts`, `Architecture`, `Visualization`, `JSON` |
@@ -210,5 +210,3 @@ See `references/colors.md` for full color tables. Quick reference:
 - Do NOT use emoji in text -- they don't render in Excalidraw's font
 - For dark mode diagrams, see `references/dark-mode.md`
 - For larger examples, see `references/examples.md`
-
-

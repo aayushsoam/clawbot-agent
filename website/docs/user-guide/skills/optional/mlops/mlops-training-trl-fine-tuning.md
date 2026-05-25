@@ -17,7 +17,7 @@ TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.
 | Source | Optional — install with `clawbot skills install official/mlops/trl-fine-tuning` |
 | Path | `optional-skills/mlops/training/trl-fine-tuning` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `trl`, `transformers`, `datasets`, `peft`, `accelerate`, `torch` |
 | Platforms | linux, macos, windows |
@@ -475,5 +475,3 @@ config = PPOConfig(
   - "Direct Preference Optimization: Your Language Model is Secretly a Reward Model" (DPO, 2023)
   - "Group Relative Policy Optimization" (GRPO, 2024)
 - Examples: https://github.com/huggingface/trl/tree/main/examples/scripts
-
-

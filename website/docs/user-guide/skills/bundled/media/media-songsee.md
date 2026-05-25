@@ -17,7 +17,7 @@ Audio spectrograms/features (mel, chroma, MFCC) via CLI.
 | Source | Bundled (installed by default) |
 | Path | `skills/media/songsee` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Audio`, `Visualization`, `Spectrogram`, `Music`, `Analysis` |
@@ -96,5 +96,3 @@ Multiple `--viz` types render as a grid in a single image.
 - WAV and MP3 are decoded natively; other formats require `ffmpeg`
 - Output images can be inspected with `vision_analyze` for automated audio analysis
 - Useful for comparing audio outputs, debugging synthesis, or documenting audio processing pipelines
-
-

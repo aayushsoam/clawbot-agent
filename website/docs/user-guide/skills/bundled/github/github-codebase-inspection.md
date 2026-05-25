@@ -17,7 +17,7 @@ Inspect codebases w/ pygount: LOC, languages, ratios.
 | Source | Bundled (installed by default) |
 | Path | `skills/github/codebase-inspection` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `LOC`, `Code Analysis`, `pygount`, `Codebase`, `Metrics`, `Repository` |
@@ -130,5 +130,3 @@ Special pseudo-languages:
 2. **Markdown shows 0 code lines** — pygount classifies all Markdown content as comments, not code. This is expected behavior.
 3. **JSON files show low code counts** — pygount may count JSON lines conservatively. For accurate JSON line counts, use `wc -l` directly.
 4. **Large monorepos** — for very large repos, consider using `--suffix` to target specific languages rather than scanning everything.
-
-

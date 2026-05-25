@@ -17,7 +17,7 @@ Serverless GPU cloud platform for running ML workloads. Use when you need on-dem
 | Source | Optional — install with `clawbot skills install official/mlops/modal` |
 | Path | `optional-skills/mlops/modal` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `modal>=0.64.0` |
 | Platforms | linux, macos, windows |
@@ -360,5 +360,3 @@ if __name__ == "__main__":
 - **Examples**: https://github.com/modal-labs/modal-examples
 - **Pricing**: https://modal.com/pricing
 - **Discord**: https://discord.gg/modal
-
-

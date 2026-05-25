@@ -17,7 +17,7 @@ Delegate coding to OpenCode CLI (features, PR review).
 | Source | Bundled (installed by default) |
 | Path | `skills/autonomous-ai-agents/opencode` |
 | Version | `1.2.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Coding-Agent`, `OpenCode`, `Autonomous`, `Refactoring`, `Code-Review` |
@@ -235,5 +235,3 @@ Success criteria:
 4. For long tasks, provide progress updates from `process` logs.
 5. Report concrete outcomes (files changed, tests, remaining risks).
 6. Exit interactive sessions with Ctrl+C or kill, never `/exit`.
-
-

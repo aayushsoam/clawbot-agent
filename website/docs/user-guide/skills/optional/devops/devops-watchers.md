@@ -17,7 +17,7 @@ Poll RSS, JSON APIs, and GitHub with watermark dedup.
 | Source | Optional — install with `clawbot skills install official/devops/watchers` |
 | Path | `optional-skills/devops/watchers` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `cron`, `polling`, `rss`, `github`, `http`, `automation`, `monitoring` |
@@ -124,5 +124,3 @@ All three scripts use the same template: load watermark, fetch, diff, save, emit
 2. **Expecting the first run to emit items.** It won't — first run records a baseline. If you need an initial digest, delete the state file after the first run or add a `--prime-with-latest N` flag in your own script.
 3. **Unbounded watermark growth.** The shared helper caps at 500 IDs. Raise it for high-churn feeds; lower it on constrained filesystems.
 4. **Putting the state dir where the agent's sandbox can't write.** `$CLAWBOT_HOME/watcher-state/` is always writable. Docker/Modal backends may not see arbitrary host paths.
-
-

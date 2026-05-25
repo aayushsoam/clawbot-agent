@@ -17,7 +17,7 @@ Provides PyTorch-native distributed LLM pretraining using torchtitan with 4D par
 | Source | Optional — install with `clawbot skills install official/mlops/torchtitan` |
 | Path | `optional-skills/mlops/torchtitan` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `torch>=2.6.0`, `torchtitan>=0.2.0`, `torchao>=0.5.0` |
 | Platforms | linux, macos |
@@ -376,5 +376,3 @@ Create seed checkpoint first (see Workflow 4, Step 1).
 - Paper: https://arxiv.org/abs/2410.06511
 - ICLR 2025: https://iclr.cc/virtual/2025/poster/29620
 - PyTorch Forum: https://discuss.pytorch.org/c/distributed/torchtitan/44
-
-

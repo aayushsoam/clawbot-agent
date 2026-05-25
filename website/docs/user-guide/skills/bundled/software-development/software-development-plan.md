@@ -17,7 +17,7 @@ Plan mode: write markdown plan to .clawbot/plans/, no exec.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/plan` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `planning`, `plan-mode`, `implementation`, `workflow` |
@@ -74,5 +74,3 @@ If not, create a sensible timestamped filename yourself under `.clawbot/plans/`.
 - If no explicit instruction accompanies `/plan`, infer the task from the current conversation context.
 - If it is genuinely underspecified, ask a brief clarifying question instead of guessing.
 - After saving the plan, reply briefly with what you planned and the saved path.
-
-

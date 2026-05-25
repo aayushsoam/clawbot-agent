@@ -17,7 +17,7 @@ Iterative Python via live Jupyter kernel (hamelnb).
 | Source | Bundled (installed by default) |
 | Path | `skills/data-science/jupyter-live-kernel` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `jupyter`, `notebook`, `repl`, `data-science`, `exploration`, `iterative` |
@@ -182,5 +182,3 @@ uv run "$SCRIPT" restart-run-all --path <notebook.ipynb> --save-outputs --compac
 The script has a 30-second default timeout per execution. For long-running
 operations, pass `--timeout 120`. Use generous timeouts (60+) for initial
 setup or heavy computation.
-
-

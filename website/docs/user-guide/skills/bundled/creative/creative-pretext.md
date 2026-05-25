@@ -17,7 +17,7 @@ Use when building creative browser demos with @chenglou/pretext — DOM-free tex
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/pretext` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `creative-coding`, `typography`, `pretext`, `ascii-art`, `canvas`, `generative`, `text-layout`, `kinetic-typography` |
@@ -236,5 +236,3 @@ Clone these for inspiration / patterns (all MIT-ish, linked from [pretext.cool](
 - **Alarmy editorial clock** — `github.com/SmisLee/alarmy-pretext-demo`
 
 Official playground: [chenglou.me/pretext](https://chenglou.me/pretext/) — accordion, bubbles, dynamic-layout, editorial-engine, justification-comparison, masonry, markdown-chat, rich-note.
-
-

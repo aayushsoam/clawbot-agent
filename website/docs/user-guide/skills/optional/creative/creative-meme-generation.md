@@ -17,7 +17,7 @@ Generate real meme images by picking a template and overlaying text with Pillow.
 | Source | Optional — install with `clawbot skills install official/creative/meme-generation` |
 | Path | `optional-skills/creative/meme-generation` |
 | Version | `2.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `creative`, `memes`, `humor`, `images` |
@@ -145,5 +145,3 @@ The output is correct if:
 - Text is legible (white with black outline) on the template
 - The joke lands — caption matches the template's intended structure
 - File can be delivered via MEDIA: path
-
-

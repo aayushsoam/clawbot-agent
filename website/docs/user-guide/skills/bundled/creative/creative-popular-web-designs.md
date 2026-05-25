@@ -17,7 +17,7 @@ description: "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS"
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/popular-web-designs` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 
@@ -221,5 +221,3 @@ Match the design to the content:
 - **Premium / luxury:** Apple, BMW, Stripe, Superhuman, Revolut
 - **Data-dense / dashboards:** Sentry, Kraken, Cohere, ClickHouse
 - **Monospace / terminal aesthetic:** Ollama, OpenCode, x.ai, VoltAgent
-
-

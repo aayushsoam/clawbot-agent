@@ -17,7 +17,7 @@ Query Polymarket: markets, prices, orderbooks, history.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/polymarket` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | Platforms | linux, macos, windows |
 
 ## Reference: full SKILL.md
@@ -94,5 +94,3 @@ Generous — unlikely to hit for normal usage:
 - Trading requires wallet-based crypto authentication (EIP-712 signatures)
 - Some new markets may have empty price history
 - Geographic restrictions apply to trading but read-only data is globally accessible
-
-

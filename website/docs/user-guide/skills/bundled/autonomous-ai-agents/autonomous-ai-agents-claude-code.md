@@ -17,7 +17,7 @@ Delegate coding to Claude Code CLI (features, PRs).
 | Source | Bundled (installed by default) |
 | Path | `skills/autonomous-ai-agents/claude-code` |
 | Version | `2.2.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Coding-Agent`, `Claude`, `Anthropic`, `Code-Review`, `Refactoring`, `PTY`, `Automation` |
@@ -761,5 +761,3 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 8. **Report results to user** — after completion, summarize what Claude did and what changed
 9. **Don't kill slow sessions** — Claude may be doing multi-step work; check progress instead
 10. **Use `--allowedTools`** — restrict capabilities to what the task actually needs
-
-

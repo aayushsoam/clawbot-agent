@@ -17,7 +17,7 @@ Build PowerPoint decks headless with python-pptx. Pairs with excel-author for mo
 | Source | Optional — install with `clawbot skills install official/finance/pptx-author` |
 | Path | `optional-skills/finance/pptx-author` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | Apache-2.0 |
 | Platforms | linux, macos, windows |
 | Tags | `powerpoint`, `pptx`, `python-pptx`, `presentation`, `finance` |
@@ -189,5 +189,3 @@ A typical banking pitch deck follows this structure. Not prescriptive, but usefu
 ## Attribution
 
 Conventions adapted from Anthropic's Claude for Financial Services plugin suite, Apache-2.0 licensed. Original: https://github.com/anthropics/financial-services/tree/main/plugins/agent-plugins/pitch-agent/skills/pptx-author
-
-

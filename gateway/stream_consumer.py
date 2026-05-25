@@ -9,8 +9,7 @@ GatewayStreamConsumer:
 
 Design: Uses the edit transport (send initial message, then editMessageText).
 This is universally supported across Telegram, Discord, and Slack.
-
-
+"""
 
 from __future__ import annotations
 
@@ -544,6 +543,11 @@ class GatewayStreamConsumer:
                             self._final_response_sent = await self._send_or_edit(
                                 self._accumulated, finalize=True,
                             )
+                            if (
+                                not self._final_response_sent
+                                and self._fallback_final_send
+                            ):
+                                await self._send_fallback_final(self._accumulated)
                         elif not self._already_sent:
                             self._final_response_sent = await self._send_or_edit(self._accumulated)
                     return

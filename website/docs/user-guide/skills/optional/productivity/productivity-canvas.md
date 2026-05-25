@@ -17,7 +17,7 @@ Canvas LMS integration — fetch enrolled courses and assignments using API toke
 | Source | Optional — install with `clawbot skills install official/productivity/canvas` |
 | Path | `optional-skills/productivity/canvas` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Canvas`, `LMS`, `Education`, `Courses`, `Assignments` |
@@ -112,5 +112,3 @@ Canvas uses `Link` headers for pagination. The Python script handles pagination 
 | Empty course list | Try `--enrollment-state active` or omit the flag to see all states |
 | Wrong institution | Verify `CANVAS_BASE_URL` matches the URL in your browser |
 | Timeout errors | Check network connectivity to your Canvas instance |
-
-

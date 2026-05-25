@@ -17,7 +17,7 @@ Control a running TouchDesigner instance via twozero MCP — create operators, s
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/touchdesigner-mcp` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `TouchDesigner`, `MCP`, `twozero`, `creative-coding`, `real-time-visuals`, `generative-art`, `audio-reactive`, `VJ`, `installation`, `GLSL` |
@@ -371,5 +371,3 @@ See `references/network-patterns.md` for complete build scripts + shader code.
 ---
 
 > You're not writing code. You're conducting light.
-
-

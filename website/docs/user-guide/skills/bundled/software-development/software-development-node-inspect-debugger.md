@@ -17,7 +17,7 @@ Debug Node.js via --inspect + Chrome DevTools Protocol CLI.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/node-inspect-debugger` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `debugging`, `nodejs`, `node-inspect`, `cdp`, `breakpoints`, `ui-tui` |
@@ -335,5 +335,3 @@ debug> pause
 debug> bt
 # Now you see the stuck frame
 ```
-
-

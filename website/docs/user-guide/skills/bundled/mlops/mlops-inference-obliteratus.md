@@ -17,7 +17,7 @@ OBLITERATUS: abliterate LLM refusals (diff-in-means).
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/inference/obliteratus` |
 | Version | `2.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `obliteratus`, `torch`, `transformers`, `bitsandbytes`, `accelerate`, `safetensors` |
 | Platforms | linux, macos |
@@ -358,5 +358,3 @@ Enable with `--contribute` flag. No personal data is collected — only model na
 - **vllm** — Serve abliterated models with high throughput
 - **gguf** — Convert abliterated models to GGUF for llama.cpp
 - **huggingface-tokenizers** — Work with model tokenizers
-
-

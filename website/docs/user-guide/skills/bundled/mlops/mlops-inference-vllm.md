@@ -17,7 +17,7 @@ vLLM: high-throughput LLM serving, OpenAI API, quantization.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/inference/vllm` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `vllm`, `torch`, `transformers` |
 | Platforms | linux, macos |
@@ -384,5 +384,3 @@ Supported platforms: NVIDIA (primary), AMD ROCm, Intel GPUs, TPUs
 - GitHub: https://github.com/vllm-project/vllm
 - Paper: "Efficient Memory Management for Large Language Model Serving with PagedAttention" (SOSP 2023)
 - Community: https://discuss.vllm.ai
-
-

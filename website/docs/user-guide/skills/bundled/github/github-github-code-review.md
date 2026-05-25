@@ -17,7 +17,7 @@ Review PRs: diffs, inline comments via gh or REST.
 | Source | Bundled (installed by default) |
 | Path | `skills/github/github-code-review` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `GitHub`, `Code-Review`, `Pull-Requests`, `Git`, `Quality` |
@@ -497,5 +497,3 @@ git branch -D pr-$PR_NUMBER
 - **Approve** — no critical or warning-level issues, only minor suggestions or all clear
 - **Request Changes** — any critical or warning-level issue that should be fixed before merge
 - **Comment** — observations and suggestions, but nothing blocking (use when you're unsure or the PR is a draft)
-
-

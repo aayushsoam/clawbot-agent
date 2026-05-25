@@ -17,7 +17,7 @@ Apple Reminders via remindctl: add, list, complete.
 | Source | Bundled (installed by default) |
 | Path | `skills/apple/apple-reminders` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | macos |
 | Tags | `Reminders`, `tasks`, `todo`, `macOS`, `Apple` |
@@ -112,5 +112,3 @@ Accepted by `--due` and date filters:
 1. When user says "remind me", clarify: Apple Reminders (syncs to phone) vs agent cronjob alert
 2. Always confirm reminder content and due date before creating
 3. Use `--json` for programmatic parsing
-
-

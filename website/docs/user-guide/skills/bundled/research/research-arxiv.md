@@ -17,7 +17,7 @@ Search arXiv papers by keyword, author, category, or ID.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/arxiv` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Research`, `Arxiv`, `Papers`, `Academic`, `Science`, `API` |
@@ -298,5 +298,3 @@ Papers can be withdrawn after submission. When this happens:
 - The `<summary>` field contains a withdrawal notice (look for "withdrawn" or "retracted")
 - Metadata fields may be incomplete
 - Always check the summary before treating a result as a valid paper
-
-

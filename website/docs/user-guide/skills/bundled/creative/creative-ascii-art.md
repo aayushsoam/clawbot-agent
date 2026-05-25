@@ -17,7 +17,7 @@ ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/ascii-art` |
 | Version | `4.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `ASCII`, `Art`, `Banners`, `Creative`, `Unicode`, `Text-Art`, `pyfiglet`, `figlet`, `cowsay`, `boxes` |
@@ -336,5 +336,3 @@ When tools above don't have what's needed, generate ASCII art directly using the
 7. **Weather/moon art** → wttr.in via curl
 8. **Something custom/creative** → LLM generation with Unicode palette
 9. **Any tool not installed** → install it, or fall back to next option
-
-

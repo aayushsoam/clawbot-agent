@@ -17,7 +17,7 @@ llama.cpp local GGUF inference + HF Hub model discovery.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/inference/llama-cpp` |
 | Version | `2.1.2` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `llama-cpp-python>=0.2.0` |
 | Platforms | linux, macos, windows |
@@ -265,5 +265,3 @@ Source URLs:
 - **Example tree API**: https://huggingface.co/api/models/unsloth/Qwen3.6-35B-A3B-GGUF/tree/main?recursive=true
 - **Example llama.cpp search**: https://huggingface.co/models?num_parameters=min:0,max:24B&apps=llama.cpp&sort=trending
 - **License**: MIT
-
-

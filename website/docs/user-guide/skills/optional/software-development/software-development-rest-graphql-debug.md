@@ -17,7 +17,7 @@ Debug REST/GraphQL APIs: status codes, auth, schemas, repro.
 | Source | Optional — install with `clawbot skills install official/software-development/rest-graphql-debug` |
 | Path | `optional-skills/software-development/rest-graphql-debug` |
 | Version | `1.2.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Tags | `api`, `rest`, `graphql`, `http`, `debugging`, `testing`, `curl`, `integration` |
 | Related skills | [`systematic-debugging`](/docs/user-guide/skills/bundled/software-development/software-development-systematic-debugging), [`test-driven-development`](/docs/user-guide/skills/bundled/software-development/software-development-test-driven-development) |
@@ -529,5 +529,3 @@ Missing required field `email`. Server validation rejects before processing.
 
 - `systematic-debugging` — once the failing API layer is isolated, root-cause your code
 - `test-driven-development` — write the regression test before shipping the fix
-
-

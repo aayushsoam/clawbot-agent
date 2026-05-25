@@ -17,7 +17,7 @@ Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).
 | Source | Optional — install with `clawbot skills install official/mlops/axolotl` |
 | Path | `optional-skills/mlops/training/axolotl` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `axolotl`, `torch`, `transformers`, `datasets`, `peft`, `accelerate`, `deepspeed` |
 | Platforms | linux, macos |
@@ -179,5 +179,3 @@ Add templates, boilerplate, or example projects here.
 To refresh this skill with updated documentation:
 1. Re-run the scraper with the same configuration
 2. The skill will be rebuilt with the latest information
-
-

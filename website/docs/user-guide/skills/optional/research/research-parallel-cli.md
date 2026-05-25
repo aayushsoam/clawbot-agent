@@ -17,7 +17,7 @@ Optional vendor skill for Parallel CLI — agent-native web search, extraction, 
 | Source | Optional — install with `clawbot skills install official/research/parallel-cli` |
 | Path | `optional-skills/research/parallel-cli` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Research`, `Web`, `Search`, `Deep-Research`, `Enrichment`, `CLI` |
@@ -409,5 +409,3 @@ parallel-cli config auto-update-check off
 - For large result sets, save JSON to `/tmp/*.json` instead of stuffing everything into context.
 - Do not silently choose Parallel when Clawbot native tools are already sufficient.
 - Remember this is a vendor workflow that usually requires account auth and paid usage beyond the free tier.
-
-

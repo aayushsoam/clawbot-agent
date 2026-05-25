@@ -17,7 +17,7 @@ Connect to a running NeuroSkill instance and incorporate the user's real-time co
 | Source | Optional — install with `clawbot skills install official/health/neuroskill-bci` |
 | Path | `optional-skills/health/neuroskill-bci` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `BCI`, `neurofeedback`, `health`, `focus`, `EEG`, `cognitive-state`, `biometrics`, `neuroskill` |
@@ -468,5 +468,3 @@ npx neuroskill label "breakthrough"
 - [NeuroSkill Desktop App](https://github.com/NeuroSkill-com/skill) (GPLv3)
 - [NeuroLoop CLI Companion](https://github.com/NeuroSkill-com/neuroloop) (GPLv3)
 - [MIT Media Lab Project](https://www.media.mit.edu/projects/neuroskill/overview/)
-
-

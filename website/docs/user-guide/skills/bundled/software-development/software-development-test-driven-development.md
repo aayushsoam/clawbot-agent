@@ -17,7 +17,7 @@ TDD: enforce RED-GREEN-REFACTOR, tests before code.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/test-driven-development` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `testing`, `tdd`, `development`, `quality`, `red-green-refactor` |
@@ -359,5 +359,3 @@ Otherwise → not TDD
 ```
 
 No exceptions without the user's explicit permission.
-
-

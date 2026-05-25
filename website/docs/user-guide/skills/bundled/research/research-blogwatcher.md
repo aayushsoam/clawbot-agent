@@ -17,7 +17,7 @@ Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/blogwatcher` |
 | Version | `2.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `RSS`, `Blogs`, `Feed-Reader`, `Monitoring` |
@@ -150,5 +150,3 @@ Unread articles (2):
 - Import blogs in bulk from OPML files exported by Feedly, Inoreader, NewsBlur, etc.
 - Database stored at `~/.blogwatcher-cli/blogwatcher-cli.db` by default (override with `--db` or `BLOGWATCHER_DB`).
 - Use `blogwatcher-cli <command> --help` to discover all flags and options.
-
-

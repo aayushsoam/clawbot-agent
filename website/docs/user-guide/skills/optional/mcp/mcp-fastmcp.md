@@ -17,7 +17,7 @@ Build, test, inspect, install, and deploy MCP servers with FastMCP in Python. Us
 | Source | Optional — install with `clawbot skills install official/mcp/fastmcp` |
 | Path | `optional-skills/mcp/fastmcp` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `MCP`, `FastMCP`, `Python`, `Tools`, `Resources`, `Prompts`, `Deployment` |
@@ -313,5 +313,3 @@ The server-building part may be correct while the Clawbot config is not. Load th
 ## References
 
 For CLI details, install targets, and deployment checks, read `references/fastmcp-cli.md`.
-
-

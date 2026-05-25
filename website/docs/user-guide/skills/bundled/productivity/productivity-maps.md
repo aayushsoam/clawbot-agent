@@ -17,7 +17,7 @@ Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/maps` |
 | Version | `1.2.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `maps`, `geocoding`, `places`, `routing`, `distance`, `directions`, `nearby`, `location`, `openstreetmap`, `nominatim`, `overpass`, `osrm` |
@@ -208,5 +208,3 @@ python3 ~/.clawbot/skills/maps/scripts/maps_client.py search "Statue of Liberty"
 python3 ~/.clawbot/skills/maps/scripts/maps_client.py nearby --near "Times Square" --category restaurant --limit 3
 # Should return a list of restaurants within ~500m of Times Square
 ```
-
-

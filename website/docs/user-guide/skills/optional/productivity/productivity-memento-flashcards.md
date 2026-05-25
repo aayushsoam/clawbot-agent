@@ -17,7 +17,7 @@ Spaced-repetition flashcard system. Create cards from facts or text, chat with f
 | Source | Optional — install with `clawbot skills install official/productivity/memento-flashcards` |
 | Path | `optional-skills/productivity/memento-flashcards` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | macos, linux |
 | Tags | `Education`, `Flashcards`, `Spaced Repetition`, `Learning`, `Quiz`, `YouTube` |
@@ -334,5 +334,3 @@ pytest tests/skills/test_memento_cards.py tests/skills/test_youtube_quiz.py -q
 Agent-level verification:
 - Start a review and confirm feedback is plain text, brief, and always includes the correct answer before the next card
 - Run a YouTube quiz flow and confirm each answer receives visible feedback before the next question
-
-

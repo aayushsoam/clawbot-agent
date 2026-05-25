@@ -17,7 +17,7 @@ Debug Clawbot TUI slash commands: Python, gateway, Ink UI.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/debugging-clawbot-tui-commands` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `debugging`, `clawbot-agent`, `tui`, `slash-commands`, `typescript`, `python` |
@@ -170,5 +170,3 @@ After fixing:
    - Live UI state reflects the change immediately (not just after restart)
 
 5. If the command is also gateway-available, test it from at least one messaging platform (or run the gateway tests: `scripts/run_tests.sh tests/gateway/`).
-
-

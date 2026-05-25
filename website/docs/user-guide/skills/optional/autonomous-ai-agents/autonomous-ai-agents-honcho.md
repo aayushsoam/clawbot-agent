@@ -17,7 +17,7 @@ Configure and use Honcho memory with Clawbot -- cross-session user modeling, mul
 | Source | Optional — install with `clawbot skills install official/autonomous-ai-agents/honcho` |
 | Path | `optional-skills/autonomous-ai-agents/honcho` |
 | Version | `2.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Honcho`, `Memory`, `Profiles`, `Observation`, `Dialectic`, `User-Modeling`, `Session-Summary` |
@@ -444,5 +444,3 @@ Session summary requires at least one prior turn in the current Honcho session. 
 | `clawbot memory setup` | Generic memory provider picker (selecting "honcho" runs the same wizard) |
 | `clawbot memory status` | Show active memory provider and config |
 | `clawbot memory off` | Disable external memory provider |
-
-

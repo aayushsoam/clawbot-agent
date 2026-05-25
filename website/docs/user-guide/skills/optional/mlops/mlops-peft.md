@@ -17,7 +17,7 @@ Parameter-efficient fine-tuning for LLMs using LoRA, QLoRA, and 25+ methods. Use
 | Source | Optional — install with `clawbot skills install official/mlops/peft` |
 | Path | `optional-skills/mlops/peft` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `peft>=0.13.0`, `transformers>=4.45.0`, `torch>=2.0.0`, `bitsandbytes>=0.43.0` |
 | Platforms | linux, macos, windows |
@@ -450,5 +450,3 @@ TrainingArguments(learning_rate=1e-4)
 - **LoRA Paper**: arXiv:2106.09685
 - **QLoRA Paper**: arXiv:2305.14314
 - **Models**: https://huggingface.co/models?library=peft
-
-

@@ -17,7 +17,7 @@ Facebook's library for efficient similarity search and clustering of dense vecto
 | Source | Optional — install with `clawbot skills install official/mlops/faiss` |
 | Path | `optional-skills/mlops/faiss` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `faiss-cpu`, `faiss-gpu`, `numpy` |
 | Platforms | linux, macos |
@@ -238,5 +238,3 @@ vector_store = FaissVectorStore(faiss_index=faiss_index)
 - **GitHub**: https://github.com/facebookresearch/faiss ⭐ 31,700+
 - **Wiki**: https://github.com/facebookresearch/faiss/wiki
 - **License**: MIT
-
-

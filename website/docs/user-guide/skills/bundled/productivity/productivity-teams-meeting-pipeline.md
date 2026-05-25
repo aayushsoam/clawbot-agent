@@ -17,7 +17,7 @@ Operate the Teams meeting summary pipeline via Clawbot CLI — summarize meeting
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/teams-meeting-pipeline` |
 | Version | `1.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Tags | `Teams`, `Microsoft Graph`, `Meetings`, `Productivity`, `Operations` |
 
@@ -125,5 +125,3 @@ Point the user to these when they need more depth than this skill covers:
 - Full pipeline setup: `/docs/user-guide/messaging/teams-meetings`
 - Operator runbook (renewal automation, troubleshooting, go-live checklist): `/docs/guides/operate-teams-meeting-pipeline`
 - Webhook listener setup: `/docs/user-guide/messaging/msgraph-webhook`
-
-

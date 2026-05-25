@@ -17,7 +17,7 @@ Control Philips Hue lights, scenes, rooms via OpenHue CLI.
 | Source | Bundled (installed by default) |
 | Path | `skills/smart-home/openhue` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Smart-Home`, `Hue`, `Lights`, `IoT`, `Automation` |
@@ -122,5 +122,3 @@ openhue set room "Living Room" --off
 - Colors only work on color-capable bulbs (not white-only models)
 - Light and room names are case-sensitive — use `openhue get light` to check exact names
 - Works great with cron jobs for scheduled lighting (e.g. dim at bedtime, bright at wake)
-
-

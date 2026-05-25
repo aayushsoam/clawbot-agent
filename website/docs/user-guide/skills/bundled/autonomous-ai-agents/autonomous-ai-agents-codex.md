@@ -17,7 +17,7 @@ Delegate coding to OpenAI Codex CLI (features, PRs).
 | Source | Bundled (installed by default) |
 | Path | `skills/autonomous-ai-agents/codex` |
 | Version | `1.0.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Coding-Agent`, `Codex`, `OpenAI`, `Code-Review`, `Refactoring` |
@@ -146,5 +146,3 @@ terminal(command="gh pr comment 86 --body '<review>'", workdir="~/project")
 5. **Background for long tasks** — use `background=true` and monitor with `process` tool
 6. **Don't interfere** — monitor with `poll`/`log`, be patient with long-running tasks
 7. **Parallel is fine** — run multiple Codex processes at once for batch work
-
-

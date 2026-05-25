@@ -17,7 +17,7 @@ Configure, extend, or contribute to Clawbot Agent.
 | Source | Bundled (installed by default) |
 | Path | `skills/autonomous-ai-agents/clawbot-agent` |
 | Version | `2.1.0` |
-| Author | Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `clawbot`, `setup`, `configuration`, `multi-agent`, `spawning`, `cli`, `gateway`, `development` |
@@ -1030,5 +1030,3 @@ Types: `fix:`, `feat:`, `refactor:`, `docs:`, `chore:`
 - Use `get_clawbot_home()` from `clawbot_constants` for all paths (profile-safe)
 - Config values go in `config.yaml`, secrets go in `.env`
 - New tools need a `check_fn` so they only appear when requirements are met
-
-
