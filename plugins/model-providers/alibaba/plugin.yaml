@@ -1,0 +1,6 @@
+name: alibaba-provider
+kind: model-provider
+version: 1.0.0
+description: Alibaba DashScope (international)
+author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+

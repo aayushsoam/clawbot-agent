@@ -1,0 +1,1 @@
+# Clawbot plugins package

@@ -1,0 +1,8 @@
+name: openai
+version: 1.0.0
+description: "OpenAI image generation backend (gpt-image-2). Saves generated images to $CLAWBOT_HOME/cache/images/."
+author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+kind: backend
+requires_env:
+  - OPENAI_API_KEY
+

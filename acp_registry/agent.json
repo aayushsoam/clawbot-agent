@@ -1,0 +1,16 @@
+{
+  "id": "clawbot-agent",
+  "name": "Clawbot Agent",
+  "version": "0.14.0",
+  "description": "Self-improving open-source AI agent by Aayush soam with ACP editor integration, persistent memory, skills, and rich tool support.",
+  "repository": "https://github.com/aayushsoam/clawbot-agent",
+  "website": "https://clawbot-agent.aayushsoam.com/docs/user-guide/features/acp",
+  "authors": ["Aayush soam"],
+  "license": "MIT",
+  "distribution": {
+    "uvx": {
+      "package": "clawbot-agent[acp]==0.14.0",
+      "args": ["clawbot-acp"]
+    }
+  }
+}

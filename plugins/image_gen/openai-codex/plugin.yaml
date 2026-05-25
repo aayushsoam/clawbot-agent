@@ -1,0 +1,6 @@
+name: openai-codex
+version: 1.0.0
+description: "OpenAI image generation backed by ChatGPT/Codex OAuth (gpt-image-2 via the Responses image_generation tool). Saves generated images to $CLAWBOT_HOME/cache/images/."
+author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+kind: backend
+

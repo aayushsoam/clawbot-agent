@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@clawbot/ink": ["src/types/clawbot-ink.d.ts"]
+    }
+  }
+}

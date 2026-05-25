@@ -1,0 +1,6 @@
+name: ai-gateway-provider
+kind: model-provider
+version: 1.0.0
+description: Vercel AI Gateway
+author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+

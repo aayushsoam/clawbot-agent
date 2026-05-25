@@ -1,0 +1,6 @@
+name: copilot-acp-provider
+kind: model-provider
+version: 1.0.0
+description: GitHub Copilot via ACP subprocess
+author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+

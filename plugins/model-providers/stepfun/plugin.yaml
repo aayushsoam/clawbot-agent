@@ -1,0 +1,6 @@
+name: stepfun-provider
+kind: model-provider
+version: 1.0.0
+description: StepFun Step Plan
+author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+
