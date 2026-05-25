@@ -2108,7 +2108,7 @@ def _strip_leaked_bracketed_paste_wrappers(text: str) -> str:
 # prompt_toolkit's _on_resize() + renderer send ``ESC[6n`` queries to the
 # terminal; under resize storms or tab switches the terminal's reply can
 # race past the input parser and end up in the input buffer as literal
-# text (see issue #14692). Also matches the visible-form ``^[[<row>;<col>R``
+# text (see issue ). Also matches the visible-form ``^[[<row>;<col>R``
 # that appears when the ESC byte was stripped by a prior filter.
 _DSR_CPR_ESC_RE = re.compile(r"\x1b\[\d+;\d+R")
 _DSR_CPR_VISIBLE_RE = re.compile(r"\^\[\[\d+;\d+R")

@@ -2,7 +2,7 @@
 
 Covers Cursor Position Report (CPR / DSR) responses that occasionally
 leak into the input buffer after terminal resize storms or multiplexer
-tab switches — see issue #14692.
+tab switches — see issue .
 """
 
 from cli import _strip_leaked_terminal_responses
@@ -17,7 +17,7 @@ class TestStripLeakedTerminalResponses:
         assert _strip_leaked_terminal_responses("") == ""
 
     def test_strips_canonical_dsr_response(self):
-        # Reports from issue #14692
+        # Reports from issue 
         text = "\x1b[53;1R"
         assert _strip_leaked_terminal_responses(text) == ""
 
