@@ -78,6 +78,26 @@ def test_board_empty(client):
     assert data["latest_event_id"] == 0
 
 
+def test_corrupt_kanban_db_returns_recovery_hint(tmp_path, monkeypatch):
+    home = tmp_path / ".clawbot"
+    home.mkdir()
+    (home / "kanban.db").write_text("not sqlite", encoding="utf-8")
+    monkeypatch.setenv("CLAWBOT_HOME", str(home))
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+
+    app = FastAPI()
+    app.include_router(_load_plugin_router(), prefix="/api/plugins/kanban")
+    client = TestClient(app)
+
+    r = client.get("/api/plugins/kanban/board")
+
+    assert r.status_code == 503
+    detail = r.json()["detail"]
+    assert detail["error"] == "Kanban database is not readable."
+    assert detail["path"].endswith("kanban.db")
+    assert "clawbot kanban init" in detail["hint"]
+
+
 # ---------------------------------------------------------------------------
 # POST /tasks then GET /board sees it
 # ---------------------------------------------------------------------------

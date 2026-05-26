@@ -120,7 +120,23 @@ def _conn(board: Optional[str] = None):
         kanban_db.init_db(board=board)
     except Exception as exc:
         log.warning("kanban init_db failed: %s", exc)
-    return kanban_db.connect(board=board)
+    try:
+        return kanban_db.connect(board=board)
+    except sqlite3.DatabaseError as exc:
+        db_path = kanban_db.kanban_db_path(board=board)
+        log.warning("kanban database unavailable at %s: %s", db_path, exc)
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "Kanban database is not readable.",
+                "path": str(db_path),
+                "reason": str(exc),
+                "hint": (
+                    "Stop Clawbot, move this kanban.db aside, then run "
+                    "`clawbot kanban init` to create a fresh board database."
+                ),
+            },
+        ) from exc
 
 
 # ---------------------------------------------------------------------------
