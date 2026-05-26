@@ -42,6 +42,10 @@ dependencies = [
   "requests==2.33.0",  # CVE-2026-25645
   "jinja2==3.1.6",
   "pydantic==2.12.5",
+  # Vercel's Python runtime imports clawbot_cli.web_server directly from
+  # project.dependencies and does not install optional extras. Keep FastAPI in
+  # core so hosted dashboard deployments can start without lazy pip installs.
+  "fastapi==0.133.1",
   # Interactive CLI (prompt_toolkit is used directly by cli.py)
   "prompt_toolkit==3.0.52",
   # Cron scheduler (built-in feature — scheduled cron/interval jobs use croniter).
@@ -164,8 +168,9 @@ youtube = [
   # at first invocation with ModuleNotFoundError (issue #22243).
   "youtube-transcript-api==1.2.4",
 ]
-# `clawbot dashboard` (localhost SPA + API).  Not in core to keep the default install lean.
-web = ["fastapi==0.133.1", "uvicorn[standard]==0.41.0"]
+# `clawbot dashboard` (localhost SPA + API). FastAPI is core for Vercel's
+# direct app import path; uvicorn remains optional for the local server runner.
+web = ["uvicorn[standard]==0.41.0"]
 all = [
   # Policy (2026-05-12): `[all]` includes only extras that genuinely
   # CAN'T be lazy-installed via `tools/lazy_deps.py` — i.e. things every
