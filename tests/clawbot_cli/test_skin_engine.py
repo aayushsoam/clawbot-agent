@@ -31,7 +31,7 @@ class TestSkinConfig:
     def test_get_color_with_fallback(self):
         from clawbot_cli.skin_engine import load_skin
         skin = load_skin("default")
-        assert skin.get_color("banner_title") == "#FFD700"
+        assert skin.get_color("banner_title") == "#FF6600"
         assert skin.get_color("nonexistent", "#000") == "#000"
 
     def test_get_branding_with_fallback(self):
@@ -44,6 +44,20 @@ class TestSkinConfig:
         from clawbot_cli.skin_engine import load_skin
         skin = load_skin("default")
         assert skin.get_spinner_wings() == []
+
+    def test_default_skin_uses_orange_palette(self):
+        from clawbot_cli.skin_engine import load_skin
+
+        skin = load_skin("default")
+        assert skin.get_color("banner_accent") == "#FF8C00"
+        assert skin.get_color("banner_dim") == "#CC5500"
+        assert skin.get_color("banner_text") == "#FFE4C4"
+        assert skin.get_color("ui_label") == "#FF8C00"
+        assert skin.get_color("status_bar_text") == "#FFE4C4"
+        assert skin.get_color("status_bar_dim") == "#CC5500"
+        assert skin.get_color("status_bar_good") == "#FF8C00"
+        assert skin.get_color("status_bar_warn") == "#FF8C00"
+        assert skin.get_color("completion_menu_current_bg") == "#333355"
 
 
 class TestBuiltinSkins:
@@ -107,8 +121,15 @@ class TestBuiltinSkins:
 
     def test_all_builtin_skins_have_complete_colors(self):
         from clawbot_cli.skin_engine import _BUILTIN_SKINS, _build_skin_config
-        required_keys = ["banner_border", "banner_title", "banner_accent",
-                         "banner_dim", "banner_text", "ui_accent"]
+        required_keys = [
+            "banner_border", "banner_title", "banner_accent",
+            "banner_dim", "banner_text", "ui_accent", "ui_label",
+            "status_bar_bg", "status_bar_text", "status_bar_strong",
+            "status_bar_dim", "status_bar_good", "status_bar_warn",
+            "status_bar_bad", "status_bar_critical", "voice_status_bg",
+            "selection_bg", "completion_menu_bg", "completion_menu_current_bg",
+            "completion_menu_meta_bg", "completion_menu_meta_current_bg",
+        ]
         for name, data in _BUILTIN_SKINS.items():
             skin = _build_skin_config(data)
             for key in required_keys:
@@ -197,7 +218,7 @@ class TestUserSkins:
         assert skin.get_branding("agent_name") == "Custom Agent"
         assert skin.tool_prefix == "▸"
         # Should inherit defaults for unspecified colors
-        assert skin.get_color("banner_border") == "#CD7F32"  # from default
+        assert skin.get_color("banner_border") == "#FF4500"  # from default
 
     def test_load_user_skin_invalid_section_types_fall_back_to_defaults(self, tmp_path, monkeypatch):
         from clawbot_cli.skin_engine import load_skin
@@ -224,7 +245,7 @@ class TestUserSkins:
         skin = load_skin("broken")
 
         assert skin.name == "broken"
-        assert skin.get_color("banner_title") == "#FFD700"
+        assert skin.get_color("banner_title") == "#FF6600"
         assert skin.get_branding("agent_name") == "Clawbot Agent"
         assert skin.spinner.get("waiting_faces", []) == []
         assert skin.tool_emojis == {}

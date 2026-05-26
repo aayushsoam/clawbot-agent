@@ -64,7 +64,7 @@
 }
 
 .heroAccent {
-  color: #ffd700;
+  color: #FF6600;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -170,7 +170,7 @@
 
 .clearBtn:hover {
   opacity: 1;
-  color: #ffd700;
+  color: #FF6600;
 }
 
 .sourcePills {
@@ -204,7 +204,7 @@
 .srcPillActive {
   border-color: var(--pill-border, rgba(255, 215, 0, 0.3));
   background: var(--pill-bg, rgba(255, 215, 0, 0.06));
-  color: var(--pill-color, #ffd700);
+  color: var(--pill-color, #FF6600);
 }
 
 .srcCount {
@@ -275,7 +275,7 @@
 }
 
 .sidebarClear:hover {
-  color: #ffd700;
+  color: #FF6600;
 }
 
 .catList {
@@ -308,7 +308,7 @@
 
 .catItemActive {
   background: rgba(255, 215, 0, 0.08);
-  color: #ffd700;
+  color: #FF6600;
 }
 
 .catItemIcon {
@@ -405,7 +405,7 @@
 }
 
 .clearAllBtn:hover {
-  color: #ffd700;
+  color: #FF6600;
 }
 
 
@@ -554,7 +554,7 @@
 
 .catButton:hover {
   background: rgba(255, 215, 0, 0.1);
-  color: #ffd700;
+  color: #FF6600;
   border-color: rgba(255, 215, 0, 0.25);
 }
 
@@ -731,7 +731,7 @@
 
 .highlight {
   background: rgba(255, 215, 0, 0.2);
-  color: #ffd700;
+  color: #FF6600;
   border-radius: 2px;
   padding: 0 1px;
 }
@@ -759,7 +759,7 @@
 .loadMoreBtn:hover {
   background: rgba(255, 215, 0, 0.08);
   border-color: rgba(255, 215, 0, 0.35);
-  color: #ffd700;
+  color: #FF6600;
 }
 
 
@@ -798,7 +798,7 @@
   border: 1px solid rgba(255, 215, 0, 0.25);
   border-radius: 6px;
   background: transparent;
-  color: #ffd700;
+  color: #FF6600;
   cursor: pointer;
   transition: all 0.2s;
 }

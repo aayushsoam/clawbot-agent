@@ -311,7 +311,7 @@ The registry handles schema collection, dispatch, availability checking, and err
 ## Dependency Pinning Policy
 
 All dependencies must have upper bounds to limit supply-chain attack surface.
-This policy was established after the litellm compromise (PR #2796, #2810) and
+This policy was established after the litellm compromise  and
 reinforced after the Mini Shai-Hulud worm campaign (May 2026).
 
 | Source type | Treatment | Example |
@@ -435,7 +435,7 @@ clawbot_cli/skin_engine.py    # SkinConfig dataclass, built-in skins, YAML loade
 
 ### Built-in skins
 
-- `default` — Classic Clawbot gold/kawaii (the current look)
+- `default` — Classic Clawbot orange/kawaii (the current look)
 - `ares` — Crimson/bronze war-god theme with custom spinner wings
 - `mono` — Clean grayscale monochrome
 - `slate` — Cool blue developer-focused theme

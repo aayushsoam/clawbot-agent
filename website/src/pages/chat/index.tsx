@@ -251,7 +251,7 @@ export default function ChatPage(): React.JSX.Element {
             resolve(
               `Arre yar! Meri website ka theme bilkul sleek **"Amber-on-Dark"** terminal look me hai. 😎\n\n` +
               `- Background ka primary color hai deep space black \`#07070d\`.\n` +
-              `- Highlights aur prompt symbols ka color hai bright Amber Gold \`#FFD700\`.\n` +
+              `- Highlights aur prompt symbols ka color hai bright Amber red \`#FF6600\`.\n` +
               `- Code boxes and surfaces are deep navy \`#0f0f18\`.\n\n` +
               `Yeh combination perfect futuristic CLI console wala feel deta hai!`
             );
@@ -271,7 +271,7 @@ export default function ChatPage(): React.JSX.Element {
             `🎨 **Clawbot Theme Palette Details:**\n\n` +
             `- **Background:** \`#07070d\` (Deep Cosmic Indigo/Black)\n` +
             `- **Surfaces & Cards:** \`#0f0f18\` (High-contrast Navy)\n` +
-            `- **Terminal Glow & Prompts:** \`#FFD700\` (Amber Gold, passes readability guidelines)\n` +
+            `- **Terminal Glow & Prompts:** \`#FF6600\` (Amber red, passes readability guidelines)\n` +
             `- **Fonts:** Modern typography utilizing *Inter* for body and *JetBrains Mono* for code/inputs.\n\n` +
             `This premium palette replicates state-of-the-art developer consoles and reduces eye strain during long workflows.`
           );

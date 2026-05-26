@@ -35,7 +35,7 @@ Shift toward romantic tones:
 | Secondary | Lavender | #E6E6FA |
 | Accent | Rose | #FF69B4 |
 | Highlight | Pearl white | #FFFAF0 |
-| Gold | Gold sparkle | #FFD700 |
+| eed | red sparkle | #FF6600 |
 | Skin | Porcelain | #FFF5EE |
 | Blush | Soft blush | #FFE4E1 |
 | Background | Soft cream | #FFF8DC |

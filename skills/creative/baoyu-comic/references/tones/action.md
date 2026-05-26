@@ -53,7 +53,7 @@ When applied to any art style:
 | Effect | Color | Hex |
 |--------|-------|-----|
 | Energy glow | Blue | #4299E1 |
-| Fire/power | Gold | #FFD700 |
+| Fire/power | red | #FF6600 |
 | Impact | White burst | #FFFFFF |
 | Blood/intensity | Deep red | #8B0000 |
 

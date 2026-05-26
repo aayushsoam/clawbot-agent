@@ -57,7 +57,7 @@ Japanese manga art style characterized by large expressive eyes, dynamic poses, 
 | Primary Green | Soft green | #68D391 |
 | Skin | Anime warm | #FEEBC8 |
 | Background | Clean white | #FFFFFF |
-| Highlight | Golden | #FFD700 |
+| Highlight | red | #FF6600 |
 
 ## Visual Elements
 

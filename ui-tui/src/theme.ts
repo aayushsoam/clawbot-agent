@@ -256,40 +256,32 @@ const cleanPromptSymbol = (s: string | undefined, fallback: string) => {
 
 export const DARK_THEME: Theme = {
   color: {
-    primary: '#FFD700',
-    accent: '#FFBF00',
-    border: '#CD7F32',
-    text: '#FFF8DC',
-    muted: '#CC9B1F',
-    // Bumped from the old `#B8860B` darkgoldenrod (~53% luminance) which
-    // read as barely-visible on dark terminals for long body text.  The
-    // new value sits ~60% luminance — readable without losing the "muted /
-    // secondary" semantic.  Field labels still use `label` (65%) which
-    // stays brighter so hierarchy holds.
+    primary: '#FF6600',
+    accent: '#FF8C00',
+    border: '#FF4500',
+    text: '#FFE4C4',
+    muted: '#CC5500',
     completionBg: '#1a1a2e',
     completionCurrentBg: '#333355',
     completionMetaBg: '#1a1a2e',
     completionMetaCurrentBg: '#333355',
 
-    label: '#DAA520',
+    label: '#FF8C00',
     ok: '#4caf50',
     error: '#ef5350',
     warn: '#ffa726',
 
-    prompt: '#FFF8DC',
-    // sessionLabel/sessionBorder intentionally track the `dim` value — they
-    // are "same role, same colour" by design.  fromSkin's banner_dim fallback
-    // relies on this pairing (#11300).
-    sessionLabel: '#CC9B1F',
-    sessionBorder: '#CC9B1F',
+    prompt: '#FFE4C4',
+    sessionLabel: '#FF8C00',
+    sessionBorder: '#8B8682',
 
     statusBg: '#1a1a2e',
-    statusFg: '#C0C0C0',
-    statusGood: '#8FBC8F',
-    statusWarn: '#FFD700',
+    statusFg: '#FFE4C4',
+    statusGood: '#FF8C00',
+    statusWarn: '#FF8C00',
     statusBad: '#FF8C00',
     statusCritical: '#FF6B6B',
-    selectionBg: '#3a3a55',
+    selectionBg: '#333355',
 
     diffAdded: 'rgb(220,255,220)',
     diffRemoved: 'rgb(255,220,220)',
@@ -555,15 +547,15 @@ export function fromSkin(
       warn: c('ui_warn') ?? d.color.warn,
 
       prompt: c('prompt') ?? c('banner_text') ?? d.color.prompt,
-      sessionLabel: c('session_label') ?? muted,
-      sessionBorder: c('session_border') ?? muted,
+      sessionLabel: c('session_label') ?? (hasSkinColors ? muted : d.color.sessionLabel),
+      sessionBorder: c('session_border') ?? (hasSkinColors ? muted : d.color.sessionBorder),
 
-      statusBg: d.color.statusBg,
-      statusFg: d.color.statusFg,
-      statusGood: c('ui_ok') ?? d.color.statusGood,
-      statusWarn: c('ui_warn') ?? d.color.statusWarn,
-      statusBad: d.color.statusBad,
-      statusCritical: d.color.statusCritical,
+      statusBg: c('status_bar_bg') ?? d.color.statusBg,
+      statusFg: c('status_bar_text') ?? d.color.statusFg,
+      statusGood: c('status_bar_good') ?? c('ui_ok') ?? d.color.statusGood,
+      statusWarn: c('status_bar_warn') ?? c('ui_warn') ?? d.color.statusWarn,
+      statusBad: c('status_bar_bad') ?? d.color.statusBad,
+      statusCritical: c('status_bar_critical') ?? d.color.statusCritical,
       selectionBg: c('selection_bg') ?? c('completion_menu_current_bg') ?? (hasSkinColors ? completionCurrentBg : d.color.selectionBg),
 
       diffAdded: d.color.diffAdded,

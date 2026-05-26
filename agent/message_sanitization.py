@@ -126,7 +126,7 @@ def _sanitize_messages_surrogates(messages: list) -> bool:
         # reasoning_content, reasoning_details, etc.) — surrogates from
         # byte-level reasoning models (xiaomi/mimo, kimi, glm) can lurk
         # in these fields and aren't covered by the per-field checks above.
-        # Matches _sanitize_messages_non_ascii's coverage (PR #10537).
+        # Matches _sanitize_messages_non_ascii's coverage .
         for key, value in msg.items():
             if key in {"content", "name", "tool_calls", "role"}:
                 continue

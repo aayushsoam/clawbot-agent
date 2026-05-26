@@ -32,7 +32,7 @@ display:
 
 | Skin | Description | Agent branding | Visual character |
 |------|-------------|----------------|------------------|
-| `default` | Classic Clawbot — gold and kawaii | `Clawbot Agent` | Warm gold borders, cornsilk text, kawaii faces in spinners. The familiar caduceus banner. Clean and inviting. |
+| `default` | Classic Clawbot — orange and kawaii | `Clawbot Agent` | Warm orange borders, bisque text, kawaii faces in spinners. The familiar caduceus banner. Clean and inviting. |
 | `ares` | War-god theme — crimson and bronze | `Ares Agent` | Deep crimson borders with bronze accents. Aggressive spinner verbs ("forging", "marching", "tempering steel"). Custom sword-and-shield ASCII art banner. |
 | `mono` | Monochrome — clean grayscale | `Clawbot Agent` | All grays — no color. Borders are `#555555`, text is `#c9d1d9`. Ideal for minimal terminal setups or screen recordings. |
 | `slate` | Cool blue — developer-focused | `Clawbot Agent` | Royal blue borders (`#4169e1`), soft blue text. Calm and professional. No custom spinner — uses default faces. |
@@ -50,20 +50,27 @@ Controls all color values throughout the CLI. Values are hex color strings.
 
 | Key | Description | Default (`default` skin) |
 |-----|-------------|--------------------------|
-| `banner_border` | Panel border around the startup banner | `#CD7F32` (bronze) |
-| `banner_title` | Title text color in the banner | `#FFD700` (gold) |
-| `banner_accent` | Section headers in the banner (Available Tools, etc.) | `#FFBF00` (amber) |
-| `banner_dim` | Muted text in the banner (separators, secondary labels) | `#B8860B` (dark goldenrod) |
-| `banner_text` | Body text in the banner (tool names, skill names) | `#FFF8DC` (cornsilk) |
-| `ui_accent` | General UI accent color (highlights, active elements) | `#FFBF00` |
-| `ui_label` | UI labels and tags | `#4dd0e1` (teal) |
+| `banner_border` | Panel border around the startup banner | `#FF4500` (bronze) |
+| `banner_title` | Title text color in the banner | `#FF6600` (orange-red) |
+| `banner_accent` | Section headers in the banner (Available Tools, etc.) | `#FF8C00` (dark orange) |
+| `banner_dim` | Muted text in the banner (separators, secondary labels) | `#CC5500` (burnt orange) |
+| `banner_text` | Body text in the banner (tool names, skill names) | `#FFE4C4` (bisque) |
+| `ui_accent` | General UI accent color (highlights, active elements) | `#FF8C00` |
+| `ui_label` | UI labels and tags | `#FF8C00` (warm orange) |
 | `ui_ok` | Success indicators (checkmarks, completion) | `#4caf50` (green) |
 | `ui_error` | Error indicators (failures, blocked) | `#ef5350` (red) |
 | `ui_warn` | Warning indicators (caution, approval prompts) | `#ffa726` (orange) |
-| `prompt` | Interactive prompt text color | `#FFF8DC` |
-| `input_rule` | Horizontal rule above the input area | `#CD7F32` |
-| `response_border` | Border around the agent's response box (ANSI escape) | `#FFD700` |
-| `session_label` | Session label color | `#DAA520` |
+| `prompt` | Interactive prompt text color | `#FFE4C4` |
+| `input_rule` | Horizontal rule above the input area | `#FF4500` |
+| `response_border` | Border around the agent's response box (ANSI escape) | `#FF6600` |
+| `status_bar_text` | Default text color for the TUI status / usage bar | `#FFE4C4` |
+| `status_bar_strong` | Highlighted text color for the TUI status / usage bar | `#FF6600` |
+| `status_bar_dim` | Muted/separator text color for the TUI status / usage bar | `#CC5500` |
+| `status_bar_good` | Healthy context usage color | `#FF8C00` |
+| `status_bar_warn` | Warning context usage color | `#FF8C00` |
+| `status_bar_bad` | High context usage color | `#FF8C00` |
+| `status_bar_critical` | Critical context usage color | `#FF6B6B` |
+| `session_label` | Session label color | `#FF8C00` |
 | `session_border` | Session ID dim border color | `#8B8682` |
 | `status_bar_bg` | Background color for the TUI status / usage bar | `#1a1a2e` |
 | `voice_status_bg` | Background color for the voice-mode status badge | `#1a1a2e` |
@@ -123,20 +130,27 @@ name: mytheme
 description: My custom theme
 
 colors:
-  banner_border: "#CD7F32"
-  banner_title: "#FFD700"
-  banner_accent: "#FFBF00"
-  banner_dim: "#B8860B"
-  banner_text: "#FFF8DC"
-  ui_accent: "#FFBF00"
-  ui_label: "#4dd0e1"
+  banner_border: "#FF4500"
+  banner_title: "#FF6600"
+  banner_accent: "#FF8C00"
+  banner_dim: "#CC5500"
+  banner_text: "#FFE4C4"
+  ui_accent: "#FF8C00"
+  ui_label: "#FF8C00"
   ui_ok: "#4caf50"
   ui_error: "#ef5350"
   ui_warn: "#ffa726"
-  prompt: "#FFF8DC"
-  input_rule: "#CD7F32"
-  response_border: "#FFD700"
-  session_label: "#DAA520"
+  prompt: "#FFE4C4"
+  input_rule: "#FF4500"
+  response_border: "#FF6600"
+  status_bar_text: "#FFE4C4"
+  status_bar_strong: "#FF6600"
+  status_bar_dim: "#CC5500"
+  status_bar_good: "#FF8C00"
+  status_bar_warn: "#FF8C00"
+  status_bar_bad: "#FF8C00"
+  status_bar_critical: "#FF6B6B"
+  session_label: "#FF8C00"
   session_border: "#8B8682"
   status_bar_bg: "#1a1a2e"
   voice_status_bg: "#1a1a2e"
@@ -182,9 +196,9 @@ tool_emojis:
 
 # Custom ASCII art banners (optional, Rich markup supported)
 # banner_logo: |
-#   [bold #FFD700] MY AGENT [/]
+#   [bold #FF6600] MY AGENT [/]
 # banner_hero: |
-#   [#FFD700]  Custom art here  [/]
+#   [#FF6600]  Custom art here  [/]
 ```
 
 ### Minimal custom skin example

@@ -73,6 +73,8 @@ Examples:
     clawbot dashboard              Start web UI dashboard (port 9119)
     clawbot dashboard --stop       Stop running dashboard processes
     clawbot dashboard --status     List running dashboard processes
+    clawbot app                    Start dashboard in a desktop app window
+    clawbot app --stop             Stop running dashboard/app processes
 
 For more help on a command:
     clawbot <command> --help

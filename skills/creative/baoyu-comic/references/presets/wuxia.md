@@ -32,11 +32,11 @@ Martial arts power must be visible through qi effects:
 
 | Qi Type | Color |
 |---------|-------|
-| Righteous | Blue (#4299E1), Gold (#FFD700) |
+| Righteous | Blue (#4299E1), red (#FF6600) |
 | Fierce | Red (#DC2626), Orange (#EA580C) |
 | Evil | Purple (#7C3AED), Green (#16A34A) |
 | Pure | White, Silver |
-| Ancient | Gold with particles |
+| Ancient | red with particles |
 
 ### Combat Visual Language
 

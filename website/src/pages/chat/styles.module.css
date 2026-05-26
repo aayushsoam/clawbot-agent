@@ -51,7 +51,7 @@
 
 .terminalIcon {
   font-size: 1.5rem;
-  color: #FFD700;
+  color: #FF6600;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
 
@@ -60,7 +60,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  background: linear-gradient(to right, #FFF, #FFD700);
+  background: linear-gradient(to right, #FFF, #FF6600);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -136,7 +136,7 @@
 }
 
 .asciiArt {
-  color: #FFD700;
+  color: #FF6600;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.35);
   white-space: pre;
   margin-bottom: 1.5rem;
@@ -163,7 +163,7 @@
 .commandChip {
   background: rgba(255, 215, 0, 0.06);
   border: 1px solid rgba(255, 215, 0, 0.15);
-  color: #FFD700;
+  color: #FF6600;
   padding: 0.25rem 0.65rem;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -221,7 +221,7 @@
 }
 
 .promptSymbol {
-  color: #FFD700;
+  color: #FF6600;
   font-weight: bold;
 }
 
@@ -235,7 +235,7 @@
 .userBubble {
   background: rgba(255, 215, 0, 0.08);
   border: 1px solid rgba(255, 215, 0, 0.2);
-  color: #FFD700;
+  color: #FF6600;
   border-bottom-right-radius: 2px;
 }
 
@@ -256,7 +256,7 @@
 .botBubble code {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #FFD700;
+  color: #FF6600;
   padding: 0.15rem 0.3rem;
   border-radius: 4px;
   font-size: 0.85em;
@@ -293,7 +293,7 @@
 .typingDot {
   width: 5px;
   height: 5px;
-  background-color: #FFD700;
+  background-color: #FF6600;
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out both;
 }
@@ -328,13 +328,13 @@
 }
 
 .inputWrapperFocused {
-  border-color: #FFD700;
+  border-color: #FF6600;
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
   background: rgba(5, 5, 10, 0.9);
 }
 
 .inputPrefix {
-  color: #FFD700;
+  color: #FF6600;
   font-family: 'JetBrains Mono', monospace;
   font-weight: bold;
   font-size: 0.9rem;
@@ -358,7 +358,7 @@
 }
 
 .sendButton {
-  background: #FFD700;
+  background: #FF6600;
   border: none;
   outline: none;
   color: #07070d;
@@ -406,5 +406,5 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.1rem 0.25rem;
   border-radius: 4px;
-  color: #FFD700;
+  color: #FF6600;
 }

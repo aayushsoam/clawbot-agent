@@ -6050,7 +6050,7 @@ def _build_web_ui(web_dir: Path, *, fatal: bool = False) -> bool:
 
 
 def _find_stale_dashboard_pids() -> list[int]:
-    """Return PIDs of ``clawbot dashboard`` processes other than ourselves.
+    """Return PIDs of ``clawbot dashboard``/``clawbot app`` processes other than ourselves.
 
     ``clawbot dashboard`` is a long-lived server process commonly started and
     forgotten.  When ``clawbot update`` replaces files on disk, the running
@@ -6068,8 +6068,11 @@ def _find_stale_dashboard_pids() -> list[int]:
     """
     patterns = [
         "clawbot dashboard",
+        "clawbot app",
         "clawbot_cli.main dashboard",
+        "clawbot_cli.main app",
         "clawbot_cli/main.py dashboard",
+        "clawbot_cli/main.py app",
     ]
     self_pid = os.getpid()
     dashboard_pids: list[int] = []
@@ -9682,7 +9685,7 @@ def _render_distribution_plan(plan) -> None:
 
 
 def _report_dashboard_status() -> int:
-    """Print ``clawbot dashboard`` PIDs and return the count.
+    """Print ``clawbot dashboard``/``clawbot app`` PIDs and return the count.
 
     Uses the same detection logic as ``_find_stale_dashboard_pids`` (the
     current process is excluded, but since ``clawbot dashboard --status``
@@ -9691,10 +9694,10 @@ def _report_dashboard_status() -> int:
     """
     pids = _find_stale_dashboard_pids()
     if not pids:
-        print("No clawbot dashboard processes running.")
+        print("No clawbot dashboard/app processes running.")
         return 0
 
-    print(f"{len(pids)} clawbot dashboard process(es) running:")
+    print(f"{len(pids)} clawbot dashboard/app process(es) running:")
     for pid in pids:
         # Best-effort: show the full cmdline so users can tell profiles apart.
         cmdline = ""
@@ -9718,6 +9721,82 @@ def _report_dashboard_status() -> int:
     return len(pids)
 
 
+def _dashboard_browser_app_candidates() -> list[str]:
+    """Return browser executables likely to support ``--app=<url>``."""
+    candidates: list[str] = []
+    for name in (
+        "msedge",
+        "msedge.exe",
+        "chrome",
+        "chrome.exe",
+        "google-chrome",
+        "chromium",
+        "chromium-browser",
+    ):
+        found = shutil.which(name)
+        if found and found not in candidates:
+            candidates.append(found)
+
+    if sys.platform == "win32":
+        for root_var in ("ProgramFiles", "ProgramFiles(x86)", "LocalAppData"):
+            root = os.environ.get(root_var)
+            if not root:
+                continue
+            for rel in (
+                ("Microsoft", "Edge", "Application", "msedge.exe"),
+                ("Google", "Chrome", "Application", "chrome.exe"),
+            ):
+                path = str(Path(root, *rel))
+                if os.path.exists(path) and path not in candidates:
+                    candidates.append(path)
+    elif sys.platform == "darwin":
+        for path in (
+            "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            "/Applications/Chromium.app/Contents/MacOS/Chromium",
+        ):
+            if os.path.exists(path) and path not in candidates:
+                candidates.append(path)
+
+    return candidates
+
+
+def _open_dashboard_app_window(url: str) -> bool:
+    """Open the dashboard URL in a desktop-app-style browser window."""
+    app_url = url
+    if "://0.0.0.0:" in app_url:
+        app_url = app_url.replace("://0.0.0.0:", "://127.0.0.1:", 1)
+
+    for browser in _dashboard_browser_app_candidates():
+        try:
+            subprocess.Popen(
+                [browser, f"--app={app_url}", "--new-window"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                stdin=subprocess.DEVNULL,
+            )
+            return True
+        except OSError:
+            continue
+
+    try:
+        import webbrowser
+
+        return bool(webbrowser.open(app_url))
+    except Exception:
+        return False
+
+
+def _schedule_dashboard_app_window(url: str) -> None:
+    """Open the app window shortly after uvicorn has started binding."""
+    def _open() -> None:
+        _time.sleep(1.0)
+        if not _open_dashboard_app_window(url):
+            print(f"  Open Clawbot App manually: {url}")
+
+    threading.Thread(target=_open, daemon=True).start()
+
+
 def cmd_dashboard(args):
     """Start the web UI server, or (with --stop/--status) manage running ones."""
     # --status: report running dashboards and exit, no deps needed.
@@ -9729,7 +9808,7 @@ def cmd_dashboard(args):
     if getattr(args, "stop", False):
         pids = _find_stale_dashboard_pids()
         if not pids:
-            print("No clawbot dashboard processes running.")
+            print("No clawbot dashboard/app processes running.")
             sys.exit(0)
         # Reuse the same SIGTERM-grace-SIGKILL path used after `clawbot update`.
         _kill_stale_dashboard_processes(reason="requested via --stop")
@@ -9773,11 +9852,16 @@ def cmd_dashboard(args):
 
     from clawbot_cli.web_server import start_server
 
+    app_window = bool(getattr(args, "app_window", False) or getattr(args, "command", "") == "app")
+    open_requested = not args.no_open
+    if app_window and open_requested:
+        _schedule_dashboard_app_window(f"http://{args.host}:{args.port}")
+
     embedded_chat = args.tui or os.environ.get("CLAWBOT_DASHBOARD_TUI") == "1"
     start_server(
         host=args.host,
         port=args.port,
-        open_browser=not args.no_open,
+        open_browser=open_requested and not app_window,
         allow_public=getattr(args, "insecure", False),
         embedded_chat=embedded_chat,
     )
@@ -9846,7 +9930,7 @@ _BUILTIN_SUBCOMMANDS = frozenset(
     {
         "acp", "auth", "backup", "checkpoints", "claw", "completion",
         "computer-use",
-        "config", "cron", "curator", "dashboard", "debug", "doctor",
+        "config", "cron", "curator", "dashboard", "app", "debug", "doctor",
         "dump", "fallback", "gateway", "hooks", "import", "insights",
         "kanban", "login", "logout", "logs", "lsp", "mcp", "memory",
         "model", "pairing", "plugins", "postinstall", "profile", "proxy",
@@ -12407,59 +12491,69 @@ Examples:
     # =========================================================================
     # dashboard command
     # =========================================================================
+    def _add_dashboard_server_args(dashboard_like_parser, *, app_defaults: bool = False) -> None:
+        dashboard_like_parser.add_argument(
+            "--port", type=int, default=9119, help="Port (default 9119)"
+        )
+        dashboard_like_parser.add_argument(
+            "--host", default="127.0.0.1", help="Host (default 127.0.0.1)"
+        )
+        dashboard_like_parser.add_argument(
+            "--no-open", action="store_true", help="Don't open browser/app automatically"
+        )
+        dashboard_like_parser.add_argument(
+            "--insecure",
+            action="store_true",
+            help="Allow binding to non-localhost (DANGEROUS: exposes API keys on the network)",
+        )
+        dashboard_like_parser.add_argument(
+            "--tui",
+            action="store_true",
+            help=(
+                "Expose the in-browser Chat tab (embedded `clawbot --tui` via PTY/WebSocket). "
+                "Alternatively set CLAWBOT_DASHBOARD_TUI=1."
+            ),
+        )
+        dashboard_like_parser.add_argument(
+            "--skip-build",
+            action="store_true",
+            help=(
+                "Skip the web UI build step and serve the existing dist directly. "
+                "Useful for non-interactive contexts (Windows Scheduled Tasks, CI) "
+                "where npm may not be available. Pre-build with: cd web && npm run build"
+            ),
+        )
+        dashboard_like_parser.add_argument(
+            "--stop",
+            action="store_true",
+            help="Stop all running clawbot dashboard/app processes and exit",
+        )
+        dashboard_like_parser.add_argument(
+            "--status",
+            action="store_true",
+            help="List running clawbot dashboard/app processes and exit",
+        )
+        dashboard_like_parser.set_defaults(func=cmd_dashboard, app_window=app_defaults)
+
     dashboard_parser = subparsers.add_parser(
         "dashboard",
         help="Start the web UI dashboard",
         description="Launch the Clawbot Agent web dashboard for managing config, API keys, and sessions",
     )
-    dashboard_parser.add_argument(
-        "--port", type=int, default=9119, help="Port (default 9119)"
-    )
-    dashboard_parser.add_argument(
-        "--host", default="127.0.0.1", help="Host (default 127.0.0.1)"
-    )
-    dashboard_parser.add_argument(
-        "--no-open", action="store_true", help="Don't open browser automatically"
-    )
-    dashboard_parser.add_argument(
-        "--insecure",
-        action="store_true",
-        help="Allow binding to non-localhost (DANGEROUS: exposes API keys on the network)",
-    )
-    dashboard_parser.add_argument(
-        "--tui",
-        action="store_true",
-        help=(
-            "Expose the in-browser Chat tab (embedded `clawbot --tui` via PTY/WebSocket). "
-            "Alternatively set CLAWBOT_DASHBOARD_TUI=1."
+    _add_dashboard_server_args(dashboard_parser)
+
+    # =========================================================================
+    # app command
+    # =========================================================================
+    app_parser = subparsers.add_parser(
+        "app",
+        help="Start Clawbot as a local desktop app window",
+        description=(
+            "Launch the same Clawbot web dashboard in a desktop-app-style "
+            "Chrome/Edge window on this PC."
         ),
     )
-    dashboard_parser.add_argument(
-        "--skip-build",
-        action="store_true",
-        help=(
-            "Skip the web UI build step and serve the existing dist directly. "
-            "Useful for non-interactive contexts (Windows Scheduled Tasks, CI) "
-            "where npm may not be available. Pre-build with: cd web && npm run build"
-        ),
-    )
-    # Lifecycle flags — mutually exclusive with each other and with the
-    # start-a-server flags above (if both are passed, --stop / --status win
-    # because they exit before the server is started).  The dashboard has
-    # no service manager and no PID file, so these scan the process table
-    # for `clawbot dashboard` cmdlines and SIGTERM them directly — the same
-    # path `clawbot update` uses to clean up stale dashboards.
-    dashboard_parser.add_argument(
-        "--stop",
-        action="store_true",
-        help="Stop all running clawbot dashboard processes and exit",
-    )
-    dashboard_parser.add_argument(
-        "--status",
-        action="store_true",
-        help="List running clawbot dashboard processes and exit",
-    )
-    dashboard_parser.set_defaults(func=cmd_dashboard)
+    _add_dashboard_server_args(app_parser, app_defaults=True)
 
     # =========================================================================
     # logs command

@@ -220,7 +220,7 @@ function monoVariations(hue, count = 5) {
 
 ```javascript
 const SUNSET = ['#2E0854', '#850E35', '#EE6C4D', '#F5E663'];
-const EMBER  = ['#1a0000', '#4a0000', '#8b2500', '#cd5c00', '#ffd700'];
+const EMBER  = ['#1a0000', '#4a0000', '#8b2500', '#cd5c00', '#FF6600'];
 const PEACH  = ['#fff5eb', '#ffdab9', '#ff9a76', '#ff6b6b', '#c94c4c'];
 const COPPER = ['#1c1108', '#3d2b1f', '#7b4b2a', '#b87333', '#daa06d'];
 ```
