@@ -75,3 +75,4 @@ models-dev-upstream/
 clawbot_cli/tui_dist/*
 clawbot_cli/scripts/
 docs/superpowers/*
+.vercel
