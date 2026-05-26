@@ -15,6 +15,8 @@ from clawbot_constants import get_clawbot_home
 
 from clawbot_cli.colors import Colors, color
 
+SYSTEMD_UNINSTALL_TIMEOUT_SECONDS = 10
+
 def log_info(msg: str):
     print(f"{color('→', Colors.CYAN)} {msg}")
 
@@ -23,6 +25,11 @@ def log_success(msg: str):
 
 def log_warn(msg: str):
     print(f"{color('⚠', Colors.YELLOW)} {msg}")
+
+
+def _run_uninstall_service_cmd(cmd: list[str], timeout: int = SYSTEMD_UNINSTALL_TIMEOUT_SECONDS):
+    """Run service teardown commands without letting uninstall hang forever."""
+    return subprocess.run(cmd, capture_output=True, check=False, timeout=timeout)
 
 def get_project_root() -> Path:
     """Get the project installation directory."""
@@ -174,13 +181,21 @@ def uninstall_gateway_service():
                         continue
 
                     cmd = _systemctl_cmd(is_system)
-                    subprocess.run(cmd + ["stop", svc_name],
-                                   capture_output=True, check=False)
-                    subprocess.run(cmd + ["disable", svc_name],
-                                   capture_output=True, check=False)
+                    try:
+                        _run_uninstall_service_cmd(cmd + ["stop", svc_name])
+                    except subprocess.TimeoutExpired:
+                        log_warn(
+                            f"{scope} gateway service stop timed out; forcing service kill"
+                        )
+                        try:
+                            _run_uninstall_service_cmd(cmd + ["kill", svc_name], timeout=5)
+                            _run_uninstall_service_cmd(cmd + ["reset-failed", svc_name], timeout=5)
+                        except subprocess.TimeoutExpired:
+                            log_warn(f"{scope} gateway service kill also timed out")
+
+                    _run_uninstall_service_cmd(cmd + ["disable", svc_name])
                     unit_path.unlink()
-                    subprocess.run(cmd + ["daemon-reload"],
-                                   capture_output=True, check=False)
+                    _run_uninstall_service_cmd(cmd + ["daemon-reload"])
                     log_success(f"Removed {scope} gateway service ({unit_path})")
                     stopped_something = True
                 except Exception as e:
