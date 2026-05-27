@@ -10,5 +10,16 @@
       "destination": "/:path*",
       "permanent": false
     }
+  ],
+  "headers": [
+    {
+      "source": "/img/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    }
   ]
 }
