@@ -17,7 +17,7 @@ Poll RSS, JSON APIs, and GitHub with watermark dedup.
 | Source | Optional — install with `clawbot skills install official/devops/watchers` |
 | Path | `optional-skills/devops/watchers` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `cron`, `polling`, `rss`, `github`, `http`, `automation`, `monitoring` |

@@ -17,7 +17,7 @@ Author in-repo SKILL.md: frontmatter, validator, structure.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/clawbot-agent-skill-authoring` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `skills`, `authoring`, `clawbot-agent`, `conventions`, `skill-md` |
@@ -62,7 +62,7 @@ Peer-matched shape used by every skill under `skills/software-development/`:
 name: my-skill-name               # lowercase, hyphens, ≤64 chars (MAX_NAME_LENGTH)
 description: Use when <trigger>. <one-line behavior>.
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 metadata:
   clawbot:

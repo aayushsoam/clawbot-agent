@@ -17,7 +17,7 @@ Outlines: structured JSON/regex/Pydantic LLM generation.
 | Source | Optional — install with `clawbot skills install official/mlops/outlines` |
 | Path | `optional-skills/mlops/inference/outlines` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `outlines`, `transformers`, `vllm`, `pydantic` |
 | Platforms | linux, macos, windows |

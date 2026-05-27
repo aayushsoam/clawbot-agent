@@ -2,7 +2,7 @@
 name: ocr-and-documents
 description: "Extract text from PDFs/scans (pymupdf, marker-pdf)."
 version: 2.3.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

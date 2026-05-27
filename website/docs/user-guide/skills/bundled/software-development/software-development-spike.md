@@ -17,7 +17,7 @@ Throwaway experiments to validate an idea before build.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/spike` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `spike`, `prototype`, `experiment`, `feasibility`, `throwaway`, `exploration`, `research`, `planning`, `mvp`, `proof-of-concept` |

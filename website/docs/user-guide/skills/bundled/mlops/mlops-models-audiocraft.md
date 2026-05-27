@@ -17,7 +17,7 @@ AudioCraft: MusicGen text-to-music, AudioGen text-to-sound.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/models/audiocraft` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `audiocraft`, `torch>=2.0.0`, `transformers>=4.30.0` |
 | Platforms | linux, macos |

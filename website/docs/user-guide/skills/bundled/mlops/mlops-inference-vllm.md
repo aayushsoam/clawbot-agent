@@ -17,7 +17,7 @@ vLLM: high-throughput LLM serving, OpenAI API, quantization.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/inference/vllm` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `vllm`, `torch`, `transformers` |
 | Platforms | linux, macos |

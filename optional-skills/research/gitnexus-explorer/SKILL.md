@@ -2,7 +2,7 @@
 name: gitnexus-explorer
 description: Index a codebase with GitNexus and serve an interactive knowledge graph via web UI + Cloudflare tunnel.
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

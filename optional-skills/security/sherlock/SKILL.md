@@ -2,7 +2,7 @@
 name: sherlock
 description: OSINT username search across 400+ social networks. Hunt down social media accounts by username.
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

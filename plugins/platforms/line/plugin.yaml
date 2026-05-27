@@ -11,7 +11,7 @@ description: >
   when the token has expired or is absent. Slow LLM responses surface a
   Template Buttons postback bubble so the user can fetch the answer with
   a fresh reply token (free) once it's ready.
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 # ``requires_env`` and ``optional_env`` entries are surfaced in the
 # ``clawbot config`` UI via the platform-plugin env var injector in
 # ``clawbot_cli/config.py``.

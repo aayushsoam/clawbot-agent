@@ -17,7 +17,7 @@ Large Language and Vision Assistant. Enables visual instruction tuning and image
 | Source | Optional — install with `clawbot skills install official/mlops/llava` |
 | Path | `optional-skills/mlops/llava` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `transformers`, `torch`, `pillow` |
 | Platforms | linux, macos, windows |

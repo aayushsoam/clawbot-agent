@@ -17,7 +17,7 @@ Humanize text: strip AI-isms and add real voice.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/humanizer` |
 | Version | `2.5.1` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `writing`, `editing`, `humanize`, `anti-ai-slop`, `voice`, `prose`, `text` |

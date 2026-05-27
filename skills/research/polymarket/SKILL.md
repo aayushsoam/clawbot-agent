@@ -2,7 +2,7 @@
 name: polymarket
 description: "Query Polymarket: markets, prices, orderbooks, history."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 tags: [polymarket, prediction-markets, market-data, trading]
 platforms: [linux, macos, windows]
 ---

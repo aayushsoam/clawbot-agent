@@ -2,7 +2,7 @@
 name: baoyu-infographic
 description: "Infographics: 21 layouts x 21 styles (信息图, 可视化)."
 version: 1.56.1
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

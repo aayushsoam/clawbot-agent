@@ -17,7 +17,7 @@ Expert guidance for Fully Sharded Data Parallel training with PyTorch FSDP - par
 | Source | Optional — install with `clawbot skills install official/mlops/pytorch-fsdp` |
 | Path | `optional-skills/mlops/pytorch-fsdp` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `torch>=2.0`, `transformers` |
 | Platforms | linux, macos |

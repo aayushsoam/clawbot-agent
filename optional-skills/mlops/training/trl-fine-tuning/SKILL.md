@@ -2,7 +2,7 @@
 name: fine-tuning-with-trl
 description: "TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [trl, transformers, datasets, peft, accelerate, torch]
 platforms: [linux, macos, windows]

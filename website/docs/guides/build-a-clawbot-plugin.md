@@ -66,7 +66,7 @@ This tells Clawbot: "I'm a plugin called calculator, I provide tools and hooks."
 
 Optional fields you could add:
 ```yaml
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 requires_env:          # gate loading on env vars; prompted during install
   - SOME_API_KEY       # simple format — plugin disabled if missing
   - name: OTHER_KEY    # rich format — shows description/url during install

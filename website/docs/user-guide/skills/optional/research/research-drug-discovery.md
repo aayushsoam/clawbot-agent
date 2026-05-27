@@ -17,7 +17,7 @@ Pharmaceutical research assistant for drug discovery workflows. Search bioactive
 | Source | Optional — install with `clawbot skills install official/research/drug-discovery` |
 | Path | `optional-skills/research/drug-discovery` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `science`, `chemistry`, `pharmacology`, `research`, `health` |

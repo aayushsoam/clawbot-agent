@@ -17,7 +17,7 @@ Pixel art w/ era palettes (NES, Game Boy, PICO-8).
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/pixel-art` |
 | Version | `2.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `creative`, `pixel-art`, `arcade`, `snes`, `nes`, `gameboy`, `retro`, `image`, `video` |

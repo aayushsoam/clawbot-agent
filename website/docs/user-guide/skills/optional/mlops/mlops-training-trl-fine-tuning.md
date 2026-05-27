@@ -17,7 +17,7 @@ TRL: SFT, DPO, PPO, GRPO, reward modeling for LLM RLHF.
 | Source | Optional — install with `clawbot skills install official/mlops/trl-fine-tuning` |
 | Path | `optional-skills/mlops/training/trl-fine-tuning` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `trl`, `transformers`, `datasets`, `peft`, `accelerate`, `torch` |
 | Platforms | linux, macos, windows |

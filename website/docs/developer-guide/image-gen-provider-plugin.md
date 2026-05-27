@@ -185,7 +185,7 @@ def register(ctx) -> None:
 name: my-backend
 version: 1.0.0
 description: My image backend — text-to-image via My Backend SDK
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 kind: backend
 requires_env:
   - MY_BACKEND_API_KEY

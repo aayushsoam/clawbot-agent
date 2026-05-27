@@ -17,7 +17,7 @@ Query Solana blockchain data with USD pricing — wallet balances, token portfol
 | Source | Optional — install with `clawbot skills install official/blockchain/solana` |
 | Path | `optional-skills/blockchain/solana` |
 | Version | `0.2.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Solana`, `Blockchain`, `Crypto`, `Web3`, `RPC`, `DeFi`, `NFT` |

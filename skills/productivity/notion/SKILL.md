@@ -2,7 +2,7 @@
 name: notion
 description: "Notion API + ntn CLI: pages, databases, markdown, Workers."
 version: 2.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 prerequisites:

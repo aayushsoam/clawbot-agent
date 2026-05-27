@@ -17,7 +17,7 @@ lm-eval-harness: benchmark LLMs (MMLU, GSM8K, etc.).
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/evaluation/lm-evaluation-harness` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `lm-eval`, `transformers`, `vllm` |
 | Platforms | linux, macos |

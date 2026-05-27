@@ -790,17 +790,7 @@ $ clawbot model
 
 Select a task, pick a provider (OAuth flows open a browser; API-key providers prompt), pick a model. The change persists to `auxiliary.<task>.*` in `config.yaml`. Same machinery as the main-model picker — no extra syntax to learn.
 
-### Video Tutorial
 
-<div style={{position: 'relative', width: '100%', aspectRatio: '16 / 9', marginBottom: '1.5rem'}}>
-  <iframe
-    src="https://www.youtube.com/embed/NoF-YajElIM"
-    title="Clawbot Agent — Auxiliary Models Tutorial"
-    style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0}}
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowFullScreen
-  />
-</div>
 
 ### The universal config pattern
 

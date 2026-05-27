@@ -17,7 +17,7 @@ llama.cpp local GGUF inference + HF Hub model discovery.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/inference/llama-cpp` |
 | Version | `2.1.2` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `llama-cpp-python>=0.2.0` |
 | Platforms | linux, macos, windows |

@@ -2,7 +2,7 @@
 name: shop-app
 description: "Shop.app: product search, order tracking, returns, reorder."
 version: 0.0.28
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 prerequisites:

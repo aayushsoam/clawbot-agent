@@ -2,7 +2,7 @@
 name: weights-and-biases
 description: "W&B: log ML experiments, sweeps, model registry, dashboards."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [wandb]
 platforms: [linux, macos, windows]

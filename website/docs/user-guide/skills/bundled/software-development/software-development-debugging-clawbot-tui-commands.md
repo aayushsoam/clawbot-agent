@@ -17,7 +17,7 @@ Debug Clawbot TUI slash commands: Python, gateway, Ink UI.
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/debugging-clawbot-tui-commands` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `debugging`, `clawbot-agent`, `tui`, `slash-commands`, `typescript`, `python` |

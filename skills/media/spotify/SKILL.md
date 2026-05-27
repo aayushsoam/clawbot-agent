@@ -2,7 +2,7 @@
 name: spotify
 description: "Spotify: play, search, queue, manage playlists and devices."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 prerequisites:

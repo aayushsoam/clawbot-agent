@@ -2,7 +2,7 @@
 name: dspy
 description: "DSPy: declarative LM programs, auto-optimize prompts, RAG."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [dspy, openai, anthropic]
 platforms: [linux, macos, windows]

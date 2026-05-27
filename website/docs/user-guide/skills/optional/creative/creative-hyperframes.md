@@ -17,7 +17,7 @@ Create HTML-based video compositions, animated title cards, social overlays, cap
 | Source | Optional — install with `clawbot skills install official/creative/hyperframes` |
 | Path | `optional-skills/creative/hyperframes` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | Apache-2.0 |
 | Platforms | linux, macos, windows |
 | Tags | `creative`, `video`, `animation`, `html`, `gsap`, `motion-graphics` |

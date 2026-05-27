@@ -17,7 +17,7 @@ Build institutional-quality DCF valuation models in Excel — revenue projection
 | Source | Optional — install with `clawbot skills install official/finance/dcf-model` |
 | Path | `optional-skills/finance/dcf-model` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | Apache-2.0 |
 | Platforms | linux, macos, windows |
 | Tags | `finance`, `valuation`, `dcf`, `excel`, `openpyxl`, `modeling`, `investment-banking` |

@@ -17,7 +17,7 @@ OpenAI's general-purpose speech recognition model. Supports 99 languages, transc
 | Source | Optional — install with `clawbot skills install official/mlops/whisper` |
 | Path | `optional-skills/mlops/whisper` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `openai-whisper`, `transformers`, `torch` |
 | Platforms | linux, macos |

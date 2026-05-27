@@ -17,7 +17,7 @@ Migrate a user's OpenClaw customization footprint into Clawbot Agent. Imports Cl
 | Source | Optional — install with `clawbot skills install official/migration/openclaw-migration` |
 | Path | `optional-skills/migration/openclaw-migration` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Migration`, `OpenClaw`, `Clawbot`, `Memory`, `Persona`, `Import` |

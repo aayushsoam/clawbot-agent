@@ -17,7 +17,7 @@ Execute plans via delegate_task subagents (2-stage review).
 | Source | Bundled (installed by default) |
 | Path | `skills/software-development/subagent-driven-development` |
 | Version | `1.1.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `delegation`, `subagent`, `implementation`, `workflow`, `parallel` |

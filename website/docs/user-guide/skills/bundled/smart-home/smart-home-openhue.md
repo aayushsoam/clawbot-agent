@@ -17,7 +17,7 @@ Control Philips Hue lights, scenes, rooms via OpenHue CLI.
 | Source | Bundled (installed by default) |
 | Path | `skills/smart-home/openhue` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Smart-Home`, `Hue`, `Lights`, `IoT`, `Automation` |

@@ -17,7 +17,7 @@ Apple Reminders via remindctl: add, list, complete.
 | Source | Bundled (installed by default) |
 | Path | `skills/apple/apple-reminders` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | macos |
 | Tags | `Reminders`, `tasks`, `todo`, `macOS`, `Apple` |

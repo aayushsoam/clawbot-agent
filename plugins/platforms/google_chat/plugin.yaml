@@ -9,7 +9,7 @@ description: >
   Socket Mode or Telegram long-polling, no public URL required. Native
   file attachments are delivered via per-user OAuth (each user runs
   /setup-files once in their own DM).
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 # ``requires_env`` entries are surfaced in ``clawbot config`` UI via the
 # platform-plugin env var injector in ``clawbot_cli/config.py``.  Using the
 # rich-dict form lets us contribute description/url/prompt metadata so users

@@ -2,7 +2,7 @@
 name: airtable
 description: Airtable REST API via curl. Records CRUD, filters, upserts.
 version: 1.1.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 prerequisites:

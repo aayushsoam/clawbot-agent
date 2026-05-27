@@ -17,7 +17,7 @@ Extract text from PDFs/scans (pymupdf, marker-pdf).
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/ocr-and-documents` |
 | Version | `2.3.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `PDF`, `Documents`, `Research`, `Arxiv`, `Text-Extraction`, `OCR` |

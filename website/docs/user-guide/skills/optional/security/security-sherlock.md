@@ -17,7 +17,7 @@ OSINT username search across 400+ social networks. Hunt down social media accoun
 | Source | Optional — install with `clawbot skills install official/security/sherlock` |
 | Path | `optional-skills/security/sherlock` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `osint`, `security`, `username`, `social-media`, `reconnaissance` |

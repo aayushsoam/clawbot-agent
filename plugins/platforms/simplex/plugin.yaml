@@ -9,7 +9,7 @@ description: >
   SimpleX is decentralised and assigns no persistent user IDs —
   every contact is an opaque internal ID generated at connection
   time, making it one of the most private messengers available.
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 # ``requires_env`` and ``optional_env`` entries are surfaced in the
 # ``clawbot config`` UI via the platform-plugin env var injector in
 # ``clawbot_cli/config.py``.

@@ -2,7 +2,7 @@
 name: audiocraft-audio-generation
 description: "AudioCraft: MusicGen text-to-music, AudioGen text-to-sound."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [audiocraft, torch>=2.0.0, transformers>=4.30.0]
 platforms: [linux, macos]

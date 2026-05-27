@@ -2,7 +2,7 @@
 name: baoyu-comic
 description: "Knowledge comics (知识漫画): educational, biography, tutorial."
 version: 1.56.1
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

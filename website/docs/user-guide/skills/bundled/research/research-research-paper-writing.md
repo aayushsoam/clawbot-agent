@@ -17,7 +17,7 @@ Write ML papers for NeurIPS/ICML/ICLR: design→submit.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/research-paper-writing` |
 | Version | `1.1.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `semanticscholar`, `arxiv`, `habanero`, `requests`, `scipy`, `numpy`, `matplotlib`, `SciencePlots` |
 | Platforms | linux, macos |

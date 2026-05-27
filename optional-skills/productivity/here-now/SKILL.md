@@ -2,7 +2,7 @@
 name: here.now
 description: Publish static sites to {slug}.here.now and store private files in cloud Drives for agent-to-agent handoff.
 version: 1.15.3
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 prerequisites:
   commands: [curl, file, jq]

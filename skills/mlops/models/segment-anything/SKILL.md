@@ -2,7 +2,7 @@
 name: segment-anything-model
 description: "SAM: zero-shot image segmentation via points, boxes, masks."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [segment-anything, transformers>=4.30.0, torch>=1.7.0]
 platforms: [linux, macos, windows]

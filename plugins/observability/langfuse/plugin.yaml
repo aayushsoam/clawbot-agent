@@ -1,7 +1,7 @@
 name: langfuse
 version: "1.0.0"
 description: "Optional Langfuse observability for Clawbot — traces conversations, LLM calls, and tool usage. Opt-in via `clawbot plugins enable observability/langfuse` (or check the box in `clawbot plugins`)."
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 requires_env:
   - CLAWBOT_LANGFUSE_PUBLIC_KEY
   - CLAWBOT_LANGFUSE_SECRET_KEY

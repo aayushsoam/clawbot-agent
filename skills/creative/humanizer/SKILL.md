@@ -2,7 +2,7 @@
 name: humanizer
 description: "Humanize text: strip AI-isms and add real voice."
 version: 2.5.1
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

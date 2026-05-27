@@ -17,7 +17,7 @@ Structured decision-making framework for technical proposals and trade-off analy
 | Source | Optional — install with `clawbot skills install official/communication/one-three-one-rule` |
 | Path | `optional-skills/communication/one-three-one-rule` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `communication`, `decision-making`, `proposals`, `trade-offs` |

@@ -402,7 +402,7 @@ name: telemetry
 version: 0.1.0
 description: "Compliance monitoring harness"
 clawbot_requires: ">=0.12.0"
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: "MIT"
 env_requires:
   - name: OPENAI_API_KEY

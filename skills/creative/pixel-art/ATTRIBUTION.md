@@ -51,6 +51,6 @@ and in the SKILL.md credits block. No code was relicensed.
 
 - License: MIT (inherits from clawbot-agent repo)
 - Original author of the skill shell: dodo-reach
-- Expansion with palettes + video: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+- Expansion with palettes + video: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 
 

@@ -17,7 +17,7 @@ Audio spectrograms/features (mel, chroma, MFCC) via CLI.
 | Source | Bundled (installed by default) |
 | Path | `skills/media/songsee` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Audio`, `Visualization`, `Spectrogram`, `Music`, `Analysis` |

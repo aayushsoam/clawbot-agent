@@ -17,7 +17,7 @@ Canvas LMS integration — fetch enrolled courses and assignments using API toke
 | Source | Optional — install with `clawbot skills install official/productivity/canvas` |
 | Path | `optional-skills/productivity/canvas` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Canvas`, `LMS`, `Education`, `Courses`, `Assignments` |

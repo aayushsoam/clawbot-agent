@@ -513,7 +513,7 @@ my-org/clawbot-skills
 name: deploy-runbook
 description: Our deployment runbook — services, rollback, Slack channels
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 metadata:
   clawbot:
     tags: [deployment, runbook, internal]

@@ -17,7 +17,7 @@ Karpathy's LLM Wiki: build/query interlinked markdown KB.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/llm-wiki` |
 | Version | `2.1.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `wiki`, `knowledge-base`, `research`, `notes`, `markdown`, `rag-alternative` |

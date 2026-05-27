@@ -1,7 +1,7 @@
 name: web-firecrawl
 version: 1.0.0
 description: "Firecrawl web search + content extraction. Supports direct API and Soam-hosted tool-gateway routing for subscribers. Requires FIRECRAWL_API_KEY (or FIRECRAWL_API_URL for self-hosted), or an active Soam subscription with FIRECRAWL_GATEWAY_URL."
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 kind: backend
 provides_web_providers:
   - firecrawl

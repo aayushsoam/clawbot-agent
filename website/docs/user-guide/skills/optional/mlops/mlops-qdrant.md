@@ -17,7 +17,7 @@ High-performance vector similarity search engine for RAG and semantic search. Us
 | Source | Optional — install with `clawbot skills install official/mlops/qdrant` |
 | Path | `optional-skills/mlops/qdrant` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `qdrant-client>=1.12.0` |
 | Platforms | linux, macos, windows |

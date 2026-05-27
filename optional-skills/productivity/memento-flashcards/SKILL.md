@@ -6,7 +6,7 @@ description: >-
   generate quizzes from YouTube transcripts, review due cards with
   adaptive scheduling, and export/import decks as CSV.
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [macos, linux]
 metadata:

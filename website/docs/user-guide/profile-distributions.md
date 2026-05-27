@@ -98,7 +98,7 @@ name: research-bot
 version: 1.0.0
 description: "Autonomous research assistant with arXiv and web tools"
 clawbot_requires: ">=0.12.0"
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: "MIT"
 
 # Tell installers which env vars the agent needs. These are checked against
@@ -414,7 +414,7 @@ name: telemetry-harness
 version: 2.3.1
 description: "Compliance telemetry harness — monitors and reviews regulated workflows"
 clawbot_requires: ">=0.13.0"
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: "Commercial"
 
 env_requires:

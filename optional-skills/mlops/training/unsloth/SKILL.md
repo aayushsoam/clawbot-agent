@@ -2,7 +2,7 @@
 name: unsloth
 description: "Unsloth: 2-5x faster LoRA/QLoRA fine-tuning, less VRAM."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [unsloth, torch, transformers, trl, datasets, peft]
 platforms: [linux, macos]

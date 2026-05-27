@@ -1,7 +1,7 @@
 name: spotify
 version: 1.0.0
 description: "Native Spotify integration — 7 tools (playback, devices, queue, search, playlists, albums, library) using Spotify Web API + PKCE OAuth. Auth via `clawbot auth spotify`. Tools gate on `providers.spotify` in ~/.clawbot/auth.json."
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 kind: backend
 provides_tools:
   - spotify_playback

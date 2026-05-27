@@ -66,7 +66,7 @@ name: acme-inference
 kind: model-provider
 version: 1.0.0
 description: Acme Inference — OpenAI-compatible direct API
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 ```
 
 That's it. After dropping these two files, the following **auto-wire** with no other edits:

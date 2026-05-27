@@ -17,7 +17,7 @@ Provides guidance for LLM post-training with RL using slime, a Megatron+SGLang f
 | Source | Optional — install with `clawbot skills install official/mlops/slime` |
 | Path | `optional-skills/mlops/slime` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `sglang-router>=0.2.3`, `ray`, `torch>=2.0.0`, `transformers>=4.40.0` |
 | Platforms | linux, macos |

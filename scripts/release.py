@@ -45,7 +45,7 @@ ACP_REGISTRY_MANIFEST = REPO_ROOT / "acp_registry" / "agent.json"
 
 # Auto-extracted from noreply emails + manual overrides
 AUTHOR_MAP = {
-    "thakurrajjevsoam@gmail.com": "aayushsoam",
+    "thakurrajeevsoam@gmail.com": "aayushsoam",
 }
 
 def git(*args, cwd=None):

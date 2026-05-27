@@ -17,7 +17,7 @@ Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.
 | Source | Bundled (installed by default) |
 | Path | `skills/productivity/maps` |
 | Version | `1.2.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `maps`, `geocoding`, `places`, `routing`, `distance`, `directions`, `nearby`, `location`, `openstreetmap`, `nominatim`, `overpass`, `osrm` |

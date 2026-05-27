@@ -2,7 +2,7 @@
 name: obliteratus
 description: "OBLITERATUS: abliterate LLM refusals (diff-in-means)."
 version: 2.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [obliteratus, torch, transformers, bitsandbytes, accelerate, safetensors]
 platforms: [linux, macos]

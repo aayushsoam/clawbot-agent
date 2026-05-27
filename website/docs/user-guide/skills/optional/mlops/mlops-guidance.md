@@ -17,7 +17,7 @@ Control LLM output with regex and grammars, guarantee valid JSON/XML/code genera
 | Source | Optional — install with `clawbot skills install official/mlops/guidance` |
 | Path | `optional-skills/mlops/guidance` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `guidance`, `transformers` |
 | Platforms | linux, macos, windows |

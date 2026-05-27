@@ -17,7 +17,7 @@ Free meta-search via SearXNG — aggregates results from 70+ search engines. Sel
 | Source | Optional — install with `clawbot skills install official/research/searxng-search` |
 | Path | `optional-skills/research/searxng-search` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `search`, `searxng`, `meta-search`, `self-hosted`, `free`, `fallback` |

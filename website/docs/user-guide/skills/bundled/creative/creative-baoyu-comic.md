@@ -17,7 +17,7 @@ Knowledge comics (知识漫画): educational, biography, tutorial.
 | Source | Bundled (installed by default) |
 | Path | `skills/creative/baoyu-comic` |
 | Version | `1.56.1` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `comic`, `knowledge-comic`, `creative`, `image-generation` |

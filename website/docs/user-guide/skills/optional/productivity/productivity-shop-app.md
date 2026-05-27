@@ -17,7 +17,7 @@ Shop.app: product search, order tracking, returns, reorder.
 | Source | Optional — install with `clawbot skills install official/productivity/shop-app` |
 | Path | `optional-skills/productivity/shop-app` |
 | Version | `0.0.28` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `Shopping`, `E-commerce`, `Shop.app`, `Products`, `Orders`, `Returns` |

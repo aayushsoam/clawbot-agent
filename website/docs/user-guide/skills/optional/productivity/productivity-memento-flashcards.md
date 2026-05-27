@@ -17,7 +17,7 @@ Spaced-repetition flashcard system. Create cards from facts or text, chat with f
 | Source | Optional — install with `clawbot skills install official/productivity/memento-flashcards` |
 | Path | `optional-skills/productivity/memento-flashcards` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | macos, linux |
 | Tags | `Education`, `Flashcards`, `Spaced Repetition`, `Learning`, `Quiz`, `YouTube` |

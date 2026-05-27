@@ -17,7 +17,7 @@ Extract structured data from LLM responses with Pydantic validation, retry faile
 | Source | Optional — install with `clawbot skills install official/mlops/instructor` |
 | Path | `optional-skills/mlops/instructor` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `instructor`, `pydantic`, `openai`, `anthropic` |
 | Platforms | linux, macos, windows |

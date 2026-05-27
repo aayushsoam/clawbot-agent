@@ -17,7 +17,7 @@ OpenAI's model connecting vision and language. Enables zero-shot image classific
 | Source | Optional — install with `clawbot skills install official/mlops/clip` |
 | Path | `optional-skills/mlops/clip` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `transformers`, `torch`, `pillow` |
 | Platforms | linux, macos, windows |

@@ -48,7 +48,7 @@ label: My Platform
 kind: platform
 version: 1.0.0
 description: My custom messaging platform adapter
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 requires_env:
   - MY_PLATFORM_TOKEN          # bare string works
   - name: MY_PLATFORM_CHANNEL  # or rich dict for better UX
@@ -337,7 +337,7 @@ kind: platform
 version: 1.0.0
 description: >
   My Platform gateway adapter for Clawbot Agent.
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 requires_env:
   - name: MY_PLATFORM_TOKEN
     description: "Bot API token from the My Platform console"

@@ -2,7 +2,7 @@
 name: clawbot-agent
 description: "Configure, extend, or contribute to Clawbot Agent."
 version: 2.1.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [linux, macos, windows]
 metadata:

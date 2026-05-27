@@ -17,7 +17,7 @@ X/Twitter via xurl CLI: post, search, DM, media, v2 API.
 | Source | Bundled (installed by default) |
 | Path | `skills/social-media/xurl` |
 | Version | `1.1.1` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos |
 | Tags | `twitter`, `x`, `social-media`, `xurl`, `official-api` |

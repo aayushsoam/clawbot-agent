@@ -17,7 +17,7 @@ Optimizes transformer attention with Flash Attention for 2-4x speedup and 10-20x
 | Source | Optional — install with `clawbot skills install official/mlops/flash-attention` |
 | Path | `optional-skills/mlops/flash-attention` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `flash-attn`, `torch`, `transformers` |
 | Platforms | linux, macos |

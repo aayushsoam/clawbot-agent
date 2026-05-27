@@ -17,7 +17,7 @@ Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.
 | Source | Bundled (installed by default) |
 | Path | `skills/research/blogwatcher` |
 | Version | `2.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `RSS`, `Blogs`, `Feed-Reader`, `Monitoring` |

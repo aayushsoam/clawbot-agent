@@ -17,7 +17,7 @@ Open-source embedding database for AI applications. Store embeddings and metadat
 | Source | Optional — install with `clawbot skills install official/mlops/chroma` |
 | Path | `optional-skills/mlops/chroma` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `chromadb`, `sentence-transformers` |
 | Platforms | linux, macos, windows |

@@ -48,7 +48,7 @@ skills/
 name: my-skill
 description: Brief description (shown in skill search results)
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 platforms: [macos, linux]          # Optional — restrict to specific OS platforms
                                    #   Valid: macos, linux, windows

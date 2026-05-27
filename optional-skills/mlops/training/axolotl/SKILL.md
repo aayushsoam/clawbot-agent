@@ -2,7 +2,7 @@
 name: axolotl
 description: "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO)."
 version: 1.0.0
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 license: MIT
 dependencies: [axolotl, torch, transformers, datasets, peft, accelerate, deepspeed]
 platforms: [linux, macos]

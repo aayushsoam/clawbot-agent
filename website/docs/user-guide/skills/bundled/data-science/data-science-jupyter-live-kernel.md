@@ -17,7 +17,7 @@ Iterative Python via live Jupyter kernel (hamelnb).
 | Source | Bundled (installed by default) |
 | Path | `skills/data-science/jupyter-live-kernel` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `jupyter`, `notebook`, `repl`, `data-science`, `exploration`, `iterative` |

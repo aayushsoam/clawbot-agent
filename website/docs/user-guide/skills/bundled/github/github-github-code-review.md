@@ -17,7 +17,7 @@ Review PRs: diffs, inline comments via gh or REST.
 | Source | Bundled (installed by default) |
 | Path | `skills/github/github-code-review` |
 | Version | `1.1.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Platforms | linux, macos, windows |
 | Tags | `GitHub`, `Code-Review`, `Pull-Requests`, `Git`, `Quality` |

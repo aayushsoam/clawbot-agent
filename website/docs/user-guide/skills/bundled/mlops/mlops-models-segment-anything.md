@@ -17,7 +17,7 @@ SAM: zero-shot image segmentation via points, boxes, masks.
 | Source | Bundled (installed by default) |
 | Path | `skills/mlops/models/segment-anything` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `segment-anything`, `transformers>=4.30.0`, `torch>=1.7.0` |
 | Platforms | linux, macos, windows |

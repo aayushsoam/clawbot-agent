@@ -17,7 +17,7 @@ Fast tokenizers optimized for research and production. Rust-based implementation
 | Source | Optional — install with `clawbot skills install official/mlops/huggingface-tokenizers` |
 | Path | `optional-skills/mlops/huggingface-tokenizers` |
 | Version | `1.0.0` |
-| Author | Aayush Soam &lt;thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam) |
+| Author | Aayush Soam &lt;thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam) |
 | License | MIT |
 | Dependencies | `tokenizers`, `transformers`, `datasets` |
 | Platforms | linux, macos, windows |

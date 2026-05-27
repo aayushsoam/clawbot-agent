@@ -3,7 +3,7 @@ name: blender-mcp
 description: Control Blender directly from Clawbot via socket connection to the blender-mcp addon. Create 3D objects, materials, animations, and run arbitrary Blender Python (bpy) code. Use when user wants to create or modify anything in Blender.
 version: 1.0.0
 requires: Blender 4.3+ (desktop instance required, headless not supported)
-author: Aayush Soam <thakurrajjevsoam@gmail.com> (https://github.com/aayushsoam)
+author: Aayush Soam <thakurrajeevsoam@gmail.com> (https://github.com/aayushsoam)
 tags: [blender, 3d, animation, modeling, bpy, mcp]
 platforms: [linux, macos, windows]
 ---
