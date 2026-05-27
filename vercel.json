@@ -3,5 +3,12 @@
   "framework": "docusaurus-2",
   "installCommand": "cd website && npm ci",
   "buildCommand": "cd website && npm run build",
-  "outputDirectory": "website/build"
+  "outputDirectory": "website/build",
+  "redirects": [
+    {
+      "source": "/docs/:path*",
+      "destination": "/:path*",
+      "permanent": false
+    }
+  ]
 }

@@ -7,8 +7,8 @@ const config: Config = {
   tagline: 'The self-improving AI agent',
   favicon: 'img/favicon.ico',
 
-  url: 'https://clawbot-agent.aayushsoam.com',
-  baseUrl: '/docs/',
+  url: 'https://clawbot-agent.vercel.app',
+  baseUrl: '/',
 
   organizationName: 'Aayushsoam',
   projectName: 'clawbot-agent',
