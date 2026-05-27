@@ -792,7 +792,7 @@ def refresh_anthropic_oauth_pure(refresh_token: str, *, use_json: bool = False) 
     if not refresh_token:
         raise ValueError("refresh_token is required")
 
-    client_id = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
+    client_id = ""
     if use_json:
         data = json.dumps({
             "grant_type": "refresh_token",
@@ -1038,7 +1038,7 @@ def run_oauth_setup_token() -> Optional[str]:
 # Mirrors the flow used by Claude Code, pi-ai, and OpenCode.
 # Stores credentials in ~/.clawbot/.anthropic_oauth.json (our own file).
 
-_OAUTH_CLIENT_ID = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
+_OAUTH_CLIENT_ID = ""
 _OAUTH_TOKEN_URL = "https://console.anthropic.com/v1/oauth/token"
 _OAUTH_REDIRECT_URI = "https://console.anthropic.com/oauth/code/callback"
 _OAUTH_SCOPES = "org:create_api_key user:profile user:inference"
