@@ -58,6 +58,8 @@ else
 fi
 PYTHON_VERSION="3.11"
 NODE_VERSION="22"
+INSTALL_TARGET="${CLAWBOT_INSTALL_TARGET:-}"
+SKIP_NODE=false
 
 # FHS-style root install layout (set by resolve_install_layout when applicable):
 #   code at /usr/local/lib/clawbot-agent, command at /usr/local/bin/clawbot,
@@ -98,6 +100,10 @@ while [[ $# -gt 0 ]]; do
             SKIP_BROWSER=true
             shift
             ;;
+        --target)
+            INSTALL_TARGET="$2"
+            shift 2
+            ;;
         --branch)
             BRANCH="$2"
             shift 2
@@ -128,6 +134,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --no-venv      Don't create virtual environment"
             echo "  --skip-setup   Skip interactive setup wizard"
             echo "  --skip-browser Skip Playwright/Chromium install (browser tools won't work)"
+            echo "  --target TYPE  Install target: laptop or android"
             echo "  --branch NAME  Git branch to install (default: main)"
             echo "  --dir PATH     Installation directory"
             echo "                   default (non-root):  ~/.clawbot/clawbot-agent"
@@ -228,6 +235,67 @@ prompt_yes_no() {
 
 is_termux() {
     [ -n "${TERMUX_VERSION:-}" ] || [[ "${PREFIX:-}" == *"com.termux/files/usr"* ]]
+}
+
+prompt_install_target() {
+    local default_target="laptop"
+    local answer=""
+
+    if is_termux; then
+        default_target="android"
+    fi
+
+    case "$INSTALL_TARGET" in
+        laptop|desktop|pc)
+            INSTALL_TARGET="laptop"
+            ;;
+        android|termux|mobile)
+            INSTALL_TARGET="android"
+            ;;
+        "")
+            if [ "$IS_INTERACTIVE" = true ]; then
+                echo ""
+                echo -e "${CYAN}${BOLD}Select install target:${NC}"
+                echo "  1) Laptop / PC  - full install with web dashboard + Node.js"
+                echo "  2) Android      - lean Termux install, no web dashboard, no Node.js"
+                echo ""
+                read -r -p "Choose [1/2] (default: $([ "$default_target" = android ] && echo 2 || echo 1)): " answer || answer=""
+            elif [ -r /dev/tty ] && [ -w /dev/tty ]; then
+                {
+                    echo ""
+                    echo "Select install target:"
+                    echo "  1) Laptop / PC  - full install with web dashboard + Node.js"
+                    echo "  2) Android      - lean Termux install, no web dashboard, no Node.js"
+                    printf "Choose [1/2] (default: %s): " "$([ "$default_target" = android ] && echo 2 || echo 1)"
+                } > /dev/tty
+                IFS= read -r answer < /dev/tty || answer=""
+            fi
+
+            case "$answer" in
+                2|android|Android|termux|Termux) INSTALL_TARGET="android" ;;
+                1|laptop|Laptop|pc|PC|"") INSTALL_TARGET="$default_target" ;;
+                *)
+                    log_warn "Unknown target '$answer' — using $default_target"
+                    INSTALL_TARGET="$default_target"
+                    ;;
+            esac
+            ;;
+        *)
+            log_warn "Unknown install target '$INSTALL_TARGET' — using $default_target"
+            INSTALL_TARGET="$default_target"
+            ;;
+    esac
+
+    if [ "$INSTALL_TARGET" = "android" ]; then
+        SKIP_NODE=true
+        SKIP_BROWSER=true
+        log_success "Install target: Android (Node.js/web dashboard/browser tooling skipped)"
+        if ! is_termux; then
+            log_warn "Android target is intended for Termux. Continuing with lean install settings on this host."
+        fi
+    else
+        log_success "Install target: Laptop / PC"
+    fi
 }
 
 # Decide where the repo checkout + venv live, and where the `clawbot` command
@@ -563,6 +631,12 @@ npm_is_usable() {
 }
 
 check_node() {
+    if [ "$SKIP_NODE" = true ]; then
+        log_info "Skipping Node.js install for Android target"
+        HAS_NODE=false
+        return 0
+    fi
+
     log_info "Checking Node.js (for browser tools and dashboard)..."
 
     if command -v node &> /dev/null; then
@@ -1095,24 +1169,41 @@ install_deps() {
             fi
         fi
 
-        # Try the broad Termux profile first (best-effort "install all" for Android),
-        # then fall back to the conservative Termux baseline, then base package.
-        if ! "$PIP_PYTHON" -m pip install -e '.[termux-all]' -c constraints-termux.txt; then
-            log_warn "Termux broad profile (.[termux-all]) failed, trying baseline Termux profile..."
+        if [ "$INSTALL_TARGET" = "android" ]; then
+            log_info "Android target selected — installing baseline Termux profile without [web]"
             if ! "$PIP_PYTHON" -m pip install -e '.[termux]' -c constraints-termux.txt; then
                 log_warn "Termux baseline profile (.[termux]) failed, trying base install..."
                 if ! "$PIP_PYTHON" -m pip install -e '.' -c constraints-termux.txt; then
                     log_error "Package installation failed on Termux."
                     log_info "Ensure these packages are installed: pkg install clang rust make pkg-config libffi openssl ca-certificates curl"
-                    log_info "Then re-run: cd $INSTALL_DIR && python -m pip install -e '.[termux-all]' -c constraints-termux.txt"
+                    log_info "Then re-run: cd $INSTALL_DIR && python -m pip install -e '.[termux]' -c constraints-termux.txt"
                     exit 1
+                fi
+            fi
+        else
+            # Try the broad Termux profile first (best-effort "install all" for Android),
+            # then fall back to the conservative Termux baseline, then base package.
+            if ! "$PIP_PYTHON" -m pip install -e '.[termux-all]' -c constraints-termux.txt; then
+                log_warn "Termux broad profile (.[termux-all]) failed, trying baseline Termux profile..."
+                if ! "$PIP_PYTHON" -m pip install -e '.[termux]' -c constraints-termux.txt; then
+                    log_warn "Termux baseline profile (.[termux]) failed, trying base install..."
+                    if ! "$PIP_PYTHON" -m pip install -e '.' -c constraints-termux.txt; then
+                        log_error "Package installation failed on Termux."
+                        log_info "Ensure these packages are installed: pkg install clang rust make pkg-config libffi openssl ca-certificates curl"
+                        log_info "Then re-run: cd $INSTALL_DIR && python -m pip install -e '.[termux-all]' -c constraints-termux.txt"
+                        exit 1
+                    fi
                 fi
             fi
         fi
 
         log_success "Main package installed"
         log_info "Termux note: matrix e2ee and local faster-whisper extras are excluded from .[termux-all] due to upstream Android wheel/toolchain blockers."
-        log_info "Termux note: browser/WhatsApp tooling is not installed by default; see the Termux guide for optional follow-up steps."
+        if [ "$INSTALL_TARGET" = "android" ]; then
+            log_info "Android target note: web dashboard, browser tooling, and Node.js were skipped."
+        else
+            log_info "Termux note: browser/WhatsApp tooling is not installed by default; see the Termux guide for optional follow-up steps."
+        fi
 
         log_success "All dependencies installed"
         return 0
@@ -1925,7 +2016,7 @@ print_success() {
     fi
 
     # Show Node.js warning if auto-install failed
-    if [ "$HAS_NODE" = false ]; then
+    if [ "$HAS_NODE" = false ] && [ "$SKIP_NODE" != true ]; then
         echo -e "${YELLOW}"
         echo "Note: Node.js could not be installed automatically."
         echo "Browser tools need Node.js. Install manually:"
@@ -2058,10 +2149,16 @@ ensure_mode() {
 postinstall_mode() {
     print_banner
     detect_os
+    prompt_install_target
 
     log_info "Post-install mode: setting up Clawbot for pip install"
 
-    check_node
+    if [ "$SKIP_NODE" = true ]; then
+        HAS_NODE=false
+        log_info "Skipping Node.js/browser setup for Android target"
+    else
+        check_node
+    fi
     check_network_prerequisites
     install_system_packages
 
@@ -2087,18 +2184,28 @@ main() {
     print_banner
 
     detect_os
+    prompt_install_target
     resolve_install_layout
     install_uv
     check_python
     check_git
-    check_node
+    if [ "$SKIP_NODE" = true ]; then
+        HAS_NODE=false
+        log_info "Skipping Node.js check/install for Android target"
+    else
+        check_node
+    fi
     check_network_prerequisites
     install_system_packages
 
     clone_repo
     setup_venv
     install_deps
-    install_node_deps
+    if [ "$SKIP_NODE" = true ]; then
+        log_info "Skipping Node.js dependencies for Android target"
+    else
+        install_node_deps
+    fi
     setup_path
     copy_config_templates
     run_setup_wizard

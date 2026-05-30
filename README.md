@@ -44,14 +44,14 @@ curl -fsSL https://raw.githubusercontent.com/Aayushsoam/clawbot-agent/main/scrip
 Before installing, install required packages in Termux to build native dependencies:
 ```bash
 pkg update && pkg upgrade -y
-pkg install git python binutils clang make curl -y
+pkg install git python binutils clang make rust pkg-config libffi openssl ca-certificates curl ripgrep ffmpeg -y
 ```
 
-Then run the one-liner installer:
+Then run the Android-targeted installer:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Aayushsoam/clawbot-agent/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Aayushsoam/clawbot-agent/main/scripts/install.sh | bash -s -- --target android
 ```
-> **Note:** Termux uses a curated `.[termux]` extra to skip voice/audio libraries that aren't Android-compatible.
+> **Note:** The Android target uses the curated `.[termux]` extra and skips Node.js, web dashboard/browser tooling, and Playwright/Chromium downloads.
 
 ### 3. Windows (Native PowerShell) — Early Beta
 
