@@ -1,18 +1,17 @@
-"""Cua-driver backend (macOS only).
+"""Cua-driver backend.
 
 Speaks MCP over stdio to `cua-driver`. The Python `mcp` SDK is async, so we
 run a dedicated asyncio event loop on a background thread and marshal sync
 calls through it.
 
-Install: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scripts/install.sh)"`
+Install: `clawbot computer-use install`
 
 After install, `cua-driver` is on $PATH and supports `cua-driver mcp` (stdio
 transport) which is what we invoke.
 
-The private SkyLight SPIs cua-driver uses (SLEventPostToPid, SLPSPostEvent-
-RecordTo, _AXObserverAddNotificationAndCheckRemote) are not Apple-public and
-can break on OS updates. Pin the installed version via `CLAWBOT_CUA_DRIVER_
-VERSION` if you want reproducibility across an OS bump.
+On macOS, cua-driver may use private SkyLight SPIs that can break on OS
+updates. Pin the installed version via `CLAWBOT_CUA_DRIVER_VERSION` if you
+want reproducibility across an OS bump.
 """
 
 from __future__ import annotations
@@ -87,8 +86,10 @@ def cua_driver_install_hint() -> str:
         "cua-driver is not installed. Install with one of:\n"
         "  clawbot computer-use install\n"
         "Or run the upstream installer directly:\n"
-        '  /bin/bash -c "$(curl -fsSL '
-        'https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scripts/install.sh)"\n'
+        "  macOS/Linux: /bin/bash -c \"$(curl -fsSL "
+        "https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scripts/install.sh)\"\n"
+        "  Windows: powershell -NoProfile -ExecutionPolicy Bypass -Command "
+        "\"irm https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scripts/install.ps1 | iex\"\n"
         "Or run `clawbot tools` and enable the Computer Use toolset to install it automatically."
     )
 
@@ -317,7 +318,7 @@ def _extract_tool_result(mcp_result: Any) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 class CuaDriverBackend(ComputerUseBackend):
-    """Default computer-use backend. macOS-only via cua-driver MCP."""
+    """Default computer-use backend via cua-driver MCP."""
 
     def __init__(self) -> None:
         self._bridge = _AsyncBridge()

@@ -8380,13 +8380,14 @@ def _cmd_update_impl(args, gateway_mode: bool):
             logger.debug("FHS PATH guard check failed: %s", e)
 
         # Refresh the cua-driver binary used by the Computer Use toolset.
-        # The upstream installer is gated on macOS and on the binary already
-        # being on PATH, so this is a no-op for users who don't have it.
+        # The installer is gated on supported desktop platforms and on the
+        # binary already being on PATH, so this is a no-op for users who don't
+        # have it.
         # Tying the refresh to ``clawbot update`` gives users a predictable
         # cadence (matches when they pull new agent code) without adding
         # startup latency or a per-launch GitHub API call.
         try:
-            if sys.platform == "darwin" and shutil.which("cua-driver"):
+            if shutil.which("cua-driver"):
                 from clawbot_cli.tools_config import install_cua_driver
 
                 print()
@@ -11644,14 +11645,14 @@ Examples:
     tools_parser.set_defaults(func=cmd_tools)
 
     # =========================================================================
-    # computer-use command — manage Computer Use (cua-driver) on macOS
+    # computer-use command — manage Computer Use (cua-driver)
     # =========================================================================
     computer_use_parser = subparsers.add_parser(
         "computer-use",
-        help="Manage the Computer Use (cua-driver) backend (macOS)",
+        help="Manage the Computer Use (cua-driver) backend",
         description=(
             "Install or check the cua-driver binary used by the\n"
-            "`computer_use` toolset. macOS-only.\n\n"
+            "`computer_use` toolset on macOS, Windows, or Linux.\n\n"
             "Use `clawbot computer-use install` to fetch and run the\n"
             "upstream cua-driver installer. This is equivalent to the\n"
             "post-setup hook that `clawbot tools` runs when you first\n"
@@ -11664,14 +11665,14 @@ Examples:
 
     computer_use_install = computer_use_sub.add_parser(
         "install",
-        help="Install or repair the cua-driver binary (macOS)",
+        help="Install or repair the cua-driver binary",
     )
     computer_use_install.add_argument(
         "--upgrade",
         action="store_true",
         help=(
             "Re-run the upstream installer even if cua-driver is already on "
-            "PATH. The upstream install.sh always pulls the latest release, "
+            "PATH. The upstream installer always pulls the latest release, "
             "so this performs an in-place upgrade."
         ),
     )

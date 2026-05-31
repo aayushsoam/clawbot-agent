@@ -4,12 +4,12 @@ The cua-driver upstream installer always pulls the latest release tag, so
 re-running it is the canonical upgrade path. ``install_cua_driver(upgrade=True)``
 must:
 
-* Be macOS-only — no-op silently on Linux/Windows so ``clawbot update`` can
-  call it unconditionally without warning every non-macOS user.
+* Support macOS, Windows, and Linux desktop installs while skipping
+  Android/Termux.
 * Re-run the installer even when the binary is already on PATH (this is the
   fix for the "we only pulled cua-driver once on enable" complaint).
 * Preserve original ``upgrade=False`` behaviour for the toolset-enable flow:
-  skip if installed, install otherwise, warn on non-macOS.
+  skip if installed, install otherwise.
 """
 
 from __future__ import annotations
@@ -18,26 +18,53 @@ from unittest.mock import patch
 
 
 class TestInstallCuaDriverUpgrade:
-    def test_upgrade_on_non_macos_is_silent_noop(self):
+    def test_upgrade_on_termux_is_silent_noop(self):
         """``clawbot update`` calls install_cua_driver(upgrade=True) for every
-        user. On Linux/Windows it must return False without printing the
-        "macOS-only; skipping" warning that the toolset-enable path emits."""
+        user. On Android/Termux it must return False without printing a
+        desktop-only warning."""
         from clawbot_cli import tools_config
 
         with patch.object(tools_config, "_print_warning") as warn, \
+             patch.dict(tools_config.os.environ, {"TERMUX_VERSION": "1"}, clear=False), \
              patch("platform.system", return_value="Linux"):
             assert tools_config.install_cua_driver(upgrade=True) is False
             warn.assert_not_called()
 
-    def test_non_upgrade_on_non_macos_warns(self):
+    def test_non_upgrade_on_termux_warns(self):
         """The toolset-enable path (upgrade=False) should still warn loudly
-        when the user tries to enable Computer Use on a non-macOS host."""
+        when the user tries to enable Computer Use on Android/Termux."""
         from clawbot_cli import tools_config
 
         with patch.object(tools_config, "_print_warning") as warn, \
+             patch.dict(tools_config.os.environ, {"TERMUX_VERSION": "1"}, clear=False), \
              patch("platform.system", return_value="Linux"):
             assert tools_config.install_cua_driver(upgrade=False) is False
             warn.assert_called()
+
+    def test_non_upgrade_on_linux_without_binary_runs_installer(self):
+        """Linux desktop users should be allowed through to the installer."""
+        from clawbot_cli import tools_config
+
+        with patch("platform.system", return_value="Linux"), \
+             patch.object(tools_config, "_is_termux_android", return_value=False), \
+             patch.object(tools_config.shutil, "which",
+                          side_effect=lambda n: "/usr/bin/curl" if n == "curl" else None), \
+             patch.object(tools_config, "_run_cua_driver_installer",
+                          return_value=True) as runner:
+            assert tools_config.install_cua_driver(upgrade=False) is True
+            runner.assert_called_once()
+
+    def test_non_upgrade_on_windows_without_binary_runs_installer_without_curl(self):
+        """Windows uses PowerShell's irm path, so curl is not required."""
+        from clawbot_cli import tools_config
+
+        with patch("platform.system", return_value="Windows"), \
+             patch.object(tools_config, "_is_termux_android", return_value=False), \
+             patch.object(tools_config.shutil, "which", return_value=None), \
+             patch.object(tools_config, "_run_cua_driver_installer",
+                          return_value=True) as runner:
+            assert tools_config.install_cua_driver(upgrade=False) is True
+            runner.assert_called_once()
 
     def test_upgrade_on_macos_with_binary_runs_installer(self):
         """When cua-driver is already on PATH and upgrade=True, we must
@@ -113,3 +140,19 @@ class TestInstallCuaDriverUpgrade:
              patch.object(tools_config.shutil, "which", side_effect=_which), \
              patch.object(tools_config, "_print_warning"):
             assert tools_config.install_cua_driver(upgrade=True) is True
+
+    def test_windows_install_command_uses_powershell_script(self):
+        from clawbot_cli import tools_config
+
+        with patch("platform.system", return_value="Windows"):
+            cmd = tools_config._cua_driver_install_command()
+        assert "install.ps1" in cmd
+        assert "powershell" in cmd
+
+    def test_linux_install_command_uses_shell_script(self):
+        from clawbot_cli import tools_config
+
+        with patch("platform.system", return_value="Linux"):
+            cmd = tools_config._cua_driver_install_command()
+        assert "install.sh" in cmd
+        assert "/bin/bash" in cmd

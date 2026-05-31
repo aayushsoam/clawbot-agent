@@ -1,12 +1,11 @@
-"""Computer use toolset — universal (any-model) macOS desktop control.
+"""Computer use toolset — universal (any-model) desktop control.
 
 Architecture
 ------------
-This toolset drives macOS apps through cua-driver's background computer-use
-primitive (SkyLight private SPIs for focus-without-raise + pid-scoped event
-posting). Unlike #4562's pyautogui backend, it does NOT steal the user's
-cursor, keyboard focus, or Space — the agent and the user can co-work on the
-same machine.
+This toolset drives desktop apps through cua-driver's background computer-use
+primitive. Unlike #4562's pyautogui backend, it does NOT steal the user's
+cursor or keyboard focus when the underlying driver supports background
+automation, so the agent and the user can co-work on the same machine.
 
 Unlike #4562's Anthropic-native `computer_20251124` tool, the schema here is
 a plain OpenAI function-calling schema that every tool-capable model can

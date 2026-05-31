@@ -1,6 +1,6 @@
 """Entry point for the `computer_use` tool.
 
-Universal (any-model) macOS desktop control via cua-driver's background
+Universal (any-model) desktop control via cua-driver's background
 computer-use primitive. Replaces #4562's Anthropic-native `computer_20251124`
 approach — the schema here is standard OpenAI function-calling so every
 tool-capable model can drive it.
@@ -508,9 +508,13 @@ def _element_to_dict(e: UIElement) -> Dict[str, Any]:
 def check_computer_use_requirements() -> bool:
     """Return True iff computer_use can run on this host.
 
-    Conditions: macOS + cua-driver binary installed (or override via env).
+    Conditions: supported desktop OS + cua-driver binary installed (or env override).
     """
-    if sys.platform != "darwin":
+    is_termux = bool(
+        os.environ.get("TERMUX_VERSION")
+        or "com.termux/files/usr" in os.environ.get("PREFIX", "")
+    )
+    if is_termux or sys.platform not in {"darwin", "win32", "linux"}:
         return False
     from tools.computer_use.cua_backend import cua_driver_binary_available
     return cua_driver_binary_available()

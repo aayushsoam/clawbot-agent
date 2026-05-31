@@ -451,19 +451,18 @@ TOOL_CATEGORIES = {
     "computer_use": {
         "name": "Computer Use (macOS,linux,win)",
         "icon": "🖱️",
-        "platform_gate": "darwin",
         "providers": [
             {
                 "name": "cua-driver (background)",
                 "badge": "★ recommended · free · local",
                 "tag": (
-                    "macOS background computer-use via SkyLight SPIs — does "
-                    "NOT steal your cursor or focus. Works with any model."
+                    "Desktop computer-use via cua-driver for macOS, Windows, "
+                    "and Linux. Works with any model."
                 ),
                 "env_vars": [
                     # cua-driver reads HOME/TMPDIR from the process env, no
                     # extra keys required. CLAWBOT_CUA_DRIVER_VERSION is an
-                    # optional pin for reproducibility across macOS updates.
+                    # optional pin for reproducibility across driver updates.
                 ],
                 "post_setup": "cua_driver",
             },
@@ -564,26 +563,33 @@ def install_cua_driver(upgrade: bool = False) -> bool:
       by ``clawbot computer-use install --upgrade``.
 
     Returns True iff cua-driver is installed (or successfully refreshed)
-    when the function returns. macOS-only — silently returns False on
-    other platforms.
+    when the function returns. Android/Termux is skipped because cua-driver
+    is a desktop automation backend.
     """
     import platform as _plat
     import shutil
     import subprocess
 
-    if _plat.system() != "Darwin":
+    system = _plat.system()
+    if _is_termux_android():
         if upgrade:
-            # Silent on non-macOS — `clawbot update` calls this for every
-            # user; only macOS users with cua-driver care.
+            # `clawbot update` calls this opportunistically; keep Android quiet.
             return False
-        _print_warning("    Computer Use (cua-driver) is macOS-only; skipping.")
+        _print_warning("    Computer Use (cua-driver) is desktop-only; skipping on Android/Termux.")
         return False
+    if system not in {"Darwin", "Windows", "Linux"}:
+        if upgrade:
+            return False
+        _print_warning(f"    Computer Use (cua-driver) is not supported on {system or 'this OS'}.")
+        return False
+    if system == "Linux" and not upgrade:
+        _print_warning("    cua-driver Linux support is upstream pre-release/experimental.")
 
     binary = shutil.which("cua-driver")
 
     # Not installed → fresh install path (only when caller asked for it).
     if not binary and not upgrade:
-        if not shutil.which("curl"):
+        if system != "Windows" and not shutil.which("curl"):
             _print_warning("    curl not found — install manually:")
             _print_info("      https://github.com/trycua/cua/blob/main/libs/cua-driver/README.md")
             return False
@@ -599,13 +605,11 @@ def install_cua_driver(upgrade: bool = False) -> bool:
             _print_success(f"    cua-driver already installed: {version or 'unknown version'}")
         except Exception:
             _print_success("    cua-driver already installed.")
-        _print_info("    Grant macOS permissions if not done yet:")
-        _print_info("      System Settings > Privacy & Security > Accessibility")
-        _print_info("      System Settings > Privacy & Security > Screen Recording")
+        _print_cua_driver_permission_hint()
         return True
 
     # upgrade=True path — refresh to the latest upstream release.
-    if not shutil.which("curl"):
+    if system != "Windows" and not shutil.which("curl"):
         _print_warning("    curl not found — cannot refresh cua-driver.")
         return bool(binary)
 
@@ -638,21 +642,19 @@ def install_cua_driver(upgrade: bool = False) -> bool:
 
 
 def _run_cua_driver_installer(label: str = "Installing", verbose: bool = True) -> bool:
-    """Run the upstream cua-driver install.sh. Returns True on success.
+    """Run the upstream cua-driver installer. Returns True on success.
 
     The script is idempotent: it always downloads the latest release, so
     re-running it on an already-installed system performs an upgrade.
     """
+    import platform as _plat
     import shutil
     import subprocess
 
-    install_cmd = (
-        "/bin/bash -c \"$(curl -fsSL "
-        "https://raw.githubusercontent.com/trycua/cua/main/"
-        "libs/cua-driver/scripts/install.sh)\""
-    )
+    install_cmd = _cua_driver_install_command()
     if verbose:
-        _print_info(f"    {label} cua-driver (macOS background computer-use)...")
+        system = _plat.system() or "desktop"
+        _print_info(f"    {label} cua-driver ({system} desktop computer-use)...")
     else:
         _print_info(f"    {label} cua-driver...")
     try:
@@ -660,10 +662,7 @@ def _run_cua_driver_installer(label: str = "Installing", verbose: bool = True) -
         if result.returncode == 0 and shutil.which("cua-driver"):
             if verbose:
                 _print_success("    cua-driver installed.")
-                _print_info("    IMPORTANT — grant macOS permissions now:")
-                _print_info("      System Settings > Privacy & Security > Accessibility")
-                _print_info("      System Settings > Privacy & Security > Screen Recording")
-                _print_info("    Both must allow the terminal / Clawbot process.")
+                _print_cua_driver_permission_hint()
             return True
         _print_warning(f"    cua-driver {label.lower()} did not complete. Re-run manually:")
         _print_info(f"      {install_cmd}")
@@ -674,6 +673,42 @@ def _run_cua_driver_installer(label: str = "Installing", verbose: bool = True) -
     except Exception as e:
         _print_warning(f"    cua-driver {label.lower()} failed: {e}")
         return False
+
+
+def _is_termux_android() -> bool:
+    prefix = os.environ.get("PREFIX", "")
+    return bool(os.environ.get("TERMUX_VERSION") or "com.termux/files/usr" in prefix)
+
+
+def _cua_driver_install_command() -> str:
+    import platform as _plat
+
+    if _plat.system() == "Windows":
+        return (
+            "powershell -NoProfile -ExecutionPolicy Bypass -Command "
+            "\"irm https://raw.githubusercontent.com/trycua/cua/main/"
+            "libs/cua-driver/scripts/install.ps1 | iex\""
+        )
+    return (
+        "/bin/bash -c \"$(curl -fsSL "
+        "https://raw.githubusercontent.com/trycua/cua/main/"
+        "libs/cua-driver/scripts/install.sh)\""
+    )
+
+
+def _print_cua_driver_permission_hint() -> None:
+    import platform as _plat
+
+    system = _plat.system()
+    if system == "Darwin":
+        _print_info("    IMPORTANT — grant macOS permissions if not done yet:")
+        _print_info("      System Settings > Privacy & Security > Accessibility")
+        _print_info("      System Settings > Privacy & Security > Screen Recording")
+        _print_info("    Both must allow the terminal / Clawbot process.")
+    elif system == "Windows":
+        _print_info("    If Windows blocks automation, allow Clawbot/Terminal in security prompts.")
+    elif system == "Linux":
+        _print_info("    Linux support is upstream pre-release; desktop/session permissions may vary.")
 
 
 def _run_post_setup(post_setup_key: str):
