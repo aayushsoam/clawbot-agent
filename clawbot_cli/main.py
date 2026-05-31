@@ -12768,28 +12768,32 @@ Examples:
         cmd_chat(args)
         return
 
-    # Default to chat if no command specified
-    if args.command is None:
-        for attr, default in [
-            ("query", None),
-            ("model", None),
-            ("provider", None),
-            ("toolsets", None),
-            ("verbose", False),
-            ("resume", None),
-            ("continue_last", None),
-            ("worktree", False),
-        ]:
-            if not hasattr(args, attr):
-                setattr(args, attr, default)
-        cmd_chat(args)
-        return
+    try:
+        # Default to chat if no command specified
+        if args.command is None:
+            for attr, default in [
+                ("query", None),
+                ("model", None),
+                ("provider", None),
+                ("toolsets", None),
+                ("verbose", False),
+                ("resume", None),
+                ("continue_last", None),
+                ("worktree", False),
+            ]:
+                if not hasattr(args, attr):
+                    setattr(args, attr, default)
+            cmd_chat(args)
+            return
 
-    # Execute the command
-    if hasattr(args, "func"):
-        args.func(args)
-    else:
-        parser.print_help()
+        # Execute the command
+        if hasattr(args, "func"):
+            args.func(args)
+        else:
+            parser.print_help()
+    except KeyboardInterrupt:
+        print("\nInterrupted.")
+        raise SystemExit(130)
 
 
 if __name__ == "__main__":
