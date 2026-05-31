@@ -1,4 +1,4 @@
-# Computer Use (macOS)
+# Computer Use (macOS,linux,win)
 
 Clawbot Agent can drive your Mac's desktop — clicking, typing, scrolling,
 dragging — in the **background**. Your cursor doesn't move, keyboard focus
@@ -41,7 +41,7 @@ Use `clawbot computer-use status` to verify the install.
 
 **Option 2: enable the toolset interactively.**
 
-1. Run `clawbot tools`, pick `🖱️ Computer Use (macOS)` → `cua-driver (background)`.
+1. Run `clawbot tools`, pick `🖱️ Computer Use (macOS,linux,win)` → `cua-driver (background)`.
 2. The setup runs the upstream installer (same as Option 1).
 
 After installing, regardless of which path you took:
