@@ -75,6 +75,7 @@ Examples:
     clawbot dashboard --status     List running dashboard processes
     clawbot app                    Start dashboard in a desktop app window
     clawbot app --stop             Stop running dashboard/app processes
+    clawbot desktop                Build and launch the native desktop app
 
 For more help on a command:
     clawbot <command> --help

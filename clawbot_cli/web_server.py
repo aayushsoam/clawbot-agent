@@ -80,10 +80,10 @@ app = FastAPI(title="Clawbot Agent", version=__version__)
 
 # ---------------------------------------------------------------------------
 # Session token for protecting sensitive endpoints (reveal).
-# Generated fresh on every server start — dies when the process exits.
+# Generated fresh on every server start unless the desktop shell pins it.
 # Injected into the SPA HTML so only the legitimate web UI can use it.
 # ---------------------------------------------------------------------------
-_SESSION_TOKEN = secrets.token_urlsafe(32)
+_SESSION_TOKEN = os.environ.get("CLAWBOT_DASHBOARD_SESSION_TOKEN") or secrets.token_urlsafe(32)
 _SESSION_HEADER_NAME = "X-Clawbot-Session-Token"
 
 # In-browser Chat tab (/chat, /api/pty, …).  Off unless ``clawbot dashboard --tui``
@@ -116,6 +116,7 @@ _PUBLIC_API_PATHS: frozenset = frozenset({
     "/api/config/defaults",
     "/api/config/schema",
     "/api/model/info",
+    "/api/messaging/platforms",
     "/api/dashboard/themes",
     "/api/dashboard/plugins",
     "/api/dashboard/plugins/rescan",
@@ -460,6 +461,12 @@ class EnvVarReveal(BaseModel):
     key: str
 
 
+class MessagingPlatformUpdate(BaseModel):
+    enabled: Optional[bool] = None
+    env: Optional[Dict[str, str]] = None
+    clear_env: Optional[List[str]] = None
+
+
 class ModelAssignment(BaseModel):
     """Payload for POST /api/model/set — assign a provider/model to a slot.
 
@@ -792,6 +799,97 @@ async def get_sessions(limit: int = 20, offset: int = 0):
     except Exception:
         _log.exception("GET /api/sessions failed")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.get("/api/profiles/sessions")
+async def get_profile_sessions(
+    limit: int = 40,
+    offset: int = 0,
+    min_messages: int = 0,
+    archived: str = "exclude",
+    order: str = "recent",
+    profile: str = "all",
+):
+    """Read session lists across profiles for the desktop sidebar."""
+    from clawbot_state import SessionDB
+    from clawbot_cli import profiles as profiles_mod
+
+    def _profile_entries() -> list[tuple[str, Path, bool]]:
+        entries: list[tuple[str, Path, bool]] = []
+        default_home = profiles_mod._get_default_clawbot_home()
+        if profile in ("all", "default", ""):
+            entries.append(("default", default_home, True))
+        if profile not in ("all", "default", ""):
+            try:
+                profiles_mod.validate_profile_name(profile)
+                if profiles_mod.profile_exists(profile):
+                    entries.append((profile, profiles_mod.get_profile_dir(profile), False))
+            except ValueError:
+                raise HTTPException(status_code=400, detail=f"Invalid profile: {profile}")
+        elif profile == "all":
+            profiles_root = profiles_mod._get_profiles_root()
+            if profiles_root.is_dir():
+                for entry in sorted(profiles_root.iterdir()):
+                    if entry.is_dir() and profiles_mod._PROFILE_ID_RE.match(entry.name):
+                        entries.append((entry.name, entry, False))
+        return entries
+
+    rows: list[dict] = []
+    profile_totals: dict[str, int] = {}
+    errors: list[dict[str, str]] = []
+    now = time.time()
+    order_by_last_active = order == "recent"
+
+    for profile_name, profile_dir, is_default in _profile_entries():
+        db = None
+        try:
+            db = SessionDB(db_path=profile_dir / "state.db")
+            profile_rows = db.list_sessions_rich(
+                limit=10000,
+                offset=0,
+                order_by_last_active=order_by_last_active,
+            )
+            filtered = []
+            for row in profile_rows:
+                if int(row.get("message_count") or 0) < max(0, min_messages):
+                    continue
+                is_archived = bool(row.get("archived"))
+                if archived == "exclude" and is_archived:
+                    continue
+                if archived == "only" and not is_archived:
+                    continue
+                row["profile"] = profile_name
+                row["is_default_profile"] = is_default
+                row["is_active"] = (
+                    row.get("ended_at") is None
+                    and (now - row.get("last_active", row.get("started_at", 0))) < 300
+                )
+                filtered.append(row)
+            profile_totals[profile_name] = len(filtered)
+            rows.extend(filtered)
+        except Exception as exc:
+            _log.exception("GET /api/profiles/sessions failed for %s", profile_name)
+            errors.append({"profile": profile_name, "error": str(exc)})
+        finally:
+            if db is not None:
+                db.close()
+
+    if order_by_last_active:
+        rows.sort(key=lambda row: row.get("last_active") or row.get("started_at") or 0, reverse=True)
+    else:
+        rows.sort(key=lambda row: row.get("started_at") or 0, reverse=True)
+
+    total = len(rows)
+    safe_offset = max(0, offset)
+    safe_limit = max(1, min(limit, 500))
+    return {
+        "sessions": rows[safe_offset : safe_offset + safe_limit],
+        "total": total,
+        "limit": safe_limit,
+        "offset": safe_offset,
+        "profile_totals": profile_totals,
+        "errors": errors,
+    }
 
 
 @app.get("/api/sessions/search")
@@ -1237,6 +1335,169 @@ async def remove_env_var(body: EnvVarDelete):
     except Exception:
         _log.exception("DELETE /api/env failed")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def _messaging_platform_definitions() -> List[dict]:
+    try:
+        from clawbot_cli.gateway import _PLATFORMS
+
+        return list(_PLATFORMS)
+    except Exception:
+        _log.exception("Failed to load messaging platform definitions")
+        return []
+
+
+def _bool_env(value: Optional[str]) -> Optional[bool]:
+    if value is None:
+        return None
+    normalized = str(value).strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+    return None
+
+
+def _platform_env_vars(platform: dict) -> List[dict]:
+    variables = list(platform.get("vars") or [])
+    token_var = str(platform.get("token_var") or "").strip()
+    if token_var and not any(str(item.get("name") or "") == token_var for item in variables):
+        variables.insert(0, {"name": token_var, "prompt": token_var, "password": token_var.endswith("_TOKEN")})
+    return variables
+
+
+def _messaging_platform_payload(platform: dict, env_on_disk: Dict[str, str], gateway_running: bool) -> dict:
+    key = str(platform.get("key") or "").strip()
+    label = str(platform.get("label") or key.title()).strip()
+    token_var = str(platform.get("token_var") or "").strip()
+    enable_var = f"{key.upper()}_ENABLED"
+    enabled_override = _bool_env(env_on_disk.get(enable_var))
+    token_value = env_on_disk.get(token_var) if token_var else None
+    configured = bool(token_value) and _bool_env(token_value) is not False
+    if token_var == enable_var:
+        configured = _bool_env(token_value) is True
+    enabled = enabled_override if enabled_override is not None else configured
+
+    env_vars = []
+    for item in _platform_env_vars(platform):
+        name = str(item.get("name") or "").strip()
+        if not name:
+            continue
+        value = env_on_disk.get(name)
+        meta = OPTIONAL_ENV_VARS.get(name, {})
+        env_vars.append({
+            "advanced": bool(meta.get("advanced", False)),
+            "description": str(item.get("help") or meta.get("description") or ""),
+            "is_password": bool(item.get("password") or meta.get("password", False)),
+            "is_set": bool(value),
+            "key": name,
+            "prompt": str(item.get("prompt") or name),
+            "redacted_value": redact_key(value) if value else None,
+            "required": name == token_var or bool(item.get("required", False)),
+            "url": meta.get("url"),
+        })
+
+    if not enabled:
+        state = "disabled"
+    elif not configured:
+        state = "not_configured"
+    elif not gateway_running:
+        state = "gateway_stopped"
+    else:
+        state = "connected"
+
+    home_channel_value = (
+        env_on_disk.get(f"{key.upper()}_HOME_CHANNEL")
+        or env_on_disk.get(f"{key.upper()}_HOME_ROOM")
+        or env_on_disk.get(f"{key.upper()}_HOME_CHAT")
+    )
+    home_channel = None
+    if home_channel_value:
+        home_channel = {"platform": key, "chat_id": home_channel_value, "name": home_channel_value}
+
+    return {
+        "configured": configured,
+        "description": str(platform.get("description") or f"Connect Clawbot to {label}."),
+        "docs_url": f"https://clawbot-agent.aayushsoam.com/docs/user-guide/messaging/{key}/",
+        "enabled": bool(enabled),
+        "env_vars": env_vars,
+        "error_code": None,
+        "error_message": None,
+        "gateway_running": gateway_running,
+        "home_channel": home_channel,
+        "id": key,
+        "name": label,
+        "state": state,
+        "updated_at": None,
+    }
+
+
+def _find_messaging_platform(platform_id: str) -> dict:
+    normalized = platform_id.strip().lower()
+    for platform in _messaging_platform_definitions():
+        if str(platform.get("key") or "").strip().lower() == normalized:
+            return platform
+    raise HTTPException(status_code=404, detail=f"Unknown messaging platform: {platform_id}")
+
+
+@app.get("/api/messaging/platforms")
+async def get_messaging_platforms():
+    env_on_disk = load_env()
+    gateway_running = bool(get_running_pid())
+    platforms = [
+        _messaging_platform_payload(platform, env_on_disk, gateway_running)
+        for platform in _messaging_platform_definitions()
+        if platform.get("key")
+    ]
+    return {"platforms": platforms}
+
+
+@app.put("/api/messaging/platforms/{platform_id}")
+async def update_messaging_platform(platform_id: str, body: MessagingPlatformUpdate):
+    platform = _find_messaging_platform(platform_id)
+    allowed_keys = {str(item.get("name") or "").strip() for item in _platform_env_vars(platform)}
+    key = str(platform.get("key") or "").strip()
+    token_var = str(platform.get("token_var") or "").strip()
+    enable_var = f"{key.upper()}_ENABLED"
+    allowed_keys.update({token_var, enable_var})
+    allowed_keys.discard("")
+
+    try:
+        if body.env:
+            for env_key, value in body.env.items():
+                if env_key not in allowed_keys:
+                    raise HTTPException(status_code=400, detail=f"{env_key} is not valid for {platform_id}")
+                save_env_value(env_key, value)
+
+        if body.clear_env:
+            for env_key in body.clear_env:
+                if env_key not in allowed_keys:
+                    raise HTTPException(status_code=400, detail=f"{env_key} is not valid for {platform_id}")
+                remove_env_value(env_key)
+
+        if body.enabled is not None:
+            if token_var == enable_var:
+                save_env_value(enable_var, "true" if body.enabled else "false")
+            else:
+                save_env_value(enable_var, "true" if body.enabled else "false")
+
+        return {"ok": True, "platform": key}
+    except HTTPException:
+        raise
+    except Exception:
+        _log.exception("PUT /api/messaging/platforms/%s failed", platform_id)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.post("/api/messaging/platforms/{platform_id}/test")
+async def test_messaging_platform(platform_id: str):
+    platform = _find_messaging_platform(platform_id)
+    payload = _messaging_platform_payload(platform, load_env(), bool(get_running_pid()))
+    return {
+        "ok": bool(payload["configured"]),
+        "message": "Configured" if payload["configured"] else "Platform is not configured yet.",
+        "state": payload["state"],
+    }
 
 
 @app.post("/api/env/reveal")
@@ -2729,6 +2990,13 @@ async def list_profiles_endpoint():
     except Exception:
         _log.exception("GET /api/profiles failed; falling back to profile directory scan")
         return {"profiles": _fallback_profile_dicts(profiles_mod)}
+
+
+@app.get("/api/profiles/active")
+async def get_active_profile_endpoint():
+    from clawbot_cli import profiles as profiles_mod
+    current = profiles_mod.get_active_profile_name() or "default"
+    return {"active": current, "current": current}
 
 
 @app.post("/api/profiles")

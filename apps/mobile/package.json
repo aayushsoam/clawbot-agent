@@ -1,0 +1,30 @@
+{
+  "name": "@clawbot/mobile",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Mobile web shell for Clawbot Agent.",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5180",
+    "build": "tsc -p tsconfig.json && vite build",
+    "android:add": "cap add android",
+    "android:sync": "npm run build && cap sync android",
+    "android:apk": "npm run android:sync && cd android && gradlew.bat assembleDebug",
+    "preview": "vite preview --host 0.0.0.0 --port 4180",
+    "type-check": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.10"
+  }
+}

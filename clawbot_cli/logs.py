@@ -31,6 +31,8 @@ LOG_FILES = {
     "agent": "agent.log",
     "errors": "errors.log",
     "gateway": "gateway.log",
+    "desktop": "desktop.log",
+    "gui": "desktop.log",
 }
 
 # Log line timestamp regex — matches "2026-04-05 22:35:00,123" or

@@ -62,37 +62,37 @@ const SOURCE_CONFIG: Record<
 > = {
   "built-in": {
     label: "Built-in",
-    color: "#4ade80",
-    bg: "rgba(74, 222, 128, 0.08)",
-    border: "rgba(74, 222, 128, 0.2)",
+    color: "#0f766e",
+    bg: "rgba(15, 118, 110, 0.08)",
+    border: "rgba(15, 118, 110, 0.22)",
     icon: "\u{2713}",
   },
   optional: {
     label: "Optional",
-    color: "#fbbf24",
-    bg: "rgba(251, 191, 36, 0.08)",
-    border: "rgba(251, 191, 36, 0.2)",
-    icon: "\u{2B50}",
+    color: "#2563eb",
+    bg: "rgba(37, 99, 235, 0.08)",
+    border: "rgba(37, 99, 235, 0.22)",
+    icon: "\u{25CB}",
   },
   Anthropic: {
     label: "Anthropic",
-    color: "#d4845a",
-    bg: "rgba(212, 132, 90, 0.08)",
-    border: "rgba(212, 132, 90, 0.2)",
+    color: "#be123c",
+    bg: "rgba(190, 18, 60, 0.08)",
+    border: "rgba(190, 18, 60, 0.18)",
     icon: "\u{25C6}",
   },
   LobeHub: {
     label: "LobeHub",
-    color: "#60a5fa",
-    bg: "rgba(96, 165, 250, 0.08)",
-    border: "rgba(96, 165, 250, 0.2)",
+    color: "#0284c7",
+    bg: "rgba(2, 132, 199, 0.08)",
+    border: "rgba(2, 132, 199, 0.2)",
     icon: "\u{25CB}",
   },
   "Claude Marketplace": {
     label: "Marketplace",
-    color: "#a78bfa",
-    bg: "rgba(167, 139, 250, 0.08)",
-    border: "rgba(167, 139, 250, 0.2)",
+    color: "#7c3aed",
+    bg: "rgba(124, 58, 237, 0.08)",
+    border: "rgba(124, 58, 237, 0.18)",
     icon: "\u{25A0}",
   },
 };
@@ -403,12 +403,12 @@ export default function SkillsDashboard() {
               <StatCard
                 value={allSkills.filter((s) => s.source === "built-in").length}
                 label="Built-in"
-                color="#4ade80"
+                color="#0f766e"
               />
               <StatCard
                 value={allSkills.filter((s) => s.source === "optional").length}
                 label="Optional"
-                color="#fbbf24"
+                color="#2563eb"
               />
               <StatCard
                 value={
@@ -417,12 +417,12 @@ export default function SkillsDashboard() {
                   ).length
                 }
                 label="Community"
-                color="#60a5fa"
+                color="#0284c7"
               />
               <StatCard
                 value={new Set(allSkills.map((s) => s.category)).size}
                 label="Categories"
-                color="#a78bfa"
+                color="#7c3aed"
               />
             </div>
           </div>

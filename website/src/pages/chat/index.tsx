@@ -9,19 +9,12 @@ interface Message {
   timestamp: string;
 }
 
-const WELCOME_ASCII = `  _____ _                 _           _   
- / ____| |               | |         | |  
-| |    | | __ _ _      __| |__   ___ | |_ 
-| |    | |/ _\` \\ \\ /\\ / /| '_ \\ / _ \\| __|
-| |____| | (_| |\\ V  V / | |_) | (_) | |_ 
- \\_____|_|\\__,_| \\_/\\_/  |_.__/ \\___/ \\__|`;
-
 const QUICK_COMMANDS = [
-  { label: "⚙️ Get Help", cmd: "/help" },
-  { label: "🗂 Browse Skills", cmd: "/skills" },
-  { label: "🤖 Active Model", cmd: "/model" },
-  { label: "🩺 Diagnostic Status", cmd: "/status" },
-  { label: "🌐 Gateway Configuration", cmd: "/gateway" }
+  { label: "Help", cmd: "/help" },
+  { label: "Skills", cmd: "/skills" },
+  { label: "Model", cmd: "/model" },
+  { label: "Status", cmd: "/status" },
+  { label: "Gateway", cmd: "/gateway" }
 ];
 
 export default function ChatPage(): React.JSX.Element {
@@ -46,7 +39,7 @@ export default function ChatPage(): React.JSX.Element {
       {
         id: "welcome-1",
         sender: "bot",
-        text: WELCOME_ASCII + "\n\nWelcome to Clawbot Agent CLI Terminal. I am your self-improving AI agent, running in a dual-mode local sandbox.",
+        text: "Welcome to Clawbot Agent. I am running in a dual-mode local sandbox and can route commands to a live daemon when it is available.",
         timestamp: time
       },
       {
@@ -78,7 +71,7 @@ export default function ChatPage(): React.JSX.Element {
             {
               id: `sys-${Date.now()}`,
               sender: "system",
-              text: "⚡ Successfully connected to active Clawbot gateway daemon (ws://127.0.0.1:9119/api/ws). Live CLI interaction is active!",
+            text: "Connected to active Clawbot gateway daemon at ws://127.0.0.1:9119/api/ws. Live CLI interaction is active.",
               timestamp: time
             }
           ]);
@@ -156,7 +149,7 @@ export default function ChatPage(): React.JSX.Element {
           switch (cmd) {
             case "/help":
               resolve(
-                `🔧 **Clawbot Interactive CLI Shell v0.14.0**\n\n` +
+                `**Clawbot Interactive CLI Shell v0.14.0**\n\n` +
                 `Here is a list of active commands you can run in this terminal:\n` +
                 `- \`/skills\`   - List active scientific and general tools\n` +
                 `- \`/model\`    - Get current model state or change default provider\n` +
@@ -169,7 +162,7 @@ export default function ChatPage(): React.JSX.Element {
 
             case "/skills":
               resolve(
-                `🗂 **Active Skills & Tool Registry**\n\n` +
+                `**Active Skills & Tool Registry**\n\n` +
                 `Clawbot has loaded **36 specialized skills** in this workspace:\n\n` +
                 `1. **alphafold-database-fetch-and-analyze** [Built-in]\n` +
                 `   - Retrives 3D predicted structures, assesses domain boundaries & pLDDT confidence metrics.\n` +
@@ -192,7 +185,7 @@ export default function ChatPage(): React.JSX.Element {
                 resolve(`✓ **Success:** Model configuration updated. Configured default provider to \`${newModel}\`.`);
               } else {
                 resolve(
-                  `🤖 **AI Provider Configuration**\n\n` +
+                `**AI Provider Configuration**\n\n` +
                   `- **Current Active Model:** \`Gemini 3.5 Flash\` (Highly Optimized)\n` +
                   `- **Supported CLI Model Backends:**\n` +
                   `  - \`qwen/qwen-2.5-72b-instruct\`\n` +
@@ -205,7 +198,7 @@ export default function ChatPage(): React.JSX.Element {
 
             case "/status":
               resolve(
-                `🩺 **Clawbot Doctor — Health Check Status**\n\n` +
+                `**Clawbot Doctor — Health Check Status**\n\n` +
                 `\`\`\`text\n` +
                 `◆ Security Advisories: ✓ No active security advisories\n` +
                 `◆ Python Environment:  ✓ Python 3.11.15 (Venv Active)\n` +
@@ -218,7 +211,7 @@ export default function ChatPage(): React.JSX.Element {
 
             case "/gateway":
               resolve(
-                `🌐 **Messaging Gateway Configuration**\n\n` +
+                `**Messaging Gateway Configuration**\n\n` +
                 `Clawbot can connect to external messaging apps so you can chat from anywhere:\n` +
                 `- **Telegram Bot:** \`Disconnected\` (Configure API token via \`clawbot setup gateway\`)\n` +
                 `- **Discord Bot:** \`Disconnected\`\n` +
@@ -249,11 +242,11 @@ export default function ChatPage(): React.JSX.Element {
         ) {
           if (lowerText.includes("color") || lowerText.includes("colour") || lowerText.includes("website")) {
             resolve(
-              `Arre yar! Meri website ka theme bilkul sleek **"Amber-on-Dark"** terminal look me hai. 😎\n\n` +
-              `- Background ka primary color hai deep space black \`#07070d\`.\n` +
-              `- Highlights aur prompt symbols ka color hai bright Amber red \`#FF6600\`.\n` +
-              `- Code boxes and surfaces are deep navy \`#0f0f18\`.\n\n` +
-              `Yeh combination perfect futuristic CLI console wala feel deta hai!`
+                `Arre yar! Website ab modern minimal console style me hai.\n\n` +
+                `- Background deep neutral charcoal hai.\n` +
+                `- Primary accent cyan/teal hai, secondary accents blue and green.\n` +
+                `- Cards, docs, aur chat panels clean low-noise surfaces use karte hain.\n\n` +
+                `Yeh look long docs reading aur CLI workflows dono ke liye calmer hai.`
             );
           } else {
             resolve(
@@ -268,12 +261,12 @@ export default function ChatPage(): React.JSX.Element {
         // 3. Question about color/theme
         if (lowerText.includes("color") || lowerText.includes("colour") || lowerText.includes("theme")) {
           resolve(
-            `🎨 **Clawbot Theme Palette Details:**\n\n` +
-            `- **Background:** \`#07070d\` (Deep Cosmic Indigo/Black)\n` +
-            `- **Surfaces & Cards:** \`#0f0f18\` (High-contrast Navy)\n` +
-            `- **Terminal Glow & Prompts:** \`#FF6600\` (Amber red, passes readability guidelines)\n` +
-            `- **Fonts:** Modern typography utilizing *Inter* for body and *JetBrains Mono* for code/inputs.\n\n` +
-            `This premium palette replicates state-of-the-art developer consoles and reduces eye strain during long workflows.`
+              `**Clawbot Theme Palette Details:**\n\n` +
+            `- **Background:** \`#0b0f14\` deep neutral charcoal\n` +
+            `- **Surfaces & Cards:** \`#111827\` and translucent panels\n` +
+            `- **Accents:** cyan, blue, green, and small rose status states\n` +
+            `- **Fonts:** Inter for interface text and JetBrains Mono for code/inputs.\n\n` +
+            `The UI is designed to feel focused, readable, and lighter than a traditional terminal skin.`
           );
           return;
         }
@@ -281,8 +274,8 @@ export default function ChatPage(): React.JSX.Element {
         // 4. Code / Agent Trajectory Simulations
         if (lowerText.includes("code") || lowerText.includes("python") || lowerText.includes("script") || lowerText.includes("write")) {
           resolve(
-            `🔍 **[Research]** Searching workspace for python routines...\n` +
-            `⚙️ **[Executing Tool]** Running python interpreter sandbox...\n\n` +
+            `**[Research]** Searching workspace for python routines...\n` +
+            `**[Executing Tool]** Running python interpreter sandbox...\n\n` +
             `Here is a clean helper code structure for managing Clawbot pipelines:\n` +
             `\`\`\`python\n` +
             `import os\n` +
@@ -358,7 +351,7 @@ export default function ChatPage(): React.JSX.Element {
           {
             id: "welcome-1",
             sender: "bot",
-            text: WELCOME_ASCII + "\n\nWelcome to Clawbot Agent CLI Terminal. History cleared successfully.",
+            text: "Welcome to Clawbot Agent. History cleared successfully.",
             timestamp: time
           }
         ]);
@@ -424,23 +417,17 @@ export default function ChatPage(): React.JSX.Element {
           {/* Header */}
           <div className={styles.header}>
             <div className={styles.titleArea}>
-              <span className={styles.terminalIcon}>⌨_</span>
-              <h1 className={styles.title}>Clawbot CLI Terminal</h1>
+              <span className={styles.terminalIcon}>$</span>
+              <h1 className={styles.title}>Clawbot Console</h1>
             </div>
             
             <div className={styles.statusIndicator}>
-              <div 
-                className={`${styles.statusDot} ${status === "online" ? styles.statusDotOnline : ""}`} 
-                style={{ 
-                  backgroundColor: status === "online" ? "#10b981" : status === "connecting" ? "#fbbf24" : "#fbbf24",
-                  boxShadow: status === "online" ? "0 0 8px #10b981" : "0 0 8px #fbbf24"
-                }}
-              />
+              <div className={`${styles.statusDot} ${status === "online" ? styles.statusDotOnline : ""}`} />
               <span>
                 {status === "online" 
                   ? "Connected Live" 
                   : status === "connecting" 
-                    ? "Searching Daemon..." 
+                    ? "Searching daemon..." 
                     : "Simulated Mode"}
               </span>
             </div>
@@ -480,7 +467,7 @@ export default function ChatPage(): React.JSX.Element {
                     }`}
                   >
                     {msg.sender === "system" ? (
-                      <span style={{ color: "#60a5fa" }}>{msg.text}</span>
+                      <span>{msg.text}</span>
                     ) : (
                       formatMessageText(msg.text)
                     )}
@@ -506,7 +493,7 @@ export default function ChatPage(): React.JSX.Element {
             </div>
 
             {/* Quick Command Chips */}
-            <div style={{ padding: "0 1.5rem", background: "#0f0f18" }}>
+            <div className={styles.commandBar}>
               <div className={styles.commandList}>
                 {QUICK_COMMANDS.map((chip, idx) => (
                   <button 

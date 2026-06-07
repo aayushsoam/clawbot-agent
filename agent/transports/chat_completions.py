@@ -99,6 +99,21 @@ def _is_gemini_openai_compat_base_url(base_url: Any) -> bool:
     return normalized.endswith("/openai")
 
 
+NVIDIA_NIM_MAX_TOKENS = 4096
+
+
+def _is_nvidia_profile(profile: Any) -> bool:
+    return str(getattr(profile, "name", "") or "").strip().lower() in {"nvidia", "nvidia-nim"}
+
+
+def _clamp_nvidia_max_tokens(value: Any) -> Any:
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return value
+    return min(parsed, NVIDIA_NIM_MAX_TOKENS)
+
+
 class ChatCompletionsTransport(ProviderTransport):
     """Transport for api_mode='chat_completions'.
 
@@ -243,7 +258,7 @@ class ChatCompletionsTransport(ProviderTransport):
             api_kwargs["timeout"] = timeout
 
         # Tools
-        if tools:
+        if tools and not params.get("is_nvidia_nim", False):
             # Moonshot/Kimi uses a stricter flavored JSON Schema.  Rewriting
             # tool parameters here keeps aggregator routes (Soam, OpenRouter,
             # etc.) compatible, in addition to direct moonshot.ai endpoints.
@@ -260,6 +275,14 @@ class ChatCompletionsTransport(ProviderTransport):
         is_kimi = params.get("is_kimi", False)
         is_tokenhub = params.get("is_tokenhub", False)
         reasoning_config = params.get("reasoning_config")
+
+        if is_nvidia_nim:
+            if ephemeral is not None:
+                ephemeral = _clamp_nvidia_max_tokens(ephemeral)
+            if max_tokens is not None:
+                max_tokens = _clamp_nvidia_max_tokens(max_tokens)
+            if anthropic_max_out is not None:
+                anthropic_max_out = _clamp_nvidia_max_tokens(anthropic_max_out)
 
         if ephemeral is not None and max_tokens_fn:
             api_kwargs.update(max_tokens_fn(ephemeral))
@@ -433,8 +456,11 @@ class ChatCompletionsTransport(ProviderTransport):
         if timeout is not None:
             api_kwargs["timeout"] = timeout
 
-        # Tools — apply Moonshot/Kimi schema sanitization regardless of path
-        if tools:
+        is_nvidia_profile = _is_nvidia_profile(profile)
+
+        # Tools — apply Moonshot/Kimi schema sanitization regardless of path.
+        # NVIDIA NIM rejects `tools` for several text models with HTTP 422.
+        if tools and not is_nvidia_profile:
             if is_moonshot_model(model):
                 tools = sanitize_moonshot_tools(tools)
             api_kwargs["tools"] = tools
@@ -445,12 +471,27 @@ class ChatCompletionsTransport(ProviderTransport):
         user_max = params.get("max_tokens")
         anthropic_max = params.get("anthropic_max_output")
 
+        if is_nvidia_profile:
+            if ephemeral is not None:
+                ephemeral = _clamp_nvidia_max_tokens(ephemeral)
+            if user_max is not None:
+                user_max = _clamp_nvidia_max_tokens(user_max)
+            profile_default = (
+                _clamp_nvidia_max_tokens(profile.default_max_tokens)
+                if profile.default_max_tokens
+                else None
+            )
+            if anthropic_max is not None:
+                anthropic_max = _clamp_nvidia_max_tokens(anthropic_max)
+        else:
+            profile_default = profile.default_max_tokens
+
         if ephemeral is not None and max_tokens_fn:
             api_kwargs.update(max_tokens_fn(ephemeral))
         elif user_max is not None and max_tokens_fn:
             api_kwargs.update(max_tokens_fn(user_max))
-        elif profile.default_max_tokens and max_tokens_fn:
-            api_kwargs.update(max_tokens_fn(profile.default_max_tokens))
+        elif profile_default and max_tokens_fn:
+            api_kwargs.update(max_tokens_fn(profile_default))
         elif anthropic_max is not None:
             api_kwargs["max_tokens"] = anthropic_max
 

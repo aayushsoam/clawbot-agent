@@ -15,7 +15,7 @@ nvidia = ProviderProfile(
         "nvidia/llama-3.3-70b-instruct",
     ),
     base_url="https://integrate.api.nvidia.com/v1",
-    default_max_tokens=16384,
+    default_max_tokens=4096,
 )
 
 register_provider(nvidia)

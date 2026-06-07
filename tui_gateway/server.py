@@ -1383,6 +1383,7 @@ def _session_info(agent) -> dict:
         "tools": {},
         "skills": {},
         "cwd": os.getenv("TERMINAL_CWD", os.getcwd()),
+        "desktop_contract": 1,
         "version": "",
         "release_date": "",
         "update_behind": None,

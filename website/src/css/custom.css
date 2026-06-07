@@ -1,114 +1,140 @@
-/**
- * Clawbot Agent — Custom Docusaurus Theme
- * Matches the landing page branding: amber-on-dark, terminal aesthetic
- * Colors from landingpage/style.css
- */
-
-/* Import fonts to match landing page */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* Dark amber palette for light mode — readable on white (WCAG AA compliant)
-     Current red #FF6600 has only 1.4:1 contrast on white; these tones pass 4.5:1+ */
-  --ifm-color-primary: #8B6508;
-  --ifm-color-primary-dark: #7A5800;
-  --ifm-color-primary-darker: #6E4F00;
-  --ifm-color-primary-darkest: #5A4100;
-  --ifm-color-primary-light: #9E7410;
-  --ifm-color-primary-lighter: #B38319;
-  --ifm-color-primary-lightest: #C89222;
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
 
   --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
-  --ifm-code-font-size: 90%;
+  --ifm-code-font-size: 88%;
   --ifm-heading-font-weight: 600;
+  --ifm-heading-letter-spacing: 0;
+  --ifm-global-radius: 8px;
+  --ifm-navbar-height: 64px;
 
-  --ifm-link-color: #7A5800;
-  --ifm-link-hover-color: #5A4100;
+  --ifm-background-color: #f8fafc;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #111827;
+  --ifm-font-color-secondary: #64748b;
+  --ifm-link-color: #1d4ed8;
+  --ifm-link-hover-color: #0f766e;
+  --ifm-menu-color-active: #1d4ed8;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.88);
+  --ifm-footer-background-color: #0f172a;
+  --ifm-toc-border-color: #e2e8f0;
+  --ifm-hr-border-color: #e2e8f0;
+  --docusaurus-highlighted-code-line-bg: rgba(37, 99, 235, 0.08);
 }
 
-/* Dark mode — the PRIMARY mode, matches landing page */
 [data-theme='dark'] {
-  --ifm-color-primary: #FF6600;
-  --ifm-color-primary-dark: #E6C200;
-  --ifm-color-primary-darker: #D9B700;
-  --ifm-color-primary-darkest: #B39600;
-  --ifm-color-primary-light: #FFDD33;
-  --ifm-color-primary-lighter: #FFE14D;
-  --ifm-color-primary-lightest: #FFEB80;
+  --ifm-color-primary: #38bdf8;
+  --ifm-color-primary-dark: #0ea5e9;
+  --ifm-color-primary-darker: #0284c7;
+  --ifm-color-primary-darkest: #0369a1;
+  --ifm-color-primary-light: #67e8f9;
+  --ifm-color-primary-lighter: #99f6e4;
+  --ifm-color-primary-lightest: #ccfbf1;
 
-  --ifm-background-color: #07070d;
-  --ifm-background-surface-color: #0f0f18;
-  --ifm-navbar-background-color: #07070dEE;
-  --ifm-footer-background-color: #050509;
-  --ifm-color-emphasis-100: #14142a;
-  --ifm-color-emphasis-200: #1a1a30;
+  --ifm-background-color: #0b0f14;
+  --ifm-background-surface-color: #111827;
+  --ifm-navbar-background-color: rgba(11, 15, 20, 0.86);
+  --ifm-footer-background-color: #080b10;
+  --ifm-color-emphasis-100: #121922;
+  --ifm-color-emphasis-200: #1b2531;
 
-  --ifm-font-color-base: #e8e4dc;
-  --ifm-font-color-secondary: #9a968e;
-
-  --ifm-link-color: #FF6600;
-  --ifm-link-hover-color: #FFBF00;
-
-  --ifm-code-background: #0f0f18;
-
-  --ifm-toc-border-color: rgba(255, 215, 0, 0.08);
-  --ifm-hr-border-color: rgba(255, 215, 0, 0.08);
-
-  --docusaurus-highlighted-code-line-bg: rgba(255, 215, 0, 0.08);
+  --ifm-font-color-base: #e5edf6;
+  --ifm-font-color-secondary: #94a3b8;
+  --ifm-link-color: #67e8f9;
+  --ifm-link-hover-color: #86efac;
+  --ifm-menu-color-active: #67e8f9;
+  --ifm-code-background: #121922;
+  --ifm-toc-border-color: rgba(148, 163, 184, 0.18);
+  --ifm-hr-border-color: rgba(148, 163, 184, 0.16);
+  --docusaurus-highlighted-code-line-bg: rgba(56, 189, 248, 0.1);
 }
 
-/* Subtle dot grid background matching landing page */
+body {
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+}
+
+.main-wrapper {
+  background:
+    radial-gradient(circle at 20% -10%, rgba(14, 165, 233, 0.08), transparent 32rem),
+    linear-gradient(180deg, var(--ifm-background-color), var(--ifm-background-color));
+}
+
 [data-theme='dark'] .main-wrapper {
-  background-image: radial-gradient(rgba(255, 215, 0, 0.02) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background:
+    radial-gradient(circle at 18% -8%, rgba(56, 189, 248, 0.1), transparent 34rem),
+    radial-gradient(circle at 90% 12%, rgba(134, 239, 172, 0.055), transparent 28rem),
+    #0b0f14;
 }
 
-/* Navbar styling */
 .navbar {
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+  backdrop-filter: blur(18px) saturate(1.2);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: none;
 }
 
-/* backdrop-filter creates a stacking context that hides
-   .navbar-sidebar menu content (Docusaurus #6996). Remove it
-   while the mobile sidebar is open — both classes live on the
-   same <nav> element. */
 .navbar.navbar-sidebar--show {
   backdrop-filter: none;
 }
 
 .navbar__title {
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
-/* Sidebar tweaks */
+.navbar__logo img {
+  border-radius: 8px;
+}
+
+.navbar__item,
+.navbar__link {
+  font-size: 0.93rem;
+  font-weight: 500;
+}
+
+.navbar__link--active,
+.navbar__link:hover {
+  text-decoration: none;
+}
+
 [data-theme='dark'] .menu {
   background-color: transparent;
 }
 
+.menu__link {
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background-color: rgba(37, 99, 235, 0.09);
+  color: var(--ifm-menu-color-active);
+}
+
 [data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
-  background-color: rgba(255, 215, 0, 0.08);
-  border-left: 3px solid #FF6600;
-  padding-left: calc(var(--ifm-menu-link-padding-horizontal) - 3px);
+  background-color: rgba(56, 189, 248, 0.1);
 }
 
-/* Light mode sidebar active */
-[data-theme='light'] .menu__link--active:not(.menu__link--sublist) {
-  background-color: rgba(139, 101, 8, 0.08);
-  border-left: 3px solid #8B6508;
-  padding-left: calc(var(--ifm-menu-link-padding-horizontal) - 3px);
-}
-
-/* Code blocks */
 [data-theme='dark'] .prism-code {
-  background-color: #0a0a12 !important;
-  border: 1px solid rgba(255, 215, 0, 0.06);
+  background-color: #0f1620 !important;
+  border: 1px solid rgba(148, 163, 184, 0.14);
 }
 
-/* Text diagrams: preserve spacing, disable ligatures, and prefer box-drawing-safe fonts */
+.theme-code-block {
+  border-radius: 8px;
+}
+
 pre.prism-code.language-text,
 pre.prism-code.language-plaintext,
 pre.prism-code.language-txt,
@@ -146,9 +172,9 @@ pre.prism-code.language-ascii code {
   width: 100%;
   max-width: 900px;
   margin: 1.25rem auto 0.5rem;
-  border: 1px solid rgba(255, 215, 0, 0.08);
-  border-radius: 12px;
-  background: #0a0a12;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  background: var(--ifm-background-surface-color);
 }
 
 .docs-figure-caption {
@@ -158,84 +184,75 @@ pre.prism-code.language-ascii code {
   font-size: 0.95rem;
 }
 
-/* Admonitions — gold-tinted */
 [data-theme='dark'] .alert--info {
-  --ifm-alert-background-color: rgba(255, 215, 0, 0.05);
-  --ifm-alert-border-color: rgba(255, 215, 0, 0.15);
+  --ifm-alert-background-color: rgba(56, 189, 248, 0.08);
+  --ifm-alert-border-color: rgba(56, 189, 248, 0.22);
 }
 
-/* Table styling */
 [data-theme='dark'] table {
   border-collapse: collapse;
 }
 
 [data-theme='dark'] table th {
-  background-color: rgba(255, 215, 0, 0.06);
-  border-color: rgba(255, 215, 0, 0.12);
+  background-color: rgba(56, 189, 248, 0.07);
+  border-color: rgba(148, 163, 184, 0.16);
 }
 
 [data-theme='dark'] table td {
-  border-color: rgba(255, 215, 0, 0.06);
+  border-color: rgba(148, 163, 184, 0.12);
 }
 
-/* Light mode table styling */
 [data-theme='light'] table th {
-  background-color: rgba(139, 101, 8, 0.06);
-  border-color: rgba(139, 101, 8, 0.15);
+  background-color: rgba(37, 99, 235, 0.06);
+  border-color: rgba(148, 163, 184, 0.28);
 }
 
 [data-theme='light'] table td {
-  border-color: rgba(139, 101, 8, 0.10);
+  border-color: rgba(148, 163, 184, 0.22);
 }
 
-/* Footer */
 .footer {
-  border-top: 1px solid rgba(255, 215, 0, 0.08);
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
 }
 
 .footer a {
-  color: #9a968e;
+  color: #cbd5e1;
   transition: color 0.2s;
 }
 
 [data-theme='dark'] .footer a:hover {
-  color: #FF6600;
+  color: #67e8f9;
   text-decoration: none;
 }
 
 [data-theme='light'] .footer a:hover {
-  color: #7A5800;
+  color: #2563eb;
   text-decoration: none;
 }
 
-/* Scrollbar */
 [data-theme='dark'] ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 [data-theme='dark'] ::-webkit-scrollbar-track {
-  background: #07070d;
+  background: #0b0f14;
 }
 
 [data-theme='dark'] ::-webkit-scrollbar-thumb {
-  background: #1a1a30;
+  background: #243244;
   border-radius: 4px;
 }
 
 [data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
-  background: #2a2a40;
+  background: #334155;
 }
 
-/* Search bar */
 [data-theme='dark'] .DocSearch-Button {
-  background-color: #0f0f18;
-  border: 1px solid rgba(255, 215, 0, 0.08);
+  background-color: #111827;
+  border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
-/* ─── Mobile sidebar improvements ─────────────────────────────────────────── */
-
-/* Larger touch targets on mobile */
 @media (max-width: 996px) {
   .menu__link {
     padding: 0.6rem 0.75rem;
@@ -246,35 +263,30 @@ pre.prism-code.language-ascii code {
     font-weight: 600;
     font-size: 1rem;
     padding: 0.75rem 0.75rem;
-    border-bottom: 1px solid rgba(255, 215, 0, 0.06);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
   }
 
-  /* Category caret — more visible */
   .menu__caret::before {
     background-size: 1.5rem 1.5rem;
   }
 
-  /* Indent subcategories clearly */
   .menu__list .menu__list {
     padding-left: 0.75rem;
-    border-left: 1px solid rgba(255, 215, 0, 0.06);
+    border-left: 1px solid rgba(148, 163, 184, 0.12);
     margin-left: 0.5rem;
   }
 
-  /* Sidebar overlay — slightly more opaque for readability */
   .navbar-sidebar__backdrop {
     background-color: rgba(0, 0, 0, 0.6);
   }
 
-  /* Sidebar width on mobile — use more of the screen */
   .navbar-sidebar {
     width: 85vw;
     max-width: 360px;
   }
 }
 
-/* Hero banner for docs landing if needed */
 .hero--clawbot {
-  background: linear-gradient(135deg, #07070d 0%, #0f0f18 100%);
+  background: linear-gradient(135deg, #0b0f14 0%, #111827 100%);
   padding: 4rem 0;
 }

@@ -62,9 +62,11 @@ except ModuleNotFoundError:
     pass
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -9722,6 +9724,515 @@ def _report_dashboard_status() -> int:
     return len(pids)
 
 
+def _desktop_dist_exists(desktop_dir: Path) -> bool:
+    """Return True when a local desktop renderer build is present."""
+    return (desktop_dir / "dist" / "index.html").exists()
+
+
+# ---------------------------------------------------------------------------
+# Desktop build stamp — content-hash based skip logic
+# ---------------------------------------------------------------------------
+# The desktop Electron build is expensive.
+# Unlike the web UI (which uses mtime comparison), the desktop uses a
+# SHA-256 content hash of the source tree so that:
+#   - ``git checkout`` / ``git pull`` that touch mtimes but not content
+#     don't trigger a rebuild
+#   - ``clawbot update`` can unconditionally call ``clawbot desktop --build-only``
+#     and it will skip if nothing actually changed
+#   - ``clawbot desktop`` (interactive launch) skips the build when the
+#     stamp matches, making repeated launches fast
+#
+# Stamp file: $CLAWBOT_HOME/desktop-build-stamp.json
+# Schema:
+#   {
+#     "contentHash": "<sha256 hex of source files>",
+#     "sourceMode": true | false,
+#     "builtAt": "<ISO 8601>"
+#   }
+
+def _compute_desktop_content_hash(project_root: Path) -> str:
+    """Return a SHA-256 hex digest of all source files that feed the desktop build.
+
+    Covers ``apps/desktop/`` (excluding anything matched by .gitignore)
+    plus the root ``package.json`` / ``package-lock.json`` (workspace config
+    that determines dependency resolution for the desktop workspace).
+
+    Uses a small built-in skip list so the launcher does not need any extra
+    Python dependency before it can build the desktop app.
+    """
+    h = hashlib.sha256()
+
+    def _hash_file(path: Path) -> None:
+        rel = str(path.relative_to(project_root))
+        h.update(rel.encode())
+        h.update(b"\0")
+        try:
+            with open(path, "rb") as f:
+                for chunk in iter(lambda: f.read(65536), b""):
+                    h.update(chunk)
+        except (OSError, IOError):
+            pass
+        h.update(b"\0")
+
+    skip_dirs = {
+        ".git",
+        "__pycache__",
+        "build",
+        "dist",
+        "node_modules",
+        "release",
+    }
+    skip_suffixes = {".pyc", ".pyo"}
+
+    def _skip(path: Path) -> bool:
+        rel_parts = set(path.relative_to(project_root).parts)
+        return bool(rel_parts & skip_dirs) or path.suffix in skip_suffixes
+
+    # Root workspace config
+    for name in ("package.json", "package-lock.json"):
+        p = project_root / name
+        if p.is_file():
+            if not _skip(p):
+                _hash_file(p)
+
+    # Walk apps/desktop/ — prune ignored directories in-place
+    desktop_dir = project_root / "apps" / "desktop"
+    for dirpath, dirnames, filenames in os.walk(desktop_dir, topdown=True):
+        dirnames[:] = [d for d in dirnames if d not in skip_dirs]
+
+        for fn in sorted(filenames):
+            fp = Path(dirpath) / fn
+            if not _skip(fp):
+                _hash_file(fp)
+
+    return h.hexdigest()
+
+
+def _desktop_stamp_path() -> Path:
+    """Return the path to the desktop build stamp file under $CLAWBOT_HOME."""
+    from clawbot_constants import get_clawbot_home
+    return get_clawbot_home() / "desktop-build-stamp.json"
+
+
+def _desktop_build_needed(desktop_dir: Path, project_root: Path, *, source_mode: bool) -> bool:
+    """Return True when the desktop build output is stale or missing.
+
+    Compares the current content hash against the saved stamp. Also returns
+    True if the expected build artifact doesn't exist (e.g. first run after
+    ``clawbot update`` that pulled new source but hasn't built yet).
+    """
+    # If there's no build output at all, we definitely need to build
+    if source_mode:
+        if not _desktop_dist_exists(desktop_dir):
+            return True
+    else:
+        if _desktop_packaged_executable(desktop_dir) is None:
+            return True
+
+    stamp_file = _desktop_stamp_path()
+    if not stamp_file.is_file():
+        return True
+
+    try:
+        stamp_data = json.loads(stamp_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, KeyError):
+        return True
+
+    # If the mode changed (source vs packaged), force a rebuild
+    if stamp_data.get("sourceMode") != source_mode:
+        return True
+
+    saved_hash = stamp_data.get("contentHash")
+    if not saved_hash:
+        return True
+
+    current_hash = _compute_desktop_content_hash(project_root)
+    return current_hash != saved_hash
+
+
+def _write_desktop_build_stamp(project_root: Path, *, source_mode: bool) -> None:
+    """Write the desktop build stamp after a successful build."""
+    stamp_file = _desktop_stamp_path()
+    try:
+        stamp_file.parent.mkdir(parents=True, exist_ok=True)
+        content_hash = _compute_desktop_content_hash(project_root)
+        from datetime import datetime, timezone
+        stamp_data = {
+            "contentHash": content_hash,
+            "sourceMode": source_mode,
+            "builtAt": datetime.now(timezone.utc).isoformat(),
+        }
+        stamp_file.write_text(json.dumps(stamp_data, indent=2) + "\n", encoding="utf-8")
+    except Exception as exc:
+        # Never let stamp-writing block or fail a build
+        logger.debug("Failed to write desktop build stamp: %s", exc)
+
+
+def _desktop_packaged_executable(desktop_dir: Path) -> Optional[Path]:
+    """Return the current platform's unpacked Electron app executable."""
+    release_dir = desktop_dir / "release"
+    if sys.platform == "darwin":
+        candidates = list(release_dir.glob("mac*/Clawbot.app/Contents/MacOS/Clawbot"))
+    elif sys.platform == "win32":
+        candidates = [
+            release_dir / "win-unpacked" / "Clawbot.exe",
+            release_dir / "win-ia32-unpacked" / "Clawbot.exe",
+            release_dir / "win-arm64-unpacked" / "Clawbot.exe",
+        ]
+    else:
+        candidates = [
+            release_dir / "linux-unpacked" / "clawbot",
+            release_dir / "linux-unpacked" / "Clawbot",
+            release_dir / "linux-arm64-unpacked" / "clawbot",
+            release_dir / "linux-arm64-unpacked" / "Clawbot",
+        ]
+
+    existing = [p for p in candidates if p.exists()]
+    if not existing:
+        return None
+    return max(existing, key=lambda p: p.stat().st_mtime)
+
+
+def _electron_download_cache_dirs() -> list[Path]:
+    """Return the per-user Electron download cache directories for this OS.
+
+    electron-builder's ``app-builder unpack-electron`` extracts the Electron
+    distribution from a zip stored in this cache (NOT from node_modules), so a
+    corrupt zip here — not a bad workspace install — is what poisons the build.
+    Honors the ``electron_config_cache`` / ``ELECTRON_CACHE`` overrides that
+    ``@electron/get`` respects, then falls back to the platform defaults.
+    """
+    home = Path.home()
+    candidates: list[Path] = []
+    override = os.environ.get("electron_config_cache") or os.environ.get("ELECTRON_CACHE")
+    if override:
+        candidates.append(Path(override))
+    if sys.platform == "darwin":
+        candidates.append(home / "Library" / "Caches" / "electron")
+    elif sys.platform == "win32":
+        local = os.environ.get("LOCALAPPDATA")
+        if local:
+            candidates.append(Path(local) / "electron" / "Cache")
+        candidates.append(home / "AppData" / "Local" / "electron" / "Cache")
+    else:
+        xdg = os.environ.get("XDG_CACHE_HOME")
+        if xdg:
+            candidates.append(Path(xdg) / "electron")
+        candidates.append(home / ".cache" / "electron")
+
+    seen: set[Path] = set()
+    out: list[Path] = []
+    for c in candidates:
+        rc = c.expanduser()
+        if rc not in seen:
+            seen.add(rc)
+            out.append(rc)
+    return out
+
+
+def _purge_electron_build_cache(desktop_dir: Path) -> list[Path]:
+    """Clear the cached Electron download + half-written unpacked dir so the
+    next ``pack`` re-downloads and re-stages from scratch.
+
+    Root cause of the ``ENOENT … rename '…/linux-unpacked/electron' ->
+    '…/linux-unpacked/Clawbot'`` desktop build failure: a corrupt zip in the
+    per-user Electron download cache (a partial download resumed into the same
+    file leaves prepended/concatenated junk, or an interrupted write truncates
+    it). electron-builder's ``app-builder unpack-electron`` extracts the
+    distribution from that cached zip (NOT from node_modules); a bad zip yields
+    a partial tree MISSING the 193 MB ``electron`` binary, so the final rename
+    dies. Re-running repeats the same broken extraction forever.
+
+    We deliberately do NOT try to detect corruption ourselves. stdlib
+    ``zipfile`` silently tolerates the prepended/concatenated junk that is the
+    most common corruption here — it reads from the end-of-central-directory
+    backward, so ``testzip()`` returns clean on exactly the zips ``unzip -t``
+    and ``@electron/get`` reject. Gating the purge on a self-rolled validator
+    would therefore skip the real-world case and never self-heal. Instead, on a
+    packaged-build failure we unconditionally remove the version's cached zips
+    and the stale unpacked dir, then let the caller retry once: ``@electron/get``
+    re-downloads with its own SHASUM verification (the real source of truth),
+    and ``before-pack.cjs`` re-wipes the unpacked dir. If the failure was
+    unrelated, a clean re-download is harmless and the retry fails the same way.
+
+    Best-effort: never raises. Returns the paths removed so the caller can log
+    them and decide whether a retry is worthwhile (empty list ⇒ nothing to
+    clear, so no point retrying).
+    """
+    removed: list[Path] = []
+
+    for cache_dir in _electron_download_cache_dirs():
+        if not cache_dir.is_dir():
+            continue
+        for zip_path in sorted(cache_dir.rglob("electron-*.zip")):
+            try:
+                zip_path.unlink()
+                removed.append(zip_path)
+            except OSError:
+                # Locked/permission-denied entry is out of our hands; let the
+                # build report its own error rather than masking it.
+                pass
+
+    # Drop the half-written unpacked dir too: an interrupted prior pack leaves
+    # a partial tree that poisons the rename even after the zip is fixed.
+    # (before-pack.cjs also handles this, but clearing it here makes the retry
+    # robust even if the hook is somehow skipped.)
+    release_dir = desktop_dir / "release"
+    if release_dir.is_dir():
+        for unpacked in release_dir.glob("*-unpacked"):
+            try:
+                shutil.rmtree(unpacked, ignore_errors=True)
+                removed.append(unpacked)
+            except OSError:
+                pass
+
+    return removed
+
+
+def _desktop_macos_relaunchable_fixup(desktop_dir: Path) -> None:
+    """Make a locally-built (unsigned) macOS desktop app survive in-place self-update.
+
+    An ad-hoc-signed .app has no stable Designated Requirement (no Team ID), so
+    when the self-updater rebuilds the bundle in place with a fresh build (a new,
+    different cdhash) Gatekeeper/LaunchServices treats the changed code as
+    tampering and macOS reports "Clawbot is damaged and can't be opened." The
+    bundle also inherits the com.apple.quarantine flag from the downloaded
+    installer process chain. Both make the relaunch fail.
+
+    Clearing the quarantine xattrs and re-applying a clean deep ad-hoc signature
+    (omitting the hardened-runtime flag, which is meaningless without a real
+    Developer ID) lets the rebuilt app relaunch. No-op when a real signing
+    identity is configured (CSC_LINK / APPLE_SIGNING_IDENTITY) so a properly
+    signed/notarized build is never clobbered. Best-effort: never raises.
+    """
+    if sys.platform != "darwin":
+        return
+    if os.environ.get("CSC_LINK") or os.environ.get("APPLE_SIGNING_IDENTITY"):
+        return
+    exe = _desktop_packaged_executable(desktop_dir)
+    if exe is None:
+        return
+    # exe = .../Clawbot.app/Contents/MacOS/Clawbot  ->  app bundle = .../Clawbot.app
+    app = exe.parents[2]
+    if not str(app).endswith(".app") or not app.is_dir():
+        return
+    codesign = shutil.which("codesign")
+    if not codesign:
+        return
+    try:
+        subprocess.run(["xattr", "-cr", str(app)], check=False)
+        subprocess.run([codesign, "--force", "--deep", "--sign", "-", str(app)], check=False)
+    except Exception as exc:
+        print(f"  (warning: macOS relaunch fixup skipped: {exc})")
+
+
+def _desktop_linux_sandbox_fixup(packaged_executable: Path) -> bool:
+    """Configure Electron's Linux SUID sandbox helper when required."""
+    if sys.platform != "linux":
+        return True
+
+    sandbox = packaged_executable.parent / "chrome-sandbox"
+    if not sandbox.exists():
+        print(f"✗ Clawbot Desktop is missing Electron's Linux sandbox helper: {sandbox}")
+        return False
+
+    # Reject symlinks — chown/chmod must not follow an attacker-controlled
+    # link to an arbitrary path.  Use lstat() so we inspect the link itself
+    # rather than the target, and require a regular file.
+    try:
+        sandbox_lstat = sandbox.lstat()
+    except OSError:
+        print(f"✗ Cannot stat Electron's Linux sandbox helper: {sandbox}")
+        return False
+    if not stat.S_ISREG(sandbox_lstat.st_mode):
+        print(f"✗ Electron's Linux sandbox helper is not a regular file: {sandbox}")
+        return False
+
+    if sandbox_lstat.st_uid == 0 and stat.S_IMODE(sandbox_lstat.st_mode) == 0o4755:
+        return True
+
+    sudo = shutil.which("sudo")
+    if not sudo:
+        print("✗ Clawbot Desktop requires sudo to configure Electron's Linux sandbox helper.")
+        return False
+
+    print("→ Configuring Electron Linux sandbox helper (sudo required)...")
+    for command in ([sudo, "chown", "root:root", str(sandbox)], [sudo, "chmod", "4755", str(sandbox)]):
+        if subprocess.run(command, check=False).returncode != 0:
+            print(f"✗ Failed to configure Electron's Linux sandbox helper: {sandbox}")
+            return False
+    return True
+
+
+def _desktop_workspace_dependencies_present(project_root: Path) -> bool:
+    """Return True when the desktop workspace's key npm dependencies exist."""
+    node_modules = project_root / "node_modules"
+    required = (
+        node_modules / ".package-lock.json",
+        node_modules / "electron" / "package.json",
+        node_modules / "@tailwindcss" / "vite" / "package.json",
+        node_modules / "@aayushsoam" / "ui" / "package.json",
+    )
+    return all(path.exists() for path in required)
+
+
+def cmd_gui(args: argparse.Namespace):
+    """Build and launch the native Electron desktop GUI."""
+    desktop_dir = PROJECT_ROOT / "apps" / "desktop"
+    if not (desktop_dir / "package.json").exists():
+        print(f"Desktop GUI source not found at: {desktop_dir}")
+        sys.exit(1)
+
+    try:
+        from clawbot_logging import setup_logging as _setup_logging_gui
+        _setup_logging_gui(mode="gui")
+    except Exception:
+        pass
+
+    env = os.environ.copy()
+    if getattr(args, "fake_boot", False):
+        env["CLAWBOT_DESKTOP_BOOT_FAKE"] = "1"
+    if getattr(args, "ignore_existing", False):
+        env["CLAWBOT_DESKTOP_IGNORE_EXISTING"] = "1"
+    if getattr(args, "clawbot_root", None):
+        env["CLAWBOT_DESKTOP_CLAWBOT_ROOT"] = str(Path(args.clawbot_root).expanduser().resolve())
+    if getattr(args, "cwd", None):
+        env["CLAWBOT_DESKTOP_CWD"] = str(Path(args.cwd).expanduser().resolve())
+    env.setdefault("NODE_NO_WARNINGS", "1")
+
+    source_mode = getattr(args, "source", False)
+    skip_build = getattr(args, "skip_build", False)
+    force_build = getattr(args, "force_build", False)
+
+    packaged_executable = _desktop_packaged_executable(desktop_dir)
+
+    if source_mode or not skip_build:
+        npm = shutil.which("npm")
+        if not npm:
+            print("Desktop GUI requires Node.js/npm, but npm was not found on PATH.")
+            print("Install Node.js, then run:  clawbot desktop")
+            sys.exit(1)
+    else:
+        npm = None
+
+    if skip_build:
+        if source_mode:
+            if not _desktop_dist_exists(desktop_dir):
+                print(f"✗ --skip-build --source was passed but no desktop dist found at: {desktop_dir / 'dist'}")
+                print("  Pre-build first:  cd apps/desktop && npm run build")
+                print("  Or drop --skip-build to install dependencies and build automatically.")
+                sys.exit(1)
+            if not (PROJECT_ROOT / "node_modules" / "electron" / "package.json").exists():
+                print("✗ --skip-build --source requires existing workspace dependencies.")
+                print(f"  Install first:  cd {PROJECT_ROOT} && npm ci")
+                print("  Or drop --skip-build to install dependencies and build automatically.")
+                sys.exit(1)
+            print(f"→ Skipping desktop source build (--skip-build --source); using dist at {desktop_dir / 'dist'}")
+        elif packaged_executable is None:
+            print(f"✗ --skip-build was passed but no packaged desktop app was found at: {desktop_dir / 'release'}")
+            print("  Pre-build first:  cd apps/desktop && npm run pack")
+            print("  Or drop --skip-build to package automatically.")
+            sys.exit(1)
+        else:
+            print(f"→ Skipping desktop package build (--skip-build); using {packaged_executable}")
+    else:
+        # Check the content-hash stamp before doing any build work.
+        # If the source tree hasn't changed since the last successful build,
+        # skip the npm install + build entirely (saves a ton of useless work).
+        # --force-build overrides the stamp and always rebuilds.
+        build_needed = force_build or _desktop_build_needed(
+            desktop_dir, PROJECT_ROOT, source_mode=source_mode
+        )
+        if not build_needed:
+            build_label = "source build" if source_mode else "packaged app"
+            print(f"✓ Desktop {build_label} is up to date (content stamp matches)")
+        else:
+            if _desktop_workspace_dependencies_present(PROJECT_ROOT):
+                print("✓ Desktop workspace dependencies already installed")
+            else:
+                print("→ Installing desktop workspace dependencies...")
+                install_result = _run_npm_install_deterministic(npm, PROJECT_ROOT, capture_output=False)
+                if install_result.returncode != 0:
+                    print("✗ Desktop dependency install failed")
+                    print(f"  Run manually:  cd {PROJECT_ROOT} && npm ci")
+                    sys.exit(install_result.returncode or 1)
+
+            build_label = "source build" if source_mode else "packaged app"
+            print(f"→ Building desktop {build_label}...")
+            build_script = "build" if source_mode else "pack"
+            build_result = subprocess.run([npm, "run", build_script], cwd=desktop_dir, env=env, check=False)
+            if build_result.returncode != 0 and not source_mode:
+                # A corrupt cached Electron zip makes `pack` fail with an ENOENT
+                # on the final `electron` -> `Clawbot` rename: unpack-electron
+                # extracted a partial tree (missing the 193 MB binary) from the
+                # bad zip. We do NOT try to prove the zip is corrupt ourselves —
+                # stdlib zipfile silently tolerates the prepended/concatenated
+                # junk that is the most common corruption (a partial download
+                # resumed into the same file), so a `testzip()` gate would pass
+                # and never self-heal. Instead, on any packaged-build failure we
+                # purge the version's cached zip + the half-written unpacked dir
+                # and retry once: @electron/get re-downloads with its own SHASUM
+                # verification, which is the real source of truth. If the
+                # failure was something else, the clean re-download is harmless
+                # and the retry fails the same way.
+                purged = _purge_electron_build_cache(desktop_dir)
+                if purged:
+                    print("  ⚠ Desktop build failed; cleared cached Electron download and retrying once...")
+                    for p in purged:
+                        print(f"    - {p}")
+                    build_result = subprocess.run([npm, "run", build_script], cwd=desktop_dir, env=env, check=False)
+            if build_result.returncode != 0:
+                print("✗ Desktop GUI build failed")
+                print(f"  Run manually:  cd apps/desktop && npm run {build_script}")
+                sys.exit(build_result.returncode or 1)
+            packaged_executable = _desktop_packaged_executable(desktop_dir)
+            if not source_mode:
+                # Locally-built apps are ad-hoc signed; make them relaunchable after
+                # an in-place self-update (otherwise macOS reports "Clawbot is
+                # damaged"). No-op on non-macOS and on real-identity builds.
+                _desktop_macos_relaunchable_fixup(desktop_dir)
+
+            # Build succeeded — write the stamp so next run can skip
+            _write_desktop_build_stamp(PROJECT_ROOT, source_mode=source_mode)
+
+    # --build-only: produce the artifact but do NOT launch. The installer's
+    # --update flow drives the rebuild headlessly and then launches the desktop
+    # itself (detached, after the old exe has exited), so the launch must NOT
+    # happen here — it would block the installer and, on Windows, the old exe
+    # is still being replaced. Verify the expected artifact exists so a silent
+    # "built nothing" can't slip past, then return success.
+    if getattr(args, "build_only", False):
+        if source_mode:
+            if not _desktop_dist_exists(desktop_dir):
+                print(f"✗ --build-only --source produced no dist at: {desktop_dir / 'dist'}")
+                sys.exit(1)
+            print(f"✓ Desktop source build ready at {desktop_dir / 'dist'} (not launching; --build-only)")
+        elif packaged_executable is None:
+            print(f"✗ --build-only produced no launchable app at: {desktop_dir / 'release'}")
+            print("  Expected an unpacked Electron app for the current OS.")
+            sys.exit(1)
+        else:
+            print(f"✓ Desktop packaged app ready: {packaged_executable} (not launching; --build-only)")
+        return
+
+    if source_mode:
+        print("→ Launching Clawbot Desktop from source build...")
+        launch_result = subprocess.run([npm, "exec", "--", "electron", "."], cwd=desktop_dir, env=env, check=False)
+        sys.exit(launch_result.returncode)
+
+    if packaged_executable is None:
+        print(f"✗ Desktop package build completed but no launchable app was found at: {desktop_dir / 'release'}")
+        print("  Expected an unpacked Electron app for the current OS.")
+        sys.exit(1)
+
+    if not _desktop_linux_sandbox_fixup(packaged_executable):
+        sys.exit(1)
+
+    print(f"→ Launching packaged Clawbot Desktop: {packaged_executable}")
+    launch_result = subprocess.run([str(packaged_executable)], cwd=desktop_dir, env=env, check=False)
+    sys.exit(launch_result.returncode)
+
+
 def _dashboard_browser_app_candidates() -> list[str]:
     """Return browser executables likely to support ``--app=<url>``."""
     candidates: list[str] = []
@@ -12557,6 +13068,59 @@ Examples:
     _add_dashboard_server_args(app_parser, app_defaults=True)
 
     # =========================================================================
+    # desktop command
+    # =========================================================================
+    desktop_parser = subparsers.add_parser(
+        "desktop",
+        aliases=["gui"],
+        help="Build and launch the native Clawbot desktop app",
+        description=(
+            "Launch the Clawbot Electron desktop app. By default this installs "
+            "workspace Node dependencies, builds the current OS's unpacked "
+            "Electron app, then launches that packaged artifact."
+        ),
+    )
+    desktop_parser.add_argument(
+        "--source",
+        action="store_true",
+        help="Launch via `electron .` against apps/desktop/dist instead of the packaged app",
+    )
+    desktop_parser.add_argument(
+        "--build-only",
+        action="store_true",
+        help="Build the desktop app but do not launch it",
+    )
+    desktop_parser.add_argument(
+        "--fake-boot",
+        action="store_true",
+        help="Enable deterministic desktop boot delays for validating startup UI",
+    )
+    desktop_parser.add_argument(
+        "--ignore-existing",
+        action="store_true",
+        help="Force Desktop to ignore any clawbot CLI already on PATH during backend resolution",
+    )
+    desktop_parser.add_argument(
+        "--clawbot-root",
+        help="Override the Clawbot source root used by Desktop (sets CLAWBOT_DESKTOP_CLAWBOT_ROOT)",
+    )
+    desktop_parser.add_argument(
+        "--cwd",
+        help="Initial project directory for Desktop chat sessions (sets CLAWBOT_DESKTOP_CWD)",
+    )
+    desktop_parser.add_argument(
+        "--skip-build",
+        action="store_true",
+        help="Skip npm install/package and launch the existing unpacked app from apps/desktop/release",
+    )
+    desktop_parser.add_argument(
+        "--force-build",
+        action="store_true",
+        help="Force a full rebuild even if the content stamp matches",
+    )
+    desktop_parser.set_defaults(func=cmd_gui)
+
+    # =========================================================================
     # logs command
     # =========================================================================
     logs_parser = subparsers.add_parser(
@@ -12798,3 +13362,5 @@ Examples:
 
 if __name__ == "__main__":
     main()
+
+

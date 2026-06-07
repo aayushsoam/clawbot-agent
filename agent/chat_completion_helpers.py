@@ -1301,6 +1301,11 @@ def interruptible_streaming_api_call(agent, api_kwargs: dict, *, on_first_delta=
                 pool=_conn_cap,
             ),
         }
+        if (
+            (agent.provider or "").strip().lower() in {"nvidia", "nvidia-nim"}
+            or base_url_host_matches(agent.base_url, "integrate.api.nvidia.com")
+        ):
+            stream_kwargs.pop("stream_options", None)
         request_client_holder["client"] = agent._create_request_openai_client(
             reason="chat_completion_stream_request",
             api_kwargs=stream_kwargs,

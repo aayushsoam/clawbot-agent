@@ -57,6 +57,14 @@ environments/benchmarks/evals/
 # Web UI build output
 clawbot_cli/web_dist/
 
+# Desktop app build output
+apps/desktop/dist/
+apps/desktop/release/
+apps/desktop/build/
+apps/desktop/*.tsbuildinfo
+apps/bootstrap-installer/dist/
+apps/bootstrap-installer/src-tauri/target/
+
 # Web UI assets — synced from @aayushsoam/ui at build time via
 # `npm run sync-assets` (see web/package.json).
 web/public/fonts/
