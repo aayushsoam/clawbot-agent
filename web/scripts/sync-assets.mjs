@@ -9,12 +9,20 @@
 // (invoked from Python via subprocess → cmd.exe) failed before Vite ran.
 // Using Node's stdlib fs keeps this dependency-free and platform-neutral.
 
-import { cpSync, rmSync } from "node:fs";
+import { cpSync, existsSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const webRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const uiDist = resolve(webRoot, "node_modules", "@aayushsoam", "ui", "dist");
+const candidates = [
+  resolve(webRoot, "node_modules", "@aayushsoam", "ui", "dist"),
+  resolve(webRoot, "..", "node_modules", "@aayushsoam", "ui", "dist"),
+];
+const uiDist = candidates.find((path) => existsSync(path));
+
+if (!uiDist) {
+  throw new Error(`Could not find @aayushsoam/ui dist in: ${candidates.join(", ")}`);
+}
 
 const targets = [
   { from: resolve(uiDist, "fonts"), to: resolve(webRoot, "public", "fonts") },
