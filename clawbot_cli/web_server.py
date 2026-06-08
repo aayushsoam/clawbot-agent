@@ -10,16 +10,19 @@ Usage:
 """
 
 import asyncio
+import base64
 import hmac
 import importlib.util
 import json
 import logging
+import mimetypes
 import os
 import secrets
 import subprocess
 import sys
 import threading
 import time
+import tempfile
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -481,6 +484,15 @@ class ModelAssignment(BaseModel):
     task: str = ""
 
 
+class AudioTranscribeRequest(BaseModel):
+    data_url: str
+    mime_type: Optional[str] = None
+
+
+class AudioSpeakRequest(BaseModel):
+    text: str
+
+
 _GATEWAY_HEALTH_URL = os.getenv("GATEWAY_HEALTH_URL")
 try:
     _GATEWAY_HEALTH_TIMEOUT = float(os.getenv("GATEWAY_HEALTH_TIMEOUT", "3"))
@@ -777,6 +789,139 @@ async def get_action_status(name: str, lines: int = 200):
         "pid": pid,
         "lines": tail,
     }
+
+
+_AUDIO_MIME_EXTENSIONS: Dict[str, str] = {
+    "audio/webm": ".webm",
+    "audio/wav": ".wav",
+    "audio/x-wav": ".wav",
+    "audio/mpeg": ".mp3",
+    "audio/mp3": ".mp3",
+    "audio/mp4": ".m4a",
+    "audio/m4a": ".m4a",
+    "audio/ogg": ".ogg",
+    "audio/opus": ".opus",
+    "audio/flac": ".flac",
+}
+
+
+def _audio_extension_for_mime(mime_type: Optional[str]) -> str:
+    clean = (mime_type or "").split(";", 1)[0].strip().lower()
+    return _AUDIO_MIME_EXTENSIONS.get(clean) or mimetypes.guess_extension(clean) or ".webm"
+
+
+def _decode_audio_data_url(data_url: str, explicit_mime_type: Optional[str]) -> Tuple[bytes, str]:
+    if not data_url:
+        raise HTTPException(status_code=400, detail="Audio data_url is required")
+    if not data_url.startswith("data:"):
+        raise HTTPException(status_code=400, detail="Audio must be sent as a data URL")
+
+    header, sep, payload = data_url.partition(",")
+    if not sep:
+        raise HTTPException(status_code=400, detail="Malformed audio data URL")
+
+    header_parts = header[5:].split(";")
+    mime_type = explicit_mime_type or (header_parts[0] if header_parts and header_parts[0] else "audio/webm")
+    try:
+        if "base64" in {part.lower() for part in header_parts[1:]}:
+            audio_bytes = base64.b64decode(payload, validate=True)
+        else:
+            audio_bytes = urllib.parse.unquote_to_bytes(payload)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid audio data: {exc}")
+
+    if not audio_bytes:
+        raise HTTPException(status_code=400, detail="Audio recording was empty")
+    return audio_bytes, mime_type
+
+
+@app.post("/api/audio/transcribe")
+async def transcribe_audio_endpoint(body: AudioTranscribeRequest):
+    audio_bytes, mime_type = _decode_audio_data_url(body.data_url, body.mime_type)
+    suffix = _audio_extension_for_mime(mime_type)
+    tmp_path: Optional[str] = None
+    try:
+        with tempfile.NamedTemporaryFile(prefix="clawbot_desktop_stt_", suffix=suffix, delete=False) as tmp:
+            tmp.write(audio_bytes)
+            tmp_path = tmp.name
+
+        from tools.transcription_tools import transcribe_audio
+
+        result = await asyncio.to_thread(transcribe_audio, tmp_path)
+        if not result.get("success"):
+            raise HTTPException(status_code=400, detail=result.get("error") or "Transcription failed")
+        return {
+            "ok": True,
+            "provider": result.get("provider"),
+            "transcript": result.get("transcript") or "",
+        }
+    finally:
+        if tmp_path:
+            try:
+                os.remove(tmp_path)
+            except OSError:
+                pass
+
+
+@app.post("/api/audio/speak")
+async def speak_audio_endpoint(body: AudioSpeakRequest):
+    text = (body.text or "").strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="Text is required")
+
+    out_dir = get_clawbot_home() / "cache" / "audio"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    output_path = out_dir / f"desktop_tts_{int(time.time() * 1000)}.mp3"
+
+    from tools.tts_tool import text_to_speech_tool
+
+    raw_result = await asyncio.to_thread(text_to_speech_tool, text, str(output_path))
+    try:
+        result = json.loads(raw_result)
+    except Exception:
+        raise HTTPException(status_code=500, detail=f"Invalid TTS result: {raw_result[:200]}")
+
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error") or "Speech generation failed")
+
+    file_path = Path(result.get("file_path") or output_path)
+    if not file_path.exists():
+        raise HTTPException(status_code=500, detail="Speech generation produced no audio file")
+
+    mime_type = mimetypes.guess_type(str(file_path))[0] or "audio/mpeg"
+    data = file_path.read_bytes()
+    return {
+        "ok": True,
+        "data_url": f"data:{mime_type};base64,{base64.b64encode(data).decode('ascii')}",
+        "mime_type": mime_type,
+        "provider": result.get("provider"),
+    }
+
+
+@app.get("/api/audio/elevenlabs/voices")
+async def get_elevenlabs_voices():
+    try:
+        from tools.tts_tool import _import_elevenlabs, _load_tts_config
+
+        _import_elevenlabs()
+        config = _load_tts_config()
+        api_key = os.getenv("ELEVENLABS_API_KEY") or config.get("elevenlabs", {}).get("api_key")
+        if not api_key:
+            return {"available": False, "voices": []}
+
+        from elevenlabs.client import ElevenLabs
+
+        client = ElevenLabs(api_key=api_key)
+        response = await asyncio.to_thread(client.voices.get_all)
+        voices = []
+        for voice in getattr(response, "voices", []) or []:
+            voice_id = getattr(voice, "voice_id", "")
+            name = getattr(voice, "name", voice_id)
+            if voice_id:
+                voices.append({"voice_id": voice_id, "name": name, "label": name})
+        return {"available": True, "voices": voices}
+    except Exception:
+        return {"available": False, "voices": []}
 
 
 @app.get("/api/sessions")

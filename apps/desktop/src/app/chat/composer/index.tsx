@@ -1438,7 +1438,7 @@ export function ChatBar({
     <>
       <ComposerPrimitive.Unstable_TriggerPopoverRoot>
         <ComposerPrimitive.Root
-          className="group/composer absolute bottom-0 left-1/2 z-30 w-[min(var(--composer-width),calc(100%-2rem))] max-w-full -translate-x-1/2 rounded-2xl pt-2 pb-[var(--composer-shell-pad-block-end)]"
+          className="group/composer absolute bottom-0 left-1/2 z-30 w-[min(var(--composer-width),calc(100%-2rem))] max-w-full -translate-x-1/2 rounded-[1.55rem] pt-2 pb-[var(--composer-shell-pad-block-end)]"
           data-drag-active={dragActive ? '' : undefined}
           data-slot="composer-root"
           data-thread-scrolled-up={scrolledUp ? '' : undefined}
@@ -1554,17 +1554,16 @@ export function ChatBar({
                   </div>
                 )}
                 {attachments.length > 0 && <AttachmentList attachments={attachments} onRemove={onRemoveAttachment} />}
-                <div
-                  className={cn(
-                    'grid w-full',
-                    stacked
-                      ? 'grid-cols-[auto_1fr] gap-(--composer-row-gap) [grid-template-areas:"input_input"_"menu_controls"]'
-                      : 'grid-cols-[auto_1fr_auto] items-center gap-(--composer-control-gap) [grid-template-areas:"menu_input_controls"]'
-                  )}
-                >
-                  <div className="flex items-center [grid-area:menu]">{contextMenu}</div>
-                  <div className="min-w-0 [grid-area:input]">{input}</div>
-                  <div className="flex items-center justify-end [grid-area:controls]">{controls}</div>
+                <div className="flex min-h-[6rem] w-full flex-col justify-between gap-2">
+                  <div className="min-w-0">{input}</div>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <div className="flex min-w-0 items-center">
+                      {contextMenu}
+                    </div>
+                    <div className="ml-auto flex shrink-0 items-center gap-(--composer-control-gap)">
+                      {controls}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1588,7 +1587,7 @@ export function ChatBarFallback() {
   return (
     <div
       className={cn(
-        'group/composer absolute bottom-0 left-1/2 z-30 w-[min(var(--composer-width),calc(100%-2rem))] max-w-full -translate-x-1/2 rounded-2xl pt-2 pb-[var(--composer-shell-pad-block-end)]',
+        'group/composer absolute bottom-0 left-1/2 z-30 w-[min(var(--composer-width),calc(100%-2rem))] max-w-full -translate-x-1/2 rounded-[1.55rem] pt-2 pb-[var(--composer-shell-pad-block-end)]',
         'bg-linear-to-b from-transparent to-background/55'
       )}
       data-slot="composer-root"

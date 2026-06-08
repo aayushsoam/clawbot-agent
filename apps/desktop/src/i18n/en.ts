@@ -629,8 +629,9 @@ export const en: Translations = {
     message: 'Message',
     placeholderStarting: 'Starting Clawbot...',
     placeholderReconnecting: 'Reconnecting to Clawbot…',
-    placeholderFollowUp: 'Send follow-up',
+    placeholderFollowUp: 'Ask for follow-up changes',
     newSessionPlaceholders: [
+      'Ask for follow-up changes',
       'What are we building?',
       'Give Clawbot a task',
       "What's on your mind?",
@@ -640,6 +641,7 @@ export const en: Translations = {
       'Start with a goal'
     ],
     followUpPlaceholders: [
+      'Ask for follow-up changes',
       'Send a follow-up',
       'Add more context',
       'Refine the request',

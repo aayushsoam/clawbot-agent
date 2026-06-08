@@ -12,16 +12,12 @@ import type { ChatBarState, VoiceStatus } from './types'
 export const ICON_BTN = 'size-(--composer-control-size) shrink-0 rounded-md'
 export const GHOST_ICON_BTN = cn(
   ICON_BTN,
-  'text-(--ui-text-tertiary) hover:bg-(--chrome-action-hover) hover:text-foreground'
+  'text-[color:var(--composer-muted-control,#9a9a9a)] hover:bg-[color:var(--composer-control-hover,rgba(255,255,255,.08))] hover:text-[color:var(--composer-control-foreground,#f4f4f4)]'
 )
-// Send/voice-conversation primary: solid foreground-on-background circle
-// (reads as black-on-white in light mode, white-on-black in dark mode) to
-// match the reference composer's high-contrast CTA. Keeps the pill itself
-// neutral and lets the action visually dominate the row.
 export const PRIMARY_ICON_BTN = cn(
   'size-(--composer-control-primary-size,var(--composer-control-size)) shrink-0 rounded-full p-0',
-  'bg-foreground text-background hover:bg-foreground/90',
-  'disabled:bg-foreground/30 disabled:text-background disabled:opacity-100'
+  'bg-[color:var(--composer-primary-control,#c7c7c7)] text-[color:var(--composer-primary-control-foreground,#242424)] hover:bg-[color:var(--composer-primary-control-hover,#d6d6d6)]',
+  'disabled:bg-[color:var(--composer-primary-control-disabled,rgba(199,199,199,.35))] disabled:text-[color:var(--composer-primary-control-foreground,#242424)] disabled:opacity-100'
 )
 
 interface ConversationProps {
@@ -70,7 +66,7 @@ export function ComposerControls({
   const showVoicePrimary = !busy && !hasComposerPayload
 
   return (
-    <div className="ml-auto flex shrink-0 items-center gap-(--composer-control-gap)">
+    <div className="flex shrink-0 items-center gap-(--composer-control-gap)">
       <DictationButton disabled={disabled} onToggle={onDictate} state={state.voice} status={voiceStatus} />
       {canSteer && (
         <Tip label={c.steer}>
@@ -153,7 +149,7 @@ function ConversationPill({
             : c.listening
 
   return (
-    <div className="ml-auto flex shrink-0 items-center gap-(--composer-control-gap)">
+    <div className="flex shrink-0 items-center gap-(--composer-control-gap)">
       <Tip label={muted ? c.unmuteMic : c.muteMic}>
         <Button
           aria-label={muted ? c.unmuteMic : c.muteMic}
