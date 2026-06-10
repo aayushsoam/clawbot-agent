@@ -17,7 +17,7 @@ import { BUILTIN_THEME_LIST, BUILTIN_THEMES, DEFAULT_SKIN_NAME, DEFAULT_TYPOGRAP
 import type { DesktopTheme, DesktopThemeColors } from './types'
 
 const SKIN_KEY = 'clawbot-desktop-theme-v2'
-const MODE_KEY = 'clawbot-desktop-mode-v1'
+const MODE_KEY = 'clawbot-desktop-mode-v2'
 const RETIRED_SKINS = new Set(['nous-light', 'default', 'gold'])
 
 export type ThemeMode = 'light' | 'dark' | 'system'
@@ -234,7 +234,7 @@ function applyTheme(theme: DesktopTheme, mode: 'light' | 'dark') {
 // Boot-time paint to avoid a flash before <ThemeProvider> mounts.
 if (typeof window !== 'undefined') {
   const skin = normalizeSkin(window.localStorage.getItem(SKIN_KEY))
-  const mode = (window.localStorage.getItem(MODE_KEY) as ThemeMode) ?? 'light'
+  const mode = (window.localStorage.getItem(MODE_KEY) as ThemeMode) ?? 'dark'
   const resolved = resolveMode(mode)
   applyTheme(deriveTheme(skin, resolved), resolved)
 }
@@ -256,8 +256,8 @@ const SKIN_LIST = BUILTIN_THEME_LIST.map(({ name, label, description }) => ({ na
 const ThemeContext = createContext<ThemeContextValue>({
   theme: nousTheme,
   themeName: DEFAULT_SKIN_NAME,
-  mode: 'light',
-  resolvedMode: 'light',
+  mode: 'dark',
+  resolvedMode: 'dark',
   availableThemes: SKIN_LIST,
   setTheme: () => {},
   setMode: () => {}
@@ -269,7 +269,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   )
 
   const [mode, setModeState] = useState<ThemeMode>(() =>
-    typeof window === 'undefined' ? 'light' : ((window.localStorage.getItem(MODE_KEY) as ThemeMode) ?? 'light')
+    typeof window === 'undefined' ? 'dark' : ((window.localStorage.getItem(MODE_KEY) as ThemeMode) ?? 'dark')
   )
 
   const systemDark = useMediaQuery('(prefers-color-scheme: dark)')

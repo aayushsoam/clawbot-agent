@@ -172,11 +172,6 @@ export function GatewayConnectingOverlay() {
       >
         {PREFIX}
         {tail}
-        <span
-          aria-hidden="true"
-          className="dither ml-0.5 inline-block size-2 shrink-0 -translate-y-px rounded-[1px]"
-          style={{ animation: 'gco-cursor 1s step-end infinite' }}
-        />
       </span>
     </div>
   )

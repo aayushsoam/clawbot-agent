@@ -1,20 +1,20 @@
 import type { ITheme, Terminal } from '@xterm/xterm'
 import type { CSSProperties } from 'react'
 
-// Solarized-derived palette, but with bright ANSI 8–15 promoted to real
+// Black terminal palette, but with bright ANSI 8–15 promoted to real
 // accent variants instead of Schoonover's UI grays. Clawbot' TUI skins (gold,
 // crimson, ...) emit bright SGR codes that would otherwise wash out to gray.
 // We always render the dark canvas — the app's light surfaces can't host the
 // default skin without dropping below readable contrast.
-export const TERMINAL_BG = '#002b36'
+export const TERMINAL_BG = '#000000'
 
 const THEME: ITheme = {
   background: TERMINAL_BG,
-  foreground: '#839496',
-  cursor: '#93a1a1',
+  foreground: '#d4d4d4',
+  cursor: '#f5f5f5',
   cursorAccent: TERMINAL_BG,
-  selectionBackground: '#586e7555',
-  black: '#073642',
+  selectionBackground: '#4a4a4a88',
+  black: '#000000',
   red: '#dc322f',
   green: '#859900',
   yellow: '#b58900',

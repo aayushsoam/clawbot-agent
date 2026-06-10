@@ -9893,6 +9893,72 @@ def _desktop_packaged_executable(desktop_dir: Path) -> Optional[Path]:
     return max(existing, key=lambda p: p.stat().st_mtime)
 
 
+def _desktop_stop_running_packaged_app(desktop_dir: Path) -> None:
+    """Best-effort: close locally packaged Clawbot.exe before rebuilding it.
+
+    Windows holds hard locks on files inside ``release/win-unpacked`` while the
+    app is running. Repacking over that tree then fails with EPERM/EBUSY
+    (debug.log, v8_context_snapshot.bin, native dlls, etc.). Only processes
+    whose executable lives under this checkout's desktop release directory are
+    stopped; installed/system Clawbot processes elsewhere are left alone.
+    """
+    if sys.platform != "win32":
+        return
+
+    release_dir = (desktop_dir / "release").resolve()
+    if not release_dir.exists():
+        return
+
+    powershell = shutil.which("powershell") or shutil.which("pwsh")
+    if not powershell:
+        return
+
+    script = r"""
+$release = [IO.Path]::GetFullPath($env:CLAWBOT_DESKTOP_RELEASE_DIR).TrimEnd('\')
+$processes = Get-CimInstance Win32_Process | Where-Object {
+  $_.Name -ieq 'Clawbot.exe' -and
+  $_.ExecutablePath -and
+  ([IO.Path]::GetFullPath($_.ExecutablePath).StartsWith($release, [StringComparison]::OrdinalIgnoreCase))
+}
+foreach ($process in $processes) {
+  Stop-Process -Id $process.ProcessId -Force -ErrorAction SilentlyContinue
+}
+if ($processes) {
+  Start-Sleep -Milliseconds 800
+}
+$remaining = Get-CimInstance Win32_Process | Where-Object {
+  $_.Name -ieq 'Clawbot.exe' -and
+  $_.ExecutablePath -and
+  ([IO.Path]::GetFullPath($_.ExecutablePath).StartsWith($release, [StringComparison]::OrdinalIgnoreCase))
+}
+if ($remaining) {
+  Write-Output "blocked"
+  exit 2
+}
+Write-Output (($processes | Measure-Object).Count)
+"""
+
+    env = os.environ.copy()
+    env["CLAWBOT_DESKTOP_RELEASE_DIR"] = str(release_dir)
+
+    try:
+        result = subprocess.run(
+            [powershell, "-NoProfile", "-Command", script],
+            capture_output=True,
+            text=True,
+            env=env,
+            check=False,
+        )
+    except OSError:
+        return
+
+    output = (result.stdout or "").strip()
+    if result.returncode == 0 and output and output != "0":
+        print("→ Closed running Clawbot Desktop so the package can be rebuilt")
+    elif result.returncode != 0:
+        print("  ⚠ Could not fully close the running Clawbot Desktop; build may still be locked.")
+
+
 def _electron_download_cache_dirs() -> list[Path]:
     """Return the per-user Electron download cache directories for this OS.
 
@@ -10160,6 +10226,8 @@ def cmd_gui(args: argparse.Namespace):
             build_label = "source build" if source_mode else "packaged app"
             print(f"→ Building desktop {build_label}...")
             build_script = "build" if source_mode else "pack"
+            if not source_mode:
+                _desktop_stop_running_packaged_app(desktop_dir)
             build_result = subprocess.run([npm, "run", build_script], cwd=desktop_dir, env=env, check=False)
             if build_result.returncode != 0 and not source_mode:
                 # A corrupt cached Electron zip makes `pack` fail with an ENOENT
@@ -10175,6 +10243,7 @@ def cmd_gui(args: argparse.Namespace):
                 # verification, which is the real source of truth. If the
                 # failure was something else, the clean re-download is harmless
                 # and the retry fails the same way.
+                _desktop_stop_running_packaged_app(desktop_dir)
                 purged = _purge_electron_build_cache(desktop_dir)
                 if purged:
                     print("  ⚠ Desktop build failed; cleared cached Electron download and retrying once...")

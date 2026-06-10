@@ -1,59 +1,31 @@
 import '@xterm/xterm/css/xterm.css'
 
-import { useStore } from '@nanostores/react'
-
 import { Button } from '@/components/ui/button'
-import { Codicon } from '@/components/ui/codicon'
 import { Loader } from '@/components/ui/loader'
-import { Tip } from '@/components/ui/tooltip'
 
-import { SidebarPanelLabel } from '../../shell/sidebar-label'
-import { $terminalTakeover, setRightSidebarTab, setTerminalTakeover } from '../store'
+import { cn } from '@/lib/utils'
 
 import { addSelectionShortcutLabel } from './selection'
 import { useTerminalSession } from './use-terminal-session'
 
 interface TerminalTabProps {
+  active: boolean
   cwd: string
   onAddSelectionToChat: (text: string, label?: string) => void
 }
 
-export function TerminalTab({ cwd, onAddSelectionToChat }: TerminalTabProps) {
-  const { addSelectionToChat, hostRef, selection, selectionStyle, shellName, status } = useTerminalSession({
+export function TerminalTab({ active, cwd, onAddSelectionToChat }: TerminalTabProps) {
+  const { addSelectionToChat, hostRef, selection, selectionStyle, status } = useTerminalSession({
     cwd,
     onAddSelectionToChat
   })
 
-  const takeover = useStore($terminalTakeover)
-  const label = takeover ? 'Return to split view' : 'Focus terminal view'
-
-  const toggleTakeover = () => {
-    // Pre-select the Terminal tab so the slot is ready to host us on return.
-    if (takeover) {
-      setRightSidebarTab('terminal')
-    }
-
-    setTerminalTakeover(!takeover)
-  }
-
   return (
-    <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
-      <div className="flex h-8 shrink-0 items-center gap-2 px-2.5">
-        <SidebarPanelLabel className="text-white!">{shellName}</SidebarPanelLabel>
-        <Tip label={label}>
-          <Button
-            aria-label={label}
-            className="ml-auto size-6 rounded-md text-white!"
-            onClick={toggleTakeover}
-            size="icon"
-            type="button"
-            variant="ghost"
-          >
-            <Codicon name={takeover ? 'screen-normal' : 'screen-full'} size="0.875rem" />
-          </Button>
-        </Tip>
-      </div>
-      <div className="relative min-h-0 flex-1 bg-[#002b36] p-2">
+    <div
+      aria-hidden={!active}
+      className={cn('relative min-h-0 min-w-0 flex-1 flex-col bg-black', active ? 'flex' : 'hidden')}
+    >
+      <div className="relative min-h-0 flex-1 bg-black p-2">
         {status === 'starting' && (
           <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center">
             <Loader
@@ -87,7 +59,7 @@ export function TerminalTab({ cwd, onAddSelectionToChat }: TerminalTabProps) {
             Forcing screen/viewport bg avoids xterm's default black peeking
             through the unused pixels below the last full row. */}
         <div
-          className="h-full min-h-0 overflow-hidden text-(--ui-text-secondary) [&_.xterm]:h-full [&_.xterm-screen]:bg-[#002b36]! [&_.xterm-viewport]:bg-[#002b36]!"
+          className="h-full min-h-0 overflow-hidden text-(--ui-text-secondary) [&_.xterm]:h-full [&_.xterm-screen]:bg-black! [&_.xterm-viewport]:bg-black!"
           ref={hostRef}
         />
       </div>

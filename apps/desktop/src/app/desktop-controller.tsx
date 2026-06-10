@@ -1,6 +1,6 @@
 import { useStore } from '@nanostores/react'
 import { useQueryClient } from '@tanstack/react-query'
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef } from 'react'
+import { lazy, Suspense, type PointerEvent as ReactPointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { BootFailureOverlay } from '@/components/boot-failure-overlay'
@@ -101,6 +101,31 @@ const ProfilesView = lazy(async () => ({ default: (await import('./profiles')).P
 const SettingsView = lazy(async () => ({ default: (await import('./settings')).SettingsView }))
 const SkillsView = lazy(async () => ({ default: (await import('./skills')).SkillsView }))
 
+const TERMINAL_PANEL_HEIGHT_KEY = 'clawbot.desktop.terminalPanelHeight'
+const TERMINAL_PANEL_DEFAULT_HEIGHT = 288
+const TERMINAL_PANEL_MIN_HEIGHT = 180
+const TERMINAL_PANEL_MAX_RATIO = 0.7
+
+const clampTerminalPanelHeight = (height: number) => {
+  if (typeof window === 'undefined') {
+    return Math.max(TERMINAL_PANEL_MIN_HEIGHT, height)
+  }
+
+  const maxHeight = Math.max(TERMINAL_PANEL_MIN_HEIGHT, Math.floor(window.innerHeight * TERMINAL_PANEL_MAX_RATIO))
+
+  return Math.round(Math.min(maxHeight, Math.max(TERMINAL_PANEL_MIN_HEIGHT, height)))
+}
+
+const storedTerminalPanelHeight = () => {
+  if (typeof window === 'undefined') {
+    return TERMINAL_PANEL_DEFAULT_HEIGHT
+  }
+
+  const value = Number.parseInt(window.localStorage.getItem(TERMINAL_PANEL_HEIGHT_KEY) || '', 10)
+
+  return clampTerminalPanelHeight(Number.isFinite(value) ? value : TERMINAL_PANEL_DEFAULT_HEIGHT)
+}
+
 // Rows a session refresh must preserve even if the aggregator omits them:
 // in-flight first turns (message_count 0), pinned rows aged off the page, and
 // the actively-viewed chat (its "working" flag clears a beat before the
@@ -138,6 +163,7 @@ export function DesktopController() {
   const previewTarget = useStore($previewTarget)
   const selectedStoredSessionId = useStore($selectedStoredSessionId)
   const terminalTakeover = useStore($terminalTakeover)
+  const [terminalPanelHeight, setTerminalPanelHeightState] = useState(storedTerminalPanelHeight)
   const panesFlipped = useStore($panesFlipped)
 
   const routedSessionId = routeSessionId(location.pathname)
@@ -161,7 +187,62 @@ export function DesktopController() {
     toggleCommandCenter
   } = useOverlayRouting()
 
-  const terminalTakeoverActive = chatOpen && terminalTakeover
+  const terminalPanelOpen = chatOpen && terminalTakeover
+
+  const setTerminalPanelHeight = useCallback((height: number) => {
+    const next = clampTerminalPanelHeight(height)
+    setTerminalPanelHeightState(next)
+    window.localStorage.setItem(TERMINAL_PANEL_HEIGHT_KEY, String(next))
+  }, [])
+
+  const startTerminalPanelResize = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      event.preventDefault()
+
+      const handle = event.currentTarget
+      const pointerId = event.pointerId
+      const startY = event.clientY
+      const startHeight = terminalPanelHeight
+      const previousCursor = document.body.style.cursor
+      const previousUserSelect = document.body.style.userSelect
+      let active = true
+
+      handle.setPointerCapture?.(pointerId)
+      document.body.style.cursor = 'row-resize'
+      document.body.style.userSelect = 'none'
+
+      const handleMove = (moveEvent: PointerEvent) => {
+        if (!active) {
+          return
+        }
+
+        setTerminalPanelHeight(startHeight + startY - moveEvent.clientY)
+      }
+
+      const cleanup = () => {
+        if (!active) {
+          return
+        }
+
+        active = false
+        document.body.style.cursor = previousCursor
+        document.body.style.userSelect = previousUserSelect
+        handle.releasePointerCapture?.(pointerId)
+        window.removeEventListener('pointermove', handleMove, true)
+        window.removeEventListener('pointerup', cleanup, true)
+        window.removeEventListener('pointercancel', cleanup, true)
+        window.removeEventListener('blur', cleanup)
+        handle.removeEventListener('lostpointercapture', cleanup)
+      }
+
+      window.addEventListener('pointermove', handleMove, true)
+      window.addEventListener('pointerup', cleanup, true)
+      window.addEventListener('pointercancel', cleanup, true)
+      window.addEventListener('blur', cleanup)
+      handle.addEventListener('lostpointercapture', cleanup)
+    },
+    [setTerminalPanelHeight, terminalPanelHeight]
+  )
 
   const titlebarToolGroups = useGroupRegistry<TitlebarTool>()
   const statusbarItemGroups = useGroupRegistry<StatusbarItem>()
@@ -763,12 +844,6 @@ export function DesktopController() {
     />
   )
 
-  const takeoverTerminalView = (
-    <div className="relative flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-(--ui-chat-surface-background) pt-(--titlebar-height)">
-      <TerminalSlot />
-    </div>
-  )
-
   // Flipped layout mirrors the default: sessions sidebar → right, file
   // browser + preview rail → left. Same panes, swapped sides.
   const sidebarSide = panesFlipped ? 'right' : 'left'
@@ -821,7 +896,7 @@ export function DesktopController() {
       titlebarTools={titlebarToolGroups.flat.right}
     >
       <Pane
-        disabled={terminalTakeoverActive}
+        disabled={false}
         id="chat-sidebar"
         maxWidth={SIDEBAR_MAX_WIDTH}
         minWidth={SIDEBAR_DEFAULT_WIDTH}
@@ -832,42 +907,65 @@ export function DesktopController() {
         {sidebar}
       </Pane>
       <PaneMain>
-        <Routes>
-          <Route element={terminalTakeoverActive ? takeoverTerminalView : chatView} index />
-          <Route element={terminalTakeoverActive ? takeoverTerminalView : chatView} path=":sessionId" />
-          <Route
-            element={
-              <Suspense fallback={null}>
-                <SkillsView setStatusbarItemGroup={setStatusbarItemGroup} />
-              </Suspense>
-            }
-            path="skills"
-          />
-          <Route
-            element={
-              <Suspense fallback={null}>
-                <MessagingView setStatusbarItemGroup={setStatusbarItemGroup} />
-              </Suspense>
-            }
-            path="messaging"
-          />
-          <Route
-            element={
-              <Suspense fallback={null}>
-                <ArtifactsView setStatusbarItemGroup={setStatusbarItemGroup} />
-              </Suspense>
-            }
-            path="artifacts"
-          />
-          <Route element={null} path="cron" />
-          <Route element={null} path="profiles" />
-          <Route element={null} path="settings" />
-          <Route element={null} path="command-center" />
-          <Route element={null} path="agents" />
-          <Route element={<Navigate replace to={NEW_CHAT_ROUTE} />} path="new" />
-          <Route element={<LegacySessionRedirect />} path="sessions/:sessionId" />
-          <Route element={<Navigate replace to={NEW_CHAT_ROUTE} />} path="*" />
-        </Routes>
+        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
+            <Routes>
+              <Route element={chatView} index />
+              <Route element={chatView} path=":sessionId" />
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <SkillsView setStatusbarItemGroup={setStatusbarItemGroup} />
+                  </Suspense>
+                }
+                path="skills"
+              />
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <MessagingView setStatusbarItemGroup={setStatusbarItemGroup} />
+                  </Suspense>
+                }
+                path="messaging"
+              />
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <ArtifactsView setStatusbarItemGroup={setStatusbarItemGroup} />
+                  </Suspense>
+                }
+                path="artifacts"
+              />
+              <Route element={null} path="cron" />
+              <Route element={null} path="profiles" />
+              <Route element={null} path="settings" />
+              <Route element={null} path="command-center" />
+              <Route element={null} path="agents" />
+              <Route element={<Navigate replace to={NEW_CHAT_ROUTE} />} path="new" />
+              <Route element={<LegacySessionRedirect />} path="sessions/:sessionId" />
+              <Route element={<Navigate replace to={NEW_CHAT_ROUTE} />} path="*" />
+            </Routes>
+          </div>
+          {terminalPanelOpen && (
+            <section
+              aria-label="Terminal"
+              className="relative z-20 flex min-h-[11.25rem] shrink-0 flex-col overflow-hidden bg-black shadow-[0_-0.75rem_2rem_rgba(0,0,0,0.22)]"
+              style={{ height: terminalPanelHeight }}
+            >
+              <div
+                aria-label="Resize terminal"
+                aria-orientation="horizontal"
+                className="group relative z-60 h-2 shrink-0 cursor-row-resize touch-none border-t border-(--ui-stroke-secondary) bg-black [-webkit-app-region:no-drag]"
+                onPointerDown={startTerminalPanelResize}
+                role="separator"
+                tabIndex={0}
+              >
+                <span className="absolute left-0 right-0 top-1/2 h-(--vscode-sash-hover-size,0.25rem) -translate-y-1/2 bg-(--ui-sash-hover-border) opacity-0 transition-opacity duration-100 group-hover:opacity-100 group-focus-visible:opacity-100 group-active:opacity-100" />
+              </div>
+              <TerminalSlot className="relative flex min-h-0 min-w-0 flex-1 flex-col" />
+            </section>
+          )}
+        </div>
       </PaneMain>
       {/*
         Order within a side maps to column order. Default (rail on the right):

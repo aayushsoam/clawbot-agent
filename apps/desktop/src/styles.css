@@ -413,10 +413,6 @@
   }
 }
 
-.dither {
-  background: repeating-conic-gradient(currentColor 0% 25%, transparent 0% 50%) 0 0 / 0.125rem 0.125rem;
-}
-
 :root:not([style*='--theme-asset-bg:']) .theme-default-filler {
   display: block;
 }

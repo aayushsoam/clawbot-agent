@@ -17,6 +17,7 @@ import {
   toggleSidebarOpen
 } from '@/store/layout'
 
+import { $terminalTakeover, setTerminalTakeover } from '../right-sidebar/store'
 import { appViewForPath, isOverlayView } from '../routes'
 
 import { titlebarButtonClass } from './titlebar'
@@ -52,6 +53,7 @@ export function TitlebarControls({ leftTools = [], tools = [], onOpenSettings }:
   const fileBrowserOpen = useStore($fileBrowserOpen)
   const sidebarOpen = useStore($sidebarOpen)
   const panesFlipped = useStore($panesFlipped)
+  const terminalOpen = useStore($terminalTakeover)
 
   const toggleHaptics = () => {
     if (!hapticsMuted) {
@@ -127,6 +129,17 @@ export function TitlebarControls({ leftTools = [], tools = [], onOpenSettings }:
     }
   ]
 
+  const terminalTool: TitlebarTool = {
+    active: terminalOpen,
+    icon: <Codicon name="terminal" />,
+    id: 'terminal-bottom-panel',
+    label: terminalOpen ? 'Hide terminal' : 'Show terminal',
+    onSelect: () => {
+      triggerHaptic('tap')
+      setTerminalTakeover(!terminalOpen)
+    }
+  }
+
   // While a full-screen overlay (settings, command center, …) is open it should
   // visually own the window. These control clusters are `fixed` at a higher
   // z-index than the overlay card, so they'd otherwise bleed over it — hide them
@@ -180,6 +193,7 @@ export function TitlebarControls({ leftTools = [], tools = [], onOpenSettings }:
           <TitlebarToolButton key={tool.id} navigate={navigate} tool={tool} />
         ))}
         {settingsTool && <TitlebarToolButton navigate={navigate} tool={settingsTool} />}
+        <TitlebarToolButton navigate={navigate} tool={terminalTool} />
         <TitlebarToolButton navigate={navigate} tool={rightSidebarTool} />
       </div>
     </>

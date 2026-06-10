@@ -17,8 +17,7 @@ import { SidebarPanelLabel } from '../shell/sidebar-label'
 
 import { ProjectTree } from './files/tree'
 import { useProjectTree } from './files/use-project-tree'
-import { $rightSidebarTab, $terminalTakeover, type RightSidebarTabId, setRightSidebarTab } from './store'
-import { TerminalSlot } from './terminal/persistent'
+import { $rightSidebarTab, type RightSidebarTabId, setRightSidebarTab } from './store'
 
 interface RightSidebarPaneProps {
   onActivateFile: (path: string) => void
@@ -33,13 +32,11 @@ interface RightSidebarTab {
 }
 
 const RIGHT_SIDEBAR_TABS: readonly RightSidebarTab[] = [
-  { id: 'files', label: 'File system', icon: 'list-tree' },
-  { id: 'terminal', label: 'Terminal', icon: 'terminal' }
+  { id: 'files', label: 'File system', icon: 'list-tree' }
 ]
 
 export function RightSidebarPane({ onActivateFile, onActivateFolder, onChangeCwd }: RightSidebarPaneProps) {
   const activeTab = useStore($rightSidebarTab)
-  const terminalTakeover = useStore($terminalTakeover)
   const panesFlipped = useStore($panesFlipped)
   const currentBranch = useStore($currentBranch).trim()
   const currentCwd = useStore($currentCwd).trim()
@@ -65,7 +62,7 @@ export function RightSidebarPane({ onActivateFile, onActivateFolder, onChangeCwd
   } = useProjectTree(currentCwd)
 
   const canCollapse = Object.values(openState).some(Boolean)
-  const effectiveTab: RightSidebarTabId = terminalTakeover ? 'files' : activeTab
+  const effectiveTab: RightSidebarTabId = activeTab === 'files' ? activeTab : 'files'
 
   const chooseFolder = async () => {
     const selected = await window.clawbotDesktop?.selectPaths({
@@ -94,8 +91,6 @@ export function RightSidebarPane({ onActivateFile, onActivateFolder, onChangeCwd
     }
   }
 
-  const tabs = terminalTakeover ? RIGHT_SIDEBAR_TABS.filter(tab => tab.id !== 'terminal') : RIGHT_SIDEBAR_TABS
-
   return (
     <aside
       aria-label="Right sidebar"
@@ -106,31 +101,27 @@ export function RightSidebarPane({ onActivateFile, onActivateFolder, onChangeCwd
           : 'border-l shadow-[inset_0.0625rem_0_0_color-mix(in_srgb,white_18%,transparent)]'
       )}
     >
-      <RightSidebarChrome activeTab={effectiveTab} branch={currentBranch} tabs={tabs} />
+      <RightSidebarChrome activeTab={effectiveTab} branch={currentBranch} tabs={RIGHT_SIDEBAR_TABS} />
 
-      {effectiveTab === 'terminal' ? (
-        <TerminalSlot />
-      ) : (
-        <FilesystemTab
-          canCollapse={canCollapse}
-          collapseNonce={collapseNonce}
-          cwd={currentCwd}
-          cwdName={cwdName}
-          data={data}
-          error={rootError}
-          hasCwd={hasCwd}
-          loading={rootLoading}
-          onActivateFile={onActivateFile}
-          onActivateFolder={onActivateFolder}
-          onChangeFolder={chooseFolder}
-          onCollapseAll={collapseAll}
-          onLoadChildren={loadChildren}
-          onNodeOpenChange={setNodeOpen}
-          onPreviewFile={previewFile}
-          onRefresh={() => void refreshRoot()}
-          openState={openState}
-        />
-      )}
+      <FilesystemTab
+        canCollapse={canCollapse}
+        collapseNonce={collapseNonce}
+        cwd={currentCwd}
+        cwdName={cwdName}
+        data={data}
+        error={rootError}
+        hasCwd={hasCwd}
+        loading={rootLoading}
+        onActivateFile={onActivateFile}
+        onActivateFolder={onActivateFolder}
+        onChangeFolder={chooseFolder}
+        onCollapseAll={collapseAll}
+        onLoadChildren={loadChildren}
+        onNodeOpenChange={setNodeOpen}
+        onPreviewFile={previewFile}
+        onRefresh={() => void refreshRoot()}
+        openState={openState}
+      />
     </aside>
   )
 }
