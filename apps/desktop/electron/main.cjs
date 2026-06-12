@@ -247,6 +247,7 @@ const DEFAULT_UPDATE_BRANCH = 'main'
 const DESKTOP_LOG_PATH = path.join(CLAWBOT_HOME, 'logs', 'desktop.log')
 const DESKTOP_LOG_FLUSH_MS = 120
 const DESKTOP_LOG_BUFFER_MAX_CHARS = 64 * 1024
+const DESKTOP_LOG_MAX_BYTES = 20 * 1024 * 1024
 const BOOT_FAKE_MODE = process.env.CLAWBOT_DESKTOP_BOOT_FAKE === '1'
 const BOOT_FAKE_STEP_MS = (() => {
   const raw = Number.parseInt(String(process.env.CLAWBOT_DESKTOP_BOOT_FAKE_STEP_MS || ''), 10)
@@ -536,9 +537,32 @@ function flushDesktopLogBufferSync() {
 
   try {
     fs.mkdirSync(path.dirname(DESKTOP_LOG_PATH), { recursive: true })
+    resetDesktopLogIfOversizedSync(Buffer.byteLength(chunk))
     fs.appendFileSync(DESKTOP_LOG_PATH, chunk)
   } catch {
     // Logging must never block app startup/shutdown.
+  }
+}
+
+function resetDesktopLogIfOversizedSync(incomingBytes = 0) {
+  try {
+    const currentBytes = fs.statSync(DESKTOP_LOG_PATH).size
+    if (currentBytes + incomingBytes > DESKTOP_LOG_MAX_BYTES) {
+      fs.truncateSync(DESKTOP_LOG_PATH, 0)
+    }
+  } catch {
+    // A missing or temporarily unavailable log file is safe to ignore.
+  }
+}
+
+async function resetDesktopLogIfOversized(incomingBytes = 0) {
+  try {
+    const currentBytes = (await fs.promises.stat(DESKTOP_LOG_PATH)).size
+    if (currentBytes + incomingBytes > DESKTOP_LOG_MAX_BYTES) {
+      await fs.promises.truncate(DESKTOP_LOG_PATH, 0)
+    }
+  } catch {
+    // A missing or temporarily unavailable log file is safe to ignore.
   }
 }
 
@@ -550,6 +574,7 @@ function flushDesktopLogBufferAsync() {
   desktopLogFlushPromise = desktopLogFlushPromise
     .then(async () => {
       await fs.promises.mkdir(path.dirname(DESKTOP_LOG_PATH), { recursive: true })
+      await resetDesktopLogIfOversized(Buffer.byteLength(chunk))
       await fs.promises.appendFile(DESKTOP_LOG_PATH, chunk)
     })
     .catch(() => {
@@ -5383,7 +5408,22 @@ ipcMain.handle('clawbot:version', async () => ({
   clawbotRoot: resolveUpdateRoot()
 }))
 
+const hasSingleInstanceLock = app.requestSingleInstanceLock()
+
+if (!hasSingleInstanceLock) {
+  app.quit()
+}
+
+app.on('second-instance', () => {
+  if (!mainWindow || mainWindow.isDestroyed()) return
+  if (mainWindow.isMinimized()) mainWindow.restore()
+  mainWindow.show()
+  mainWindow.focus()
+})
+
 app.whenReady().then(() => {
+  if (!hasSingleInstanceLock) return
+  resetDesktopLogIfOversizedSync()
   if (IS_MAC) {
     Menu.setApplicationMenu(buildApplicationMenu())
   } else {

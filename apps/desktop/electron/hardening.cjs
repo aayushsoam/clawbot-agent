@@ -2,7 +2,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { fileURLToPath } = require('node:url')
 
-const DEFAULT_FETCH_TIMEOUT_MS = 15_000
+const DEFAULT_FETCH_TIMEOUT_MS = 60_000
 const DATA_URL_READ_MAX_BYTES = 16 * 1024 * 1024
 const TEXT_PREVIEW_SOURCE_MAX_BYTES = 64 * 1024 * 1024
 

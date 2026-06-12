@@ -72,7 +72,8 @@ AUTH_LOCK_TIMEOUT_SECONDS = 15.0
 # Soam Portal defaults
 DEFAULT_SOAM_PORTAL_URL = "https://portal.aayushsoam.com"
 DEFAULT_SOAM_INFERENCE_URL = "https://inference-api.aayushsoam.com/v1"
-DEFAULT_SOAM_CLIENT_ID = "clawbot-cli"
+DEFAULT_SOAM_CLIENT_ID = ""
+DEFAULT_GROQ_BASE_URL = "https://api.groq.com/openai/v1"
 SOAM_LEGACY_AGENT_KEY_SCOPE = "inference:mint_agent_key"
 SOAM_INFERENCE_INVOKE_SCOPE = "inference:invoke"
 DEFAULT_SOAM_SCOPE = f"{SOAM_INFERENCE_INVOKE_SCOPE} {SOAM_LEGACY_AGENT_KEY_SCOPE}"
@@ -181,14 +182,13 @@ class ProviderConfig:
 
 
 PROVIDER_REGISTRY: Dict[str, ProviderConfig] = {
-    "soam": ProviderConfig(
-        id="soam",
-        name="Soam Portal",
-        auth_type="oauth_device_code",
-        portal_base_url=DEFAULT_SOAM_PORTAL_URL,
-        inference_base_url=DEFAULT_SOAM_INFERENCE_URL,
-        client_id=DEFAULT_SOAM_CLIENT_ID,
-        scope=DEFAULT_SOAM_SCOPE,
+    "groq": ProviderConfig(
+        id="groq",
+        name="Groq",
+        auth_type="api_key",
+        inference_base_url=DEFAULT_GROQ_BASE_URL,
+        api_key_env_vars=("GROQ_API_KEY",),
+        base_url_env_var="GROQ_BASE_URL",
     ),
     "openai-codex": ProviderConfig(
         id="openai-codex",

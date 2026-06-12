@@ -1820,14 +1820,6 @@ _OAUTH_PROVIDER_CATALOG: tuple[Dict[str, Any], ...] = (
         "status_fn": _claude_code_only_status,
     },
     {
-        "id": "soam",
-        "name": "Soam Portal",
-        "flow": "device_code",
-        "cli_command": "clawbot auth add soam",
-        "docs_url": "https://portal.aayushsoam.com",
-        "status_fn": None,  # dispatched via auth.get_soam_auth_status
-    },
-    {
         "id": "openai-codex",
         "name": "OpenAI Codex (ChatGPT)",
         "flow": "device_code",

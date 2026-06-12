@@ -161,31 +161,10 @@ def _xai_curated_models() -> list[str]:
 
 
 _PROVIDER_MODELS: dict[str, list[str]] = {
-    "soam": [
-        "anthropic/claude-opus-4.7",
-        "anthropic/claude-opus-4.6",
-        "anthropic/claude-sonnet-4.6",
-        "moonshotai/kimi-k2.6",
-        "qwen/qwen3.6-plus",
-        "anthropic/claude-haiku-4.5",
-        "openai/gpt-5.5",
-        "openai/gpt-5.5-pro",
-        "openai/gpt-5.4-mini",
-        "openai/gpt-5.4-nano",
-        "openai/gpt-5.3-codex",
-        "xiaomi/mimo-v2.5-pro",
-        "tencent/hy3-preview",
-        "google/gemini-3-pro-preview",
-        "google/gemini-3-flash-preview",
-        "google/gemini-3.1-pro-preview",
-        "google/gemini-3.1-flash-lite-preview",
-        "qwen/qwen3.6-35b-a3b",
-        "stepfun/step-3.5-flash",
-        "minimax/minimax-m2.7",
-        "z-ai/glm-5.1",
-        "x-ai/grok-4.3",
-        "nvidia/nemotron-3-super-120b-a12b",
-        "deepseek/deepseek-v4-pro",
+    "groq": [
+        "openai/gpt-oss-120b",
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
     ],
     # Native OpenAI Chat Completions (api.openai.com). Used by /model counts and
     # provider_model_ids fallback when /v1/models is unavailable.
@@ -922,7 +901,7 @@ class ProviderEntry(NamedTuple):
     tui_desc: str   # detailed description for `clawbot model` TUI
 
 CANONICAL_PROVIDERS: list[ProviderEntry] = [
-    ProviderEntry("soam",           "Soam Portal",              "Soam Portal (Aayush soam subscription)"),
+    ProviderEntry("groq",           "Groq",                     "Groq (fast OpenAI-compatible API via GROQ_API_KEY)"),
     ProviderEntry("openrouter",     "OpenRouter",               "OpenRouter (100+ models, pay-per-use)"),
     ProviderEntry("novita",         "NovitaAI",                 "NovitaAI (AI-native cloud: Model API, Agent Sandbox, GPU Cloud)"),
     ProviderEntry("lmstudio",       "LM Studio",                "LM Studio (local desktop app with built-in model server)"),
