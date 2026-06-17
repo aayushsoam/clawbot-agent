@@ -620,3 +620,85 @@ export interface ModelAssignmentResponse {
   scope?: string
   tasks?: string[]
 }
+
+export interface PluginManifestResponse {
+  name: string
+  label: string
+  description: string
+  icon: string
+  version: string
+  tab: {
+    path: string
+    position?: string
+    override?: string
+    hidden?: boolean
+  }
+  slots?: string[]
+  entry: string
+  css?: string | null
+  has_api: boolean
+  source: string
+}
+
+export interface HubAgentPluginRow {
+  name: string
+  version: string
+  description: string
+  source: string
+  runtime_status: 'disabled' | 'enabled' | 'inactive'
+  has_dashboard_manifest: boolean
+  dashboard_manifest: PluginManifestResponse | null
+  path: string
+  can_remove: boolean
+  can_update_git: boolean
+  auth_required: boolean
+  auth_command: string
+  user_hidden: boolean
+}
+
+export interface PluginsHubProviderOption {
+  name: string
+  description: string
+}
+
+export interface PluginsHubProviders {
+  memory_provider: string
+  memory_options: PluginsHubProviderOption[]
+  context_engine: string
+  context_options: PluginsHubProviderOption[]
+}
+
+export interface PluginsHubResponse {
+  plugins: HubAgentPluginRow[]
+  orphan_dashboard_plugins: PluginManifestResponse[]
+  providers: PluginsHubProviders
+}
+
+export interface AgentPluginInstallRequest {
+  identifier: string
+  force?: boolean
+  enable?: boolean
+}
+
+export interface AgentPluginInstallResponse {
+  ok: boolean
+  plugin_name?: string
+  warnings?: string[]
+  missing_env?: string[]
+  after_install_path?: string | null
+  enabled?: boolean
+  error?: string
+}
+
+export interface AgentPluginUpdateResponse {
+  ok: boolean
+  name?: string
+  output?: string
+  unchanged?: boolean
+  error?: string
+}
+
+export interface PluginProvidersPutRequest {
+  memory_provider?: string
+  context_engine?: string
+}

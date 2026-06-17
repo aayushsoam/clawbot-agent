@@ -258,7 +258,7 @@ class ChatCompletionsTransport(ProviderTransport):
             api_kwargs["timeout"] = timeout
 
         # Tools
-        if tools and not params.get("is_nvidia_nim", False):
+        if tools:
             # Moonshot/Kimi uses a stricter flavored JSON Schema.  Rewriting
             # tool parameters here keeps aggregator routes (Soam, OpenRouter,
             # etc.) compatible, in addition to direct moonshot.ai endpoints.
@@ -275,14 +275,6 @@ class ChatCompletionsTransport(ProviderTransport):
         is_kimi = params.get("is_kimi", False)
         is_tokenhub = params.get("is_tokenhub", False)
         reasoning_config = params.get("reasoning_config")
-
-        if is_nvidia_nim:
-            if ephemeral is not None:
-                ephemeral = _clamp_nvidia_max_tokens(ephemeral)
-            if max_tokens is not None:
-                max_tokens = _clamp_nvidia_max_tokens(max_tokens)
-            if anthropic_max_out is not None:
-                anthropic_max_out = _clamp_nvidia_max_tokens(anthropic_max_out)
 
         if ephemeral is not None and max_tokens_fn:
             api_kwargs.update(max_tokens_fn(ephemeral))
@@ -459,8 +451,7 @@ class ChatCompletionsTransport(ProviderTransport):
         is_nvidia_profile = _is_nvidia_profile(profile)
 
         # Tools — apply Moonshot/Kimi schema sanitization regardless of path.
-        # NVIDIA NIM rejects `tools` for several text models with HTTP 422.
-        if tools and not is_nvidia_profile:
+        if tools:
             if is_moonshot_model(model):
                 tools = sanitize_moonshot_tools(tools)
             api_kwargs["tools"] = tools
@@ -471,20 +462,7 @@ class ChatCompletionsTransport(ProviderTransport):
         user_max = params.get("max_tokens")
         anthropic_max = params.get("anthropic_max_output")
 
-        if is_nvidia_profile:
-            if ephemeral is not None:
-                ephemeral = _clamp_nvidia_max_tokens(ephemeral)
-            if user_max is not None:
-                user_max = _clamp_nvidia_max_tokens(user_max)
-            profile_default = (
-                _clamp_nvidia_max_tokens(profile.default_max_tokens)
-                if profile.default_max_tokens
-                else None
-            )
-            if anthropic_max is not None:
-                anthropic_max = _clamp_nvidia_max_tokens(anthropic_max)
-        else:
-            profile_default = profile.default_max_tokens
+        profile_default = profile.default_max_tokens
 
         if ephemeral is not None and max_tokens_fn:
             api_kwargs.update(max_tokens_fn(ephemeral))

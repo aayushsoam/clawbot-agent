@@ -97,6 +97,7 @@ const ArtifactsView = lazy(async () => ({ default: (await import('./artifacts'))
 const CommandCenterView = lazy(async () => ({ default: (await import('./command-center')).CommandCenterView }))
 const CronView = lazy(async () => ({ default: (await import('./cron')).CronView }))
 const MessagingView = lazy(async () => ({ default: (await import('./messaging')).MessagingView }))
+const PluginsView = lazy(async () => ({ default: (await import('./plugins')).PluginsView }))
 const ProfilesView = lazy(async () => ({ default: (await import('./profiles')).ProfilesView }))
 const SettingsView = lazy(async () => ({ default: (await import('./settings')).SettingsView }))
 const SkillsView = lazy(async () => ({ default: (await import('./skills')).SkillsView }))
@@ -919,6 +920,14 @@ export function DesktopController() {
                   </Suspense>
                 }
                 path="skills"
+              />
+              <Route
+                element={
+                  <Suspense fallback={null}>
+                    <PluginsView setStatusbarItemGroup={setStatusbarItemGroup} />
+                  </Suspense>
+                }
+                path="plugins"
               />
               <Route
                 element={

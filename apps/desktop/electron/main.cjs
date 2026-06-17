@@ -51,6 +51,9 @@ const {
   resolveReadableFileForIpc,
   resolveTimeoutMs
 } = require('./hardening.cjs')
+const { readDirForIpc } = require('./fs-read-dir.cjs')
+const { gitRootForIpc } = require('./git-root.cjs')
+const { buildDesktopBackendEnv, normalizeClawbotHomeRoot } = require('./backend-env.cjs')
 
 let nodePty = null
 
@@ -110,6 +113,20 @@ if (REMOTE_DISPLAY_REASON) {
     `[clawbot] remote display detected (${REMOTE_DISPLAY_REASON}); disabling GPU hardware acceleration to prevent flicker`
   )
 }
+
+// Keep the renderer running at full speed while the window is in the background
+// or occluded. The chat transcript streams to screen through a
+// requestAnimationFrame-gated flush; Chromium pauses rAF (and clamps timers)
+// for backgrounded/occluded renderers, so without these the live answer stalls
+// whenever the window loses focus (switching to your editor mid-turn, detached
+// devtools, another window covering it) and only paints on refocus or refresh.
+// `backgroundThrottling: false` on the BrowserWindow covers the blurred case;
+// these process-level switches additionally stop Chromium from backgrounding or
+// occlusion-throttling the renderer. Must run before app `ready`.
+app.commandLine.appendSwitch('disable-renderer-backgrounding')
+app.commandLine.appendSwitch('disable-backgrounding-occluded-windows')
+app.commandLine.appendSwitch('disable-background-timer-throttling')
+
 const SOURCE_REPO_ROOT = path.resolve(APP_ROOT, '../..')
 
 // Build-time install stamp -- the git ref this .exe was built against.
@@ -247,7 +264,10 @@ const DEFAULT_UPDATE_BRANCH = 'main'
 const DESKTOP_LOG_PATH = path.join(CLAWBOT_HOME, 'logs', 'desktop.log')
 const DESKTOP_LOG_FLUSH_MS = 120
 const DESKTOP_LOG_BUFFER_MAX_CHARS = 64 * 1024
-const DESKTOP_LOG_MAX_BYTES = 20 * 1024 * 1024
+const DESKTOP_LOG_MAX_BYTES = 10 * 1024 * 1024
+const DESKTOP_LOG_BACKUP_COUNT = 3
+const DESKTOP_LOG_DISCARD_BYTES = DESKTOP_LOG_MAX_BYTES * 4
+const desktopLogBackupPath = n => `${DESKTOP_LOG_PATH}.${n}`
 const BOOT_FAKE_MODE = process.env.CLAWBOT_DESKTOP_BOOT_FAKE === '1'
 const BOOT_FAKE_STEP_MS = (() => {
   const raw = Number.parseInt(String(process.env.CLAWBOT_DESKTOP_BOOT_FAKE_STEP_MS || ''), 10)
@@ -530,6 +550,62 @@ let bootProgressState = {
   timestamp: Date.now()
 }
 
+// Cascade log rotation: .log → .1, .1 → .2, ... .N → delete.
+// Returns an array of ['rm', path] or ['mv', src, dst] operations.
+function planDesktopLogRotation(size) {
+  if (size < DESKTOP_LOG_MAX_BYTES) return []
+
+  const backups = n => Array.from({ length: n }, (_, i) => desktopLogBackupPath(i + 1))
+
+  // Pathological: reclaim live + every backup outright
+  if (size > DESKTOP_LOG_DISCARD_BYTES) {
+    return [DESKTOP_LOG_PATH, ...backups(DESKTOP_LOG_BACKUP_COUNT)]
+      .map(p => ['rm', p])
+  }
+
+  // Normal: cascade rotations — .3 → delete, .2 → .3, .1 → .2, live → .1
+  const ops = [['rm', desktopLogBackupPath(DESKTOP_LOG_BACKUP_COUNT)]]
+  for (let i = DESKTOP_LOG_BACKUP_COUNT - 1; i >= 1; i--) {
+    ops.push(['mv', desktopLogBackupPath(i), desktopLogBackupPath(i + 1)])
+  }
+  ops.push(['mv', DESKTOP_LOG_PATH, desktopLogBackupPath(1)])
+  return ops
+}
+
+function rotateDesktopLogIfNeededSync() {
+  let size
+  try {
+    size = fs.statSync(DESKTOP_LOG_PATH).size
+  } catch {
+    return // No live file yet
+  }
+  for (const [op, src, dst] of planDesktopLogRotation(size)) {
+    try {
+      if (op === 'rm') fs.rmSync(src, { force: true })
+      else fs.renameSync(src, dst)
+    } catch {
+      // Best-effort — logging must never block startup
+    }
+  }
+}
+
+async function rotateDesktopLogIfNeededAsync() {
+  let size
+  try {
+    size = (await fs.promises.stat(DESKTOP_LOG_PATH)).size
+  } catch {
+    return
+  }
+  for (const [op, src, dst] of planDesktopLogRotation(size)) {
+    try {
+      if (op === 'rm') await fs.promises.rm(src, { force: true })
+      else await fs.promises.rename(src, dst)
+    } catch {
+      // Best-effort — logging must never crash the shell
+    }
+  }
+}
+
 function flushDesktopLogBufferSync() {
   if (!desktopLogBuffer) return
   const chunk = desktopLogBuffer
@@ -537,32 +613,10 @@ function flushDesktopLogBufferSync() {
 
   try {
     fs.mkdirSync(path.dirname(DESKTOP_LOG_PATH), { recursive: true })
-    resetDesktopLogIfOversizedSync(Buffer.byteLength(chunk))
+    rotateDesktopLogIfNeededSync()
     fs.appendFileSync(DESKTOP_LOG_PATH, chunk)
   } catch {
     // Logging must never block app startup/shutdown.
-  }
-}
-
-function resetDesktopLogIfOversizedSync(incomingBytes = 0) {
-  try {
-    const currentBytes = fs.statSync(DESKTOP_LOG_PATH).size
-    if (currentBytes + incomingBytes > DESKTOP_LOG_MAX_BYTES) {
-      fs.truncateSync(DESKTOP_LOG_PATH, 0)
-    }
-  } catch {
-    // A missing or temporarily unavailable log file is safe to ignore.
-  }
-}
-
-async function resetDesktopLogIfOversized(incomingBytes = 0) {
-  try {
-    const currentBytes = (await fs.promises.stat(DESKTOP_LOG_PATH)).size
-    if (currentBytes + incomingBytes > DESKTOP_LOG_MAX_BYTES) {
-      await fs.promises.truncate(DESKTOP_LOG_PATH, 0)
-    }
-  } catch {
-    // A missing or temporarily unavailable log file is safe to ignore.
   }
 }
 
@@ -574,7 +628,7 @@ function flushDesktopLogBufferAsync() {
   desktopLogFlushPromise = desktopLogFlushPromise
     .then(async () => {
       await fs.promises.mkdir(path.dirname(DESKTOP_LOG_PATH), { recursive: true })
-      await resetDesktopLogIfOversized(Buffer.byteLength(chunk))
+      await rotateDesktopLogIfNeededAsync()
       await fs.promises.appendFile(DESKTOP_LOG_PATH, chunk)
     })
     .catch(() => {
@@ -4563,7 +4617,8 @@ function createWindow() {
       webviewTag: true,
       sandbox: true,
       nodeIntegration: false,
-      devTools: true
+      devTools: true,
+      backgroundThrottling: false
     }
   })
 
@@ -4887,7 +4942,10 @@ async function mergeRemoteProfileSessions(searchParams, remoteProfiles) {
   const base = await fetchJson(`${primary.baseUrl}/api/profiles/sessions?${searchParams}`, primary.token, {
     method: 'GET',
     timeoutMs: DEFAULT_FETCH_TIMEOUT_MS
-  }).catch(() => ({ sessions: [], total: 0, profile_totals: {} }))
+  }).catch(err => {
+    rememberLog(`session list fetch failed: ${err?.message}`)
+    return { sessions: [], total: 0, profile_totals: {} }
+  })
 
   // Over-fetch each remote from offset 0 (limit+offset rows) so the merged window
   // is correct for this page — mirrors the primary's per-profile over-fetch.
@@ -4902,7 +4960,10 @@ async function mergeRemoteProfileSessions(searchParams, remoteProfiles) {
 
   // Swap each remote profile's stale local rows/total for the remote's real ones.
   await Promise.all(remoteProfiles.map(async name => {
-    const list = await remoteSessionList(name, remoteParams).catch(() => null)
+    const list = await remoteSessionList(name, remoteParams).catch(err => {
+      rememberLog(`remote session list failed for profile ${name}: ${err?.message}`)
+      return null
+    })
     if (!list) {
       delete profileTotals[name] // dead remote → drop its stale local total too
       return
@@ -5125,48 +5186,6 @@ ipcMain.handle('clawbot:logs:reveal', async () => {
 
 ipcMain.handle('clawbot:logs:recent', async () => ({ path: DESKTOP_LOG_PATH, lines: clawbotLog.slice(-200) }))
 
-// Always-hidden noise (covers non-git projects too — gitignore would catch
-// these anyway when present, but we want the same hygiene without one).
-const FS_READDIR_HIDDEN = new Set([
-  '.git',
-  '.hg',
-  '.svn',
-  '.cache',
-  '.next',
-  '.turbo',
-  '.venv',
-  '__pycache__',
-  'build',
-  'dist',
-  'node_modules',
-  'target',
-  'venv'
-])
-
-function findGitRoot(start) {
-  let dir = start
-
-  for (let i = 0; i < 50; i += 1) {
-    try {
-      if (fs.existsSync(path.join(dir, '.git'))) {
-        return dir
-      }
-    } catch {
-      return null
-    }
-
-    const parent = path.dirname(dir)
-
-    if (parent === dir) {
-      return null
-    }
-
-    dir = parent
-  }
-
-  return null
-}
-
 function terminalShellCommand() {
   if (IS_WINDOWS) {
     return { args: [], command: process.env.COMSPEC || 'cmd.exe' }
@@ -5245,46 +5264,9 @@ function disposeTerminalSession(id) {
   return true
 }
 
-ipcMain.handle('clawbot:fs:readDir', async (_event, dirPath) => {
-  const resolved = path.resolve(String(dirPath || ''))
+ipcMain.handle('clawbot:fs:readDir', async (_event, dirPath) => readDirForIpc(dirPath))
 
-  if (!resolved) {
-    return { entries: [], error: 'invalid-path' }
-  }
-
-  try {
-    const dirents = await fs.promises.readdir(resolved, { withFileTypes: true })
-
-    const entries = dirents
-      .filter(d => {
-        if (FS_READDIR_HIDDEN.has(d.name)) {
-          return false
-        }
-
-        return true
-      })
-      .map(d => ({ name: d.name, path: path.join(resolved, d.name), isDirectory: d.isDirectory() }))
-      .sort((a, b) => Number(b.isDirectory) - Number(a.isDirectory) || a.name.localeCompare(b.name))
-
-    return { entries }
-  } catch (error) {
-    return { entries: [], error: error?.code || 'read-error' }
-  }
-})
-
-ipcMain.handle('clawbot:fs:gitRoot', async (_event, startPath) => {
-  const input = String(startPath || '')
-  const resolved = input.startsWith('file:') ? fileURLToPath(input) : path.resolve(input)
-
-  try {
-    const stat = await fs.promises.stat(resolved)
-    const start = stat.isDirectory() ? resolved : path.dirname(resolved)
-
-    return findGitRoot(start)
-  } catch {
-    return findGitRoot(resolved)
-  }
-})
+ipcMain.handle('clawbot:fs:gitRoot', async (_event, startPath) => gitRootForIpc(startPath))
 
 ipcMain.handle('clawbot:terminal:start', async (event, payload = {}) => {
   if (!nodePty) {
@@ -5423,7 +5405,7 @@ app.on('second-instance', () => {
 
 app.whenReady().then(() => {
   if (!hasSingleInstanceLock) return
-  resetDesktopLogIfOversizedSync()
+  rotateDesktopLogIfNeededSync()
   if (IS_MAC) {
     Menu.setApplicationMenu(buildApplicationMenu())
   } else {

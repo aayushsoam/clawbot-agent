@@ -207,6 +207,55 @@ export interface Translations {
     failedToUpdate: (name: string) => string
   }
 
+  plugins: {
+    loading: string
+    loadFailed: string
+    refresh: string
+    refreshing: string
+    search: string
+    providersHeading: string
+    providersHint: string
+    memoryProviderLabel: string
+    contextEngineLabel: string
+    providerDefault: string
+    saveProviders: string
+    savedProviders: string
+    saveProvidersFailed: string
+    installHeading: string
+    installHint: string
+    identifierLabel: string
+    forceReinstall: string
+    enableAfterInstall: string
+    installBtn: string
+    installed: (name: string) => string
+    installFailed: string
+    missingEnv: (vars: string) => string
+    rescanHint: string
+    rescanBtn: string
+    rescanned: (count: number) => string
+    rescanFailed: string
+    pluginListHeading: string
+    noPlugins: string
+    orphanHeading: string
+    actionFailed: string
+    status: { enabled: string; disabled: string; inactive: string }
+    authRequired: string
+    enable: string
+    disable: string
+    update: string
+    remove: string
+    enabledToast: string
+    disabledToast: string
+    updatedToast: string
+    shownToast: string
+    hiddenToast: string
+    removedToast: (name: string) => string
+    showInSidebar: string
+    hideFromSidebar: string
+    removeConfirmTitle: string
+    removeConfirmDesc: (name: string) => string
+  }
+
   agents: {
     close: string
     title: string

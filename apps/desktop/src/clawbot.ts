@@ -3,18 +3,21 @@ import { JsonRpcGatewayClient } from '@clawbot/shared'
 import type {
   ActionResponse,
   ActionStatusResponse,
+  AgentPluginInstallRequest,
+  AgentPluginInstallResponse,
+  AgentPluginUpdateResponse,
   AnalyticsResponse,
   AudioSpeakResponse,
   AudioTranscriptionResponse,
   AuxiliaryModelsResponse,
+  ClawbotConfig,
+  ClawbotConfigRecord,
   ConfigSchemaResponse,
   CronJob,
   CronJobCreatePayload,
   CronJobUpdates,
   ElevenLabsVoicesResponse,
   EnvVarInfo,
-  ClawbotConfig,
-  ClawbotConfigRecord,
   LogsResponse,
   MessagingPlatformsResponse,
   MessagingPlatformTestResponse,
@@ -28,6 +31,8 @@ import type {
   OAuthStartResponse,
   OAuthSubmitResponse,
   PaginatedSessions,
+  PluginProvidersPutRequest,
+  PluginsHubResponse,
   ProfileCreatePayload,
   ProfileSetupCommand,
   ProfileSoul,
@@ -45,6 +50,9 @@ const DEFAULT_GATEWAY_REQUEST_TIMEOUT_MS = 30_000
 export type {
   ActionResponse,
   ActionStatusResponse,
+  AgentPluginInstallRequest,
+  AgentPluginInstallResponse,
+  AgentPluginUpdateResponse,
   AnalyticsDailyEntry,
   AnalyticsModelEntry,
   AnalyticsResponse,
@@ -54,6 +62,8 @@ export type {
   AudioSpeakResponse,
   AudioTranscriptionResponse,
   AuxiliaryModelsResponse,
+  ClawbotConfig,
+  ClawbotConfigRecord,
   ConfigFieldSchema,
   ConfigSchemaResponse,
   CronJob,
@@ -64,8 +74,7 @@ export type {
   ElevenLabsVoicesResponse,
   EnvVarInfo,
   GatewayReadyPayload,
-  ClawbotConfig,
-  ClawbotConfigRecord,
+  HubAgentPluginRow,
   LogsResponse,
   MessagingEnvVarInfo,
   MessagingHomeChannel,
@@ -79,6 +88,11 @@ export type {
   ModelOptionProvider,
   ModelOptionsResponse,
   PaginatedSessions,
+  PluginManifestResponse,
+  PluginProvidersPutRequest,
+  PluginsHubProviderOption,
+  PluginsHubProviders,
+  PluginsHubResponse,
   ProfileCreatePayload,
   ProfileInfo,
   ProfileSetupCommand,
@@ -439,6 +453,82 @@ export function selectToolsetProvider(
     path: `/api/tools/toolsets/${encodeURIComponent(name)}/provider`,
     method: 'PUT',
     body: { provider }
+  })
+}
+
+export function getPluginsHub(): Promise<PluginsHubResponse> {
+  return window.clawbotDesktop.api<PluginsHubResponse>({
+    ...profileScoped(),
+    path: '/api/dashboard/plugins/hub'
+  })
+}
+
+export function rescanPlugins(): Promise<{ ok: boolean; count: number }> {
+  return window.clawbotDesktop.api<{ ok: boolean; count: number }>({
+    ...profileScoped(),
+    path: '/api/dashboard/plugins/rescan'
+  })
+}
+
+export function installAgentPlugin(body: AgentPluginInstallRequest): Promise<AgentPluginInstallResponse> {
+  return window.clawbotDesktop.api<AgentPluginInstallResponse>({
+    ...profileScoped(),
+    path: '/api/dashboard/agent-plugins/install',
+    method: 'POST',
+    body
+  })
+}
+
+export function enableAgentPlugin(name: string): Promise<{ ok: boolean; name: string; unchanged?: boolean }> {
+  return window.clawbotDesktop.api<{ ok: boolean; name: string; unchanged?: boolean }>({
+    ...profileScoped(),
+    path: `/api/dashboard/agent-plugins/${encodeURIComponent(name)}/enable`,
+    method: 'POST'
+  })
+}
+
+export function disableAgentPlugin(name: string): Promise<{ ok: boolean; name: string; unchanged?: boolean }> {
+  return window.clawbotDesktop.api<{ ok: boolean; name: string; unchanged?: boolean }>({
+    ...profileScoped(),
+    path: `/api/dashboard/agent-plugins/${encodeURIComponent(name)}/disable`,
+    method: 'POST'
+  })
+}
+
+export function updateAgentPlugin(name: string): Promise<AgentPluginUpdateResponse> {
+  return window.clawbotDesktop.api<AgentPluginUpdateResponse>({
+    ...profileScoped(),
+    path: `/api/dashboard/agent-plugins/${encodeURIComponent(name)}/update`,
+    method: 'POST'
+  })
+}
+
+export function removeAgentPlugin(name: string): Promise<{ ok: boolean; name: string }> {
+  return window.clawbotDesktop.api<{ ok: boolean; name: string }>({
+    ...profileScoped(),
+    path: `/api/dashboard/agent-plugins/${encodeURIComponent(name)}`,
+    method: 'DELETE'
+  })
+}
+
+export function savePluginProviders(body: PluginProvidersPutRequest): Promise<{ ok: boolean }> {
+  return window.clawbotDesktop.api<{ ok: boolean }>({
+    ...profileScoped(),
+    path: '/api/dashboard/plugin-providers',
+    method: 'PUT',
+    body
+  })
+}
+
+export function setPluginVisibility(
+  name: string,
+  hidden: boolean
+): Promise<{ ok: boolean; name: string; hidden: boolean }> {
+  return window.clawbotDesktop.api<{ ok: boolean; name: string; hidden: boolean }>({
+    ...profileScoped(),
+    path: `/api/dashboard/plugins/${encodeURIComponent(name)}/visibility`,
+    method: 'POST',
+    body: { hidden }
   })
 }
 
