@@ -173,9 +173,9 @@ print_banner() {
     echo ""
     echo -e "${MAGENTA}${BOLD}"
     echo "┌─────────────────────────────────────────────────────────┐"
-    echo "│             ⚡Clawbot Agent Installer                    │"
+    echo "│               Clawbot Agent Installer                   │"
     echo "├─────────────────────────────────────────────────────────┤"
-    echo "│  An open source AI agent by Aayush soam.              │"
+    echo "│          An open source AI agent by Aayush soam         │"
     echo "└─────────────────────────────────────────────────────────┘"
     echo -e "${NC}"
 }

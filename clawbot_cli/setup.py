@@ -3248,7 +3248,7 @@ def run_setup_wizard(args):
     )
     print(
         color(
-            "│  Press Ctrl+C at any time to exit.                     │", Colors.MAGENTA
+            "│  Press Ctrl+C at any time to exit.                      │", Colors.MAGENTA
         )
     )
     print(

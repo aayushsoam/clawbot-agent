@@ -85,12 +85,12 @@ $InstallStageProtocolVersion = 1
 function Write-Banner {
     Write-Host ""
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
-    Write-Host "|             * Clawbot Agent Installer                    |" -ForegroundColor Magenta
+    Write-Host "|             * Clawbot Agent Installer                   |" -ForegroundColor Magenta
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
-    Write-Host "|  An open source AI agent by Aayush soam.              |" -ForegroundColor Magenta
+    Write-Host "|          An open source AI agent by Aayush soam         |" -ForegroundColor Magenta
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
     Write-Host ""
-}
+} 
 
 function Write-Info {
     param([string]$Message)
@@ -1915,7 +1915,7 @@ function Start-GatewayIfConfigured {
 function Write-Completion {
     Write-Host ""
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Green
-    Write-Host "|              [OK] Installation Complete!                |" -ForegroundColor Green
+    Write-Host "|               ✅ Installation Complete!                 |" -ForegroundColor Green
     Write-Host "+---------------------------------------------------------+" -ForegroundColor Green
     Write-Host ""
     
