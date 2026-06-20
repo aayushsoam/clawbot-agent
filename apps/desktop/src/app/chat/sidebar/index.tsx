@@ -549,11 +549,10 @@ export function ChatSidebar({
   return (
     <Sidebar
       className={cn(
-        'relative h-full min-w-0 overflow-hidden border-t-0 border-b-0 text-foreground transition-none',
-        panesFlipped ? 'border-l border-r-0' : 'border-r border-l-0',
+        'relative h-full min-w-0 overflow-hidden border-0 text-foreground transition-none',
         sidebarOpen
-          ? 'border-(--sidebar-edge-border) bg-(--ui-sidebar-surface-background) opacity-100'
-          : 'pointer-events-none border-transparent bg-transparent opacity-0'
+          ? 'bg-transparent opacity-100'
+          : 'pointer-events-none bg-transparent opacity-0'
       )}
       collapsible="none"
     >

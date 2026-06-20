@@ -80,8 +80,8 @@ export function ChatPreviewRail({ onRestartServer, setTitlebarToolGroup }: ChatP
   const isPreview = activeTab.id === RIGHT_RAIL_PREVIEW_TAB_ID
 
   return (
-    <aside className="relative flex h-full w-full min-w-0 flex-col overflow-hidden border-l border-(--ui-stroke-tertiary) bg-(--ui-editor-surface-background) text-(--ui-text-tertiary)">
-      <div className="group/rail-tabs flex h-(--titlebar-height) shrink-0 border-b border-(--ui-stroke-tertiary) bg-(--ui-sidebar-surface-background)">
+    <aside className="relative flex h-full w-full min-w-0 flex-col overflow-hidden border-0 bg-transparent text-(--ui-text-tertiary)">
+      <div className="group/rail-tabs flex h-(--titlebar-height) shrink-0 border-b border-(--ui-stroke-tertiary) bg-transparent">
         <div
           className="flex min-w-0 flex-1 overflow-x-auto overflow-y-hidden overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           role="tablist"

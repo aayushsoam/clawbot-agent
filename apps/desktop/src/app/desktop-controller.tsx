@@ -907,14 +907,14 @@ export function DesktopController() {
       >
         {sidebar}
       </Pane>
-      <PaneMain>
-        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+      <PaneMain className="pt-[calc(var(--titlebar-height)+8px)] pr-0 pb-0 pl-0">
+        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[14px] border border-[color:var(--ui-stroke-secondary)] bg-[color:var(--ui-surface-background)] shadow-2xl">
           <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
             <Routes>
               <Route element={chatView} index />
               <Route element={chatView} path=":sessionId" />
               <Route
-                element={
+                element = {
                   <Suspense fallback={null}>
                     <SkillsView setStatusbarItemGroup={setStatusbarItemGroup} />
                   </Suspense>
@@ -922,7 +922,7 @@ export function DesktopController() {
                 path="skills"
               />
               <Route
-                element={
+                element = {
                   <Suspense fallback={null}>
                     <PluginsView setStatusbarItemGroup={setStatusbarItemGroup} />
                   </Suspense>
@@ -930,7 +930,7 @@ export function DesktopController() {
                 path="plugins"
               />
               <Route
-                element={
+                element = {
                   <Suspense fallback={null}>
                     <MessagingView setStatusbarItemGroup={setStatusbarItemGroup} />
                   </Suspense>
@@ -938,7 +938,7 @@ export function DesktopController() {
                 path="messaging"
               />
               <Route
-                element={
+                element = {
                   <Suspense fallback={null}>
                     <ArtifactsView setStatusbarItemGroup={setStatusbarItemGroup} />
                   </Suspense>
@@ -964,7 +964,7 @@ export function DesktopController() {
               <div
                 aria-label="Resize terminal"
                 aria-orientation="horizontal"
-                className="group relative z-60 h-2 shrink-0 cursor-row-resize touch-none border-t border-(--ui-stroke-secondary) bg-black [-webkit-app-region:no-drag]"
+                className="group relative z-60 h-1 shrink-0 cursor-row-resize touch-none border-t border-(--ui-stroke-tertiary) bg-black [-webkit-app-region:no-drag]"
                 onPointerDown={startTerminalPanelResize}
                 role="separator"
                 tabIndex={0}
