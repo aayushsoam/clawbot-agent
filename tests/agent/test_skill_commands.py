@@ -421,9 +421,9 @@ class TestResolveSkillCommandKey:
             _make_skill(tmp_path, "foo-bar")
             scan_skill_commands()
             assert resolve_skill_command_key("foo-bar") == "/foo-bar"
+            assert resolve_skill_command_key("/foo-bar") == "/foo-bar"
             # Underscore form also works (Telegram round-trip)
             assert resolve_skill_command_key("foo_bar") == "/foo-bar"
-
 
 class TestBuildPreloadedSkillsPrompt:
     def test_builds_prompt_for_multiple_named_skills(self, tmp_path):
@@ -800,3 +800,4 @@ class TestInlineShellExpansion:
         # The command's intended stdout never made it through — only the
         # timeout marker (which echoes the command text) survives.
         assert "DYN_MARKER" not in msg.replace("sleep 5 && printf DYN_MARKER", "")
+

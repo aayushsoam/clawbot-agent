@@ -1,29 +1,20 @@
 import { useStore } from '@nanostores/react'
 import { useEffect, useRef, useState } from 'react'
+import clawbotLogoUrl from '@/assets/clawbot-logo.png'
 
 import { cn } from '@/lib/utils'
 import { $desktopBoot } from '@/store/boot'
 import { $gatewayState } from '@/store/session'
 
-// Static, always-legible prefix; only TAIL ever scrambles. Splitting them at
-// the render level means no timer logic (even a stale HMR one) can ever
-// scramble "CONN".
-const PREFIX = 'CONN'
-const TAIL = 'ECTING'
-// Even-weight mono ascii so cycling glyphs don't jump width (matches the
-// nousnet-web download-button decode effect).
-const SCRAMBLE_CHARS = '/\\|-_=+<>~:*'
-const TICK_MS = 45
-
-// Exit choreography (ms): text fades down + out, hold, then the overlay fades.
-const TEXT_OUT_MS = 360
-const POST_TEXT_HOLD_MS = 300
+// Exit choreography (ms): content fades down + out, hold, then the overlay fades.
+const CONTENT_OUT_MS = 360
+const POST_CONTENT_HOLD_MS = 300
 const OVERLAY_OUT_MS = 520
 // Preview-only: how long to "connect" for, and the pause before replaying.
 const PREVIEW_CONNECT_MS = 2600
 const PREVIEW_REPLAY_MS = 1100
 
-type Phase = 'live' | 'text-out' | 'overlay-out' | 'gone'
+type Phase = 'live' | 'content-out' | 'overlay-out' | 'gone'
 
 // Dev affordance: a warm Cmd+R reconnects almost instantly, so the overlay
 // only flashes. Load with `?connecting=1` to force a looping preview.
@@ -39,17 +30,10 @@ function forcedPreview(): boolean {
   }
 }
 
-function scrambledTail(resolvedCount: number): string {
-  return Array.from(TAIL, (ch, i) =>
-    i < resolvedCount ? ch : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0]
-  ).join('')
-}
-
 export function GatewayConnectingOverlay() {
   const gatewayState = useStore($gatewayState)
   const boot = useStore($desktopBoot)
   const [previewing] = useState(forcedPreview)
-  const [tail, setTail] = useState(TAIL)
   const [phase, setPhase] = useState<Phase>('live')
 
   const connecting = gatewayState !== 'open' && !boot.error
@@ -62,36 +46,6 @@ export function GatewayConnectingOverlay() {
     shownRef.current = true
   }
 
-  // Decode loop — only while live (freeze the resolved word during the exit).
-  useEffect(() => {
-    if (phase !== 'live' || (!previewing && !connecting)) {
-      return
-    }
-
-    let resolved = 0
-    let hold = 0
-
-    const id = window.setInterval(() => {
-      if (resolved >= TAIL.length) {
-        hold += 1
-
-        if (hold > 16) {
-          resolved = 0
-          hold = 0
-        }
-
-        setTail(TAIL)
-
-        return
-      }
-
-      resolved += 0.5
-      setTail(scrambledTail(Math.floor(resolved)))
-    }, TICK_MS)
-
-    return () => window.clearInterval(id)
-  }, [phase, previewing, connecting])
-
   // Kick off the exit when connected: real connect, or a faked timer in preview.
   useEffect(() => {
     if (phase !== 'live') {
@@ -99,24 +53,20 @@ export function GatewayConnectingOverlay() {
     }
 
     if (previewing) {
-      const id = window.setTimeout(() => {
-        setTail(TAIL)
-        setPhase('text-out')
-      }, PREVIEW_CONNECT_MS)
+      const id = window.setTimeout(() => setPhase('content-out'), PREVIEW_CONNECT_MS)
 
       return () => window.clearTimeout(id)
     }
 
     if (gatewayState === 'open' && shownRef.current) {
-      setTail(TAIL)
-      setPhase('text-out')
+      setPhase('content-out')
     }
   }, [phase, previewing, gatewayState])
 
-  // Advance the exit choreography: text-out -> overlay-out -> gone.
+  // Advance the exit choreography: content-out -> overlay-out -> gone.
   useEffect(() => {
-    if (phase === 'text-out') {
-      const id = window.setTimeout(() => setPhase('overlay-out'), TEXT_OUT_MS + POST_TEXT_HOLD_MS)
+    if (phase === 'content-out') {
+      const id = window.setTimeout(() => setPhase('overlay-out'), CONTENT_OUT_MS + POST_CONTENT_HOLD_MS)
 
       return () => window.clearTimeout(id)
     }
@@ -130,7 +80,6 @@ export function GatewayConnectingOverlay() {
     // Preview replays so we can keep watching the transition.
     if (phase === 'gone' && previewing) {
       const id = window.setTimeout(() => {
-        setTail(TAIL)
         setPhase('live')
       }, PREVIEW_REPLAY_MS)
 
@@ -163,16 +112,28 @@ export function GatewayConnectingOverlay() {
         overlayHidden ? 'pointer-events-none opacity-0' : 'opacity-100'
       )}
     >
-      <style>{'@keyframes gco-cursor { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }'}</style>
-      <span
+      <style>{'@keyframes gco-ring-spin { to { transform: rotate(360deg) } }'}</style>
+      <div
         className={cn(
-          'inline-flex items-center pl-[0.4em] font-mono text-[0.64rem] font-semibold uppercase tracking-[0.4em] tabular-nums text-(--theme-primary) transition duration-300 ease-out',
-          leaving ? 'translate-y-2 opacity-0 saturate-0' : 'translate-y-0 opacity-100 saturate-100'
+          'relative grid place-items-center transition-all duration-300 ease-out',
+          leaving ? 'scale-95 opacity-0 saturate-0' : 'scale-100 opacity-100 saturate-100'
         )}
       >
-        {PREFIX}
-        {tail}
-      </span>
+        <div
+          className="absolute inset-0 rounded-full border border-white/10 border-t-white/85"
+          style={{ animation: 'gco-ring-spin 1.15s linear infinite' }}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-3 rounded-full border border-white/5" aria-hidden="true" />
+        <div className="relative grid h-28 w-28 place-items-center rounded-full bg-black/70 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-sm">
+          <img
+            src={clawbotLogoUrl}
+            alt="Clawbot"
+            className="h-16 w-16 select-none object-contain"
+            draggable={false}
+          />
+        </div>
+      </div>
     </div>
   )
 }

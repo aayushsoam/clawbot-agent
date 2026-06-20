@@ -407,7 +407,7 @@ def reload_skills() -> Dict[str, Any]:
 
 
 def resolve_skill_command_key(command: str) -> Optional[str]:
-    """Resolve a user-typed /command to its canonical skill_cmds key.
+    """Resolve a user-typed command to its canonical skill command key.
 
     Skills are always stored with hyphens — ``scan_skill_commands`` normalizes
     spaces and underscores to hyphens when building the key. Hyphens and
@@ -421,9 +421,13 @@ def resolve_skill_command_key(command: str) -> Optional[str]:
     """
     if not command:
         return None
-    cmd_key = f"/{command.replace('_', '-')}"
-    return cmd_key if cmd_key in get_skill_commands() else None
 
+    normalized = command.strip().lstrip("/")
+    if not normalized:
+        return None
+
+    cmd_key = f"/{normalized.replace('_', '-')}"
+    return cmd_key if cmd_key in get_skill_commands() else None
 
 def build_skill_invocation_message(
     cmd_key: str,
@@ -521,3 +525,4 @@ def build_preloaded_skills_prompt(
         loaded_names.append(skill_name)
 
     return "\n\n".join(prompt_parts), loaded_names, missing
+
