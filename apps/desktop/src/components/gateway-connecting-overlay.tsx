@@ -125,11 +125,11 @@ export function GatewayConnectingOverlay() {
           aria-hidden="true"
         />
         <div className="absolute inset-3 rounded-full border border-white/5" aria-hidden="true" />
-        <div className="relative grid h-28 w-28 place-items-center rounded-full bg-black/70 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-sm">
+        <div className="relative grid h-20 w-20 place-items-center rounded-full bg-black/70 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-sm">
           <img
             src={clawbotLogoUrl}
             alt="Clawbot"
-            className="h-16 w-16 select-none object-contain"
+            className="h-18 w-18 select-none object-contain"
             draggable={false}
           />
         </div>
