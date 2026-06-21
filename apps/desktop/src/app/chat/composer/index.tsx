@@ -371,7 +371,7 @@ export function ChatBar({
     // oscillating across the wrap boundary as the input switches widths.
     const editor = editorRef.current
 
-    if (editor && editor.scrollHeight > COMPOSER_SINGLE_LINE_MAX_PX) {
+    if (editor && editor.textContent?.trim() && editor.scrollHeight > COMPOSER_SINGLE_LINE_MAX_PX) {
       setExpanded(true)
     }
 

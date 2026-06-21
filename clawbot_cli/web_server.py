@@ -3322,6 +3322,7 @@ async def get_toolsets():
         _get_effective_configurable_toolsets,
         _get_platform_tools,
         _toolset_has_keys,
+        gui_toolset_label,
     )
     from toolsets import resolve_toolset
 
@@ -3339,13 +3340,242 @@ async def get_toolsets():
             tools = []
         is_enabled = name in enabled_toolsets
         result.append({
-            "name": name, "label": label, "description": desc,
+            "name": name,
+            "label": gui_toolset_label(label),
+            "description": desc,
             "enabled": is_enabled,
             "available": is_enabled,
             "configured": _toolset_has_keys(name, config),
             "tools": tools,
         })
     return result
+
+
+class ToolsetToggle(BaseModel):
+    enabled: bool
+
+
+@app.put("/api/tools/toolsets/{name}")
+async def toggle_toolset(name: str, body: ToolsetToggle):
+    """Enable/disable a configurable toolset for the desktop (cli) platform.
+
+    Persists to ``platform_toolsets.cli`` via the same ``_save_platform_tools``
+    helper the CLI ``clawbot tools`` picker uses, so the GUI and CLI stay in
+    lockstep. Returns 400 for unknown toolset keys.
+    """
+    from clawbot_cli.tools_config import (
+        _get_effective_configurable_toolsets,
+        _get_platform_tools,
+        _save_platform_tools,
+    )
+
+    valid = {ts_key for ts_key, _, _ in _get_effective_configurable_toolsets()}
+    if name not in valid:
+        raise HTTPException(status_code=400, detail=f"Unknown toolset: {name}")
+
+    config = load_config()
+    enabled = set(
+        _get_platform_tools(config, "cli", include_default_mcp_servers=False)
+    )
+    if body.enabled:
+        enabled.add(name)
+    else:
+        enabled.discard(name)
+    _save_platform_tools(config, "cli", enabled)
+    return {"ok": True, "name": name, "enabled": body.enabled}
+
+
+@app.get("/api/tools/toolsets/{name}/config")
+async def get_toolset_config(name: str):
+    """Return the provider matrix + key status for a toolset's config panel.
+
+    Surfaces the same provider rows the CLI ``clawbot tools`` picker shows
+    (via ``_visible_providers``), each with its ``env_vars`` annotated with
+    current ``is_set`` state so the GUI can render provider selection + key
+    entry. Toolsets without a ``TOOL_CATEGORIES`` entry return an empty
+    provider list and ``has_category: false``. Returns 400 for unknown keys.
+    """
+    from clawbot_cli.tools_config import (
+        TOOL_CATEGORIES,
+        _get_effective_configurable_toolsets,
+        _is_provider_active,
+        _visible_providers,
+    )
+    from clawbot_cli.config import get_env_value
+
+    valid = {ts_key for ts_key, _, _ in _get_effective_configurable_toolsets()}
+    if name not in valid:
+        raise HTTPException(status_code=400, detail=f"Unknown toolset: {name}")
+
+    config = load_config()
+    cat = TOOL_CATEGORIES.get(name)
+    providers = []
+    active_provider = None
+    if cat:
+        for prov in _visible_providers(cat, config):
+            env_vars = [
+                {
+                    "key": e["key"],
+                    "prompt": e.get("prompt", e["key"]),
+                    "url": e.get("url"),
+                    "default": e.get("default"),
+                    "is_set": bool(get_env_value(e["key"])),
+                }
+                for e in prov.get("env_vars", [])
+            ]
+            is_active = _is_provider_active(prov, config)
+            if is_active and active_provider is None:
+                active_provider = prov["name"]
+            providers.append({
+                "name": prov["name"],
+                "badge": prov.get("badge", ""),
+                "tag": prov.get("tag", ""),
+                "env_vars": env_vars,
+                "post_setup": prov.get("post_setup"),
+                "requires_soam_auth": bool(prov.get("requires_soam_auth")),
+                "is_active": is_active,
+            })
+    return {
+        "name": name,
+        "has_category": cat is not None,
+        "providers": providers,
+        "active_provider": active_provider,
+    }
+
+
+class ToolsetProviderSelect(BaseModel):
+    provider: str
+
+
+@app.put("/api/tools/toolsets/{name}/provider")
+async def select_toolset_provider(name: str, body: ToolsetProviderSelect):
+    """Persist a provider selection for a toolset (no key prompting).
+
+    Delegates to ``apply_provider_selection`` — the shared, non-interactive
+    core extracted from the CLI configurator — so the GUI and ``clawbot tools``
+    write identical config keys (``web.backend``, ``tts.provider``, etc.).
+    API keys and post-setup flows are handled by separate endpoints. Returns
+    400 for unknown toolset or provider names.
+    """
+    from clawbot_cli.tools_config import (
+        apply_provider_selection,
+        _get_effective_configurable_toolsets,
+    )
+
+    valid = {ts_key for ts_key, _, _ in _get_effective_configurable_toolsets()}
+    if name not in valid:
+        raise HTTPException(status_code=400, detail=f"Unknown toolset: {name}")
+
+    config = load_config()
+    try:
+        apply_provider_selection(name, body.provider, config)
+    except KeyError as exc:
+        raise HTTPException(status_code=400, detail=str(exc).strip('"'))
+    save_config(config)
+    return {"ok": True, "name": name, "provider": body.provider}
+
+
+class ToolsetEnvUpdate(BaseModel):
+    env: Dict[str, str]
+
+
+@app.put("/api/tools/toolsets/{name}/env")
+async def save_toolset_env(name: str, body: ToolsetEnvUpdate):
+    """Persist API keys for a toolset's provider env vars.
+
+    Writes each ``key: value`` to ``~/.clawbot/.env`` via ``save_env_value`` —
+    the same store ``clawbot tools`` writes when it prompts for keys. Keys are
+    validated against the env-var allowlist for the toolset's category (the
+    union of every visible provider's ``env_vars``), so the GUI can't write an
+    arbitrary env var through this endpoint. A blank value is treated as
+    "leave unchanged" and skipped. Returns the saved/skipped key lists and the
+    refreshed ``is_set`` status. Returns 400 for unknown toolset or env keys.
+    """
+    from clawbot_cli.tools_config import (
+        TOOL_CATEGORIES,
+        _get_effective_configurable_toolsets,
+        _visible_providers,
+    )
+    from clawbot_cli.config import get_env_value
+
+    valid_ts = {ts_key for ts_key, _, _ in _get_effective_configurable_toolsets()}
+    if name not in valid_ts:
+        raise HTTPException(status_code=400, detail=f"Unknown toolset: {name}")
+
+    config = load_config()
+    cat = TOOL_CATEGORIES.get(name)
+    allowed: set = set()
+    if cat:
+        for prov in _visible_providers(cat, config):
+            for e in prov.get("env_vars", []):
+                allowed.add(e["key"])
+
+    unknown = [k for k in body.env if k not in allowed]
+    if unknown:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown env var(s) for toolset {name}: {', '.join(sorted(unknown))}",
+        )
+
+    saved: List[str] = []
+    skipped: List[str] = []
+    for key, value in body.env.items():
+        if value and value.strip():
+            try:
+                save_env_value(key, value.strip())
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=str(exc))
+            saved.append(key)
+        else:
+            skipped.append(key)
+
+    status = {k: bool(get_env_value(k)) for k in allowed}
+    return {"ok": True, "name": name, "saved": saved, "skipped": skipped, "is_set": status}
+
+
+class ToolsetPostSetup(BaseModel):
+    key: str
+
+
+@app.post("/api/tools/toolsets/{name}/post-setup")
+async def run_toolset_post_setup(name: str, body: ToolsetPostSetup):
+    """Spawn a provider's post-setup install hook as a background action.
+
+    Post-setup hooks (npm install for browser/Camofox, pip install for
+    KittenTTS/Piper/ddgs, cua-driver fetch, etc.) are long-running and
+    text-output, so this follows the spawn-action pattern: it launches
+    ``clawbot tools post-setup <key>`` and the frontend tails the log via
+    ``GET /api/actions/tools-post-setup/status``. The ``key`` is validated
+    against the declared post-setup allowlist before spawning. Returns 400
+    for unknown toolset or post-setup key.
+    """
+    from clawbot_cli.tools_config import (
+        _get_effective_configurable_toolsets,
+        valid_post_setup_keys,
+    )
+
+    valid_ts = {ts_key for ts_key, _, _ in _get_effective_configurable_toolsets()}
+    if name not in valid_ts:
+        raise HTTPException(status_code=400, detail=f"Unknown toolset: {name}")
+
+    if body.key not in valid_post_setup_keys():
+        raise HTTPException(
+            status_code=400, detail=f"Unknown post-setup key: {body.key}"
+        )
+
+    try:
+        proc = _spawn_clawbot_action(
+            ["tools", "post-setup", body.key],
+            "tools-post-setup",
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        _log.exception("Failed to spawn tools post-setup")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to run post-setup: {exc}"
+        )
+    return {"ok": True, "pid": proc.pid, "name": "tools-post-setup", "key": body.key}
 
 
 # ---------------------------------------------------------------------------
@@ -4684,12 +4914,13 @@ async def post_agent_plugin_install(request: Request, body: _AgentPluginInstallB
 
 def _validate_plugin_name(name: str) -> str:
     """Reject path-traversal attempts in plugin name URL parameters."""
-    if not name or "/" in name or "\\" in name or ".." in name:
+    name = name.strip("/")
+    if not name or ".." in name or "\\" in name:
         raise HTTPException(status_code=400, detail="Invalid plugin name.")
     return name
 
 
-@app.post("/api/dashboard/agent-plugins/{name}/enable")
+@app.post("/api/dashboard/agent-plugins/{name:path}/enable")
 async def post_agent_plugin_enable(request: Request, name: str):
     _require_token(request)
     name = _validate_plugin_name(name)
@@ -4701,7 +4932,7 @@ async def post_agent_plugin_enable(request: Request, name: str):
     return result
 
 
-@app.post("/api/dashboard/agent-plugins/{name}/disable")
+@app.post("/api/dashboard/agent-plugins/{name:path}/disable")
 async def post_agent_plugin_disable(request: Request, name: str):
     _require_token(request)
     name = _validate_plugin_name(name)
@@ -4713,7 +4944,7 @@ async def post_agent_plugin_disable(request: Request, name: str):
     return result
 
 
-@app.post("/api/dashboard/agent-plugins/{name}/update")
+@app.post("/api/dashboard/agent-plugins/{name:path}/update")
 async def post_agent_plugin_update(request: Request, name: str):
     _require_token(request)
     name = _validate_plugin_name(name)
@@ -4726,7 +4957,7 @@ async def post_agent_plugin_update(request: Request, name: str):
     return result
 
 
-@app.delete("/api/dashboard/agent-plugins/{name}")
+@app.delete("/api/dashboard/agent-plugins/{name:path}")
 async def delete_agent_plugin(request: Request, name: str):
     _require_token(request)
     name = _validate_plugin_name(name)

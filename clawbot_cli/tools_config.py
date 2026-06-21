@@ -80,6 +80,22 @@ CONFIGURABLE_TOOLSETS = [
     ("computer_use",     "🖱️  Computer Use (macOS,linux,win)",     "background desktop control via cua-driver"),
 ]
 
+
+def gui_toolset_label(label: str) -> str:
+    """Strip leading emoji/icons from toolset titles for GUI surfaces.
+
+    Registry labels use ``<emoji> <title>``; plugin toolsets prefix with ``🔌``.
+    CLI/TUI keeps the raw ``label`` — only HTTP APIs call this helper.
+    """
+    text = (label or "").strip()
+    if not text:
+        return text
+    parts = text.split(None, 1)
+    if len(parts) == 2 and parts[0] and not any(ch.isascii() and ch.isalnum() for ch in parts[0]):
+        return parts[1].strip()
+    return text
+
+
 # Toolsets that are OFF by default for new installs.
 # They're still in _CLAWBOT_CORE_TOOLS (available at runtime if enabled),
 # but the setup checklist won't pre-select them for first-time users.
@@ -1803,6 +1819,38 @@ def _post_setup_already_installed(post_setup_key: str) -> bool:
         return True
 
 
+def valid_post_setup_keys() -> Set[str]:
+    """Return the set of post-setup keys declared by any visible provider.
+
+    Collected from ``TOOL_CATEGORIES`` plus the plugin-registered web /
+    image-gen / video-gen / browser providers (which can also carry a
+    ``post_setup``). This is the allowlist the ``clawbot tools post-setup``
+    command and the dashboard post-setup endpoint validate against, so a
+    caller can't drive ``_run_post_setup`` with an arbitrary key.
+    """
+    keys: Set[str] = set()
+    for cat in TOOL_CATEGORIES.values():
+        for prov in cat.get("providers", []):
+            ps = prov.get("post_setup")
+            if ps:
+                keys.add(ps)
+    # Plugin-registered providers can declare their own post_setup hooks.
+    for builder in (
+        _plugin_web_search_providers,
+        _plugin_image_gen_providers,
+        _plugin_video_gen_providers,
+        _plugin_browser_providers,
+    ):
+        try:
+            for prov in builder():
+                ps = prov.get("post_setup")
+                if ps:
+                    keys.add(ps)
+        except Exception:  # pragma: no cover — defensive; plugins optional
+            continue
+    return keys
+
+
 def _toolset_needs_configuration_prompt(ts_key: str, config: dict) -> bool:
     """Return True when enabling this toolset should open provider setup."""
     cat = TOOL_CATEGORIES.get(ts_key)
@@ -2300,6 +2348,107 @@ def _select_plugin_video_gen_provider(plugin_name: str, config: dict) -> None:
     vid_cfg["use_gateway"] = False
     _print_success(f"  video_gen.provider set to: {plugin_name}")
     _configure_videogen_model_for_plugin(plugin_name, config)
+
+
+def _write_provider_config(provider: dict, config: dict, *, managed_feature) -> None:
+    """Persist the provider/backend config keys for a selected provider.
+
+    This is the pure, non-interactive core of :func:`_configure_provider` —
+    it writes ``tts.provider`` / ``browser.cloud_provider`` / ``web.backend``
+    and the ``use_gateway`` flags based on the provider's markers, but does
+    NOT prompt for env vars, run post-setup hooks, gate on Soam auth, or run
+    interactive model pickers. Both the CLI configurator and the desktop GUI
+    ``PUT .../provider`` endpoint call through here so there is one code path.
+    """
+    # Set TTS provider in config if applicable
+    if provider.get("tts_provider"):
+        tts_cfg = config.setdefault("tts", {})
+        tts_cfg["provider"] = provider["tts_provider"]
+        tts_cfg["use_gateway"] = bool(managed_feature)
+
+    # Set browser cloud provider in config if applicable
+    if "browser_provider" in provider:
+        bp = provider["browser_provider"]
+        browser_cfg = config.setdefault("browser", {})
+        if bp:
+            browser_cfg["cloud_provider"] = bp
+        browser_cfg["use_gateway"] = bool(managed_feature)
+
+    # Set web search backend in config if applicable
+    if provider.get("web_backend"):
+        web_cfg = config.setdefault("web", {})
+        web_cfg["backend"] = provider["web_backend"]
+        web_cfg["use_gateway"] = bool(managed_feature)
+
+    # For tools without a specific config key (e.g. image_gen), still
+    # track use_gateway so the runtime knows the user's intent.
+    if managed_feature and managed_feature not in {"web", "tts", "browser"}:
+        config.setdefault(managed_feature, {})["use_gateway"] = True
+    elif not managed_feature:
+        # User picked a non-gateway provider — find which category this
+        # belongs to and clear use_gateway if it was previously set.
+        for cat_key, cat in TOOL_CATEGORIES.items():
+            if provider in cat.get("providers", []):
+                section = config.get(cat_key)
+                if isinstance(section, dict) and section.get("use_gateway"):
+                    section["use_gateway"] = False
+                break
+
+
+def apply_provider_selection(ts_key: str, provider_name: str, config: dict) -> None:
+    """Non-interactively persist a provider selection for a toolset.
+
+    Resolves ``provider_name`` within ``ts_key``'s category (matching the
+    rows the GUI/CLI picker shows via :func:`_visible_providers`) and writes
+    the corresponding backend/provider config keys. Unlike
+    :func:`_configure_provider`, this does NOT prompt for API keys, run
+    post-setup hooks, gate on Soam auth, or run interactive model
+    pickers — those are handled separately (env endpoints, post-setup
+    endpoints, the model picker) in the desktop GUI.
+
+    Raises ``KeyError`` if the toolset has no category or the provider name
+    is not found among the visible providers.
+    """
+    cat = TOOL_CATEGORIES.get(ts_key)
+    if cat is None:
+        raise KeyError(f"Toolset has no configurable category: {ts_key}")
+
+    providers = _visible_providers(cat, config)
+    provider = next((p for p in providers if p.get("name") == provider_name), None)
+    if provider is None:
+        raise KeyError(f"Unknown provider {provider_name!r} for toolset {ts_key!r}")
+
+    managed_feature = provider.get("managed_soam_feature")
+    _write_provider_config(provider, config, managed_feature=managed_feature)
+
+    # Plugin-registered image/video gen backends record the provider name in
+    # their own config section. Write that here (without the interactive
+    # model picker the CLI runs afterwards — model choice is a separate GUI
+    # flow).
+    plugin_name = provider.get("image_gen_plugin_name")
+    if plugin_name:
+        img_cfg = config.setdefault("image_gen", {})
+        if not isinstance(img_cfg, dict):
+            img_cfg = {}
+            config["image_gen"] = img_cfg
+        img_cfg["provider"] = plugin_name
+        img_cfg["use_gateway"] = bool(managed_feature)
+
+    video_plugin = provider.get("video_gen_plugin_name")
+    if video_plugin:
+        vid_cfg = config.setdefault("video_gen", {})
+        if not isinstance(vid_cfg, dict):
+            vid_cfg = {}
+            config["video_gen"] = vid_cfg
+        vid_cfg["provider"] = video_plugin
+        vid_cfg["use_gateway"] = bool(managed_feature)
+
+    # In-tree FAL imagegen backend: keep image_gen.provider on the legacy
+    # path (mirrors _configure_provider).
+    if provider.get("imagegen_backend"):
+        img_cfg = config.setdefault("image_gen", {})
+        if isinstance(img_cfg, dict) and img_cfg.get("provider") not in {None, "", "fal"}:
+            img_cfg["provider"] = "fal"
 
 
 def _configure_provider(provider: dict, config: dict):

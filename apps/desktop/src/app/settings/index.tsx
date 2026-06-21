@@ -1,4 +1,4 @@
-import { IconDownload, IconRefresh, IconUpload } from '@tabler/icons-react'
+import { IconDownload, IconRefresh, IconUpload, IconArrowLeft } from '@tabler/icons-react'
 import { useRef } from 'react'
 
 import { Tip } from '@/components/ui/tooltip'
@@ -175,59 +175,70 @@ export function SettingsView({ gateway, onClose, onConfigSaved, onMainModelChang
             label={t.settings.nav.about}
             onClick={() => setActiveView('about')}
           />
-          <div className="mt-auto flex items-center gap-1 pt-2">
-            <Tip label={t.settings.exportConfig}>
-              <OverlayIconButton onClick={() => void exportConfig()}>
-                <IconDownload className="size-3.5" />
-              </OverlayIconButton>
-            </Tip>
-            <Tip label={t.settings.importConfig}>
-              <OverlayIconButton
-                onClick={() => {
-                  triggerHaptic('open')
-                  importInputRef.current?.click()
-                }}
-              >
-                <IconUpload className="size-3.5" />
-              </OverlayIconButton>
-            </Tip>
-            <Tip label={t.settings.resetToDefaults}>
-              <OverlayIconButton
-                className="hover:text-destructive"
-                onClick={() => {
-                  triggerHaptic('warning')
-                  void resetConfig()
-                }}
-              >
-                <IconRefresh className="size-3.5" />
+          <div className="mt-auto flex items-center justify-between gap-1 pt-2 w-full">
+            <div className="flex items-center gap-1">
+              <Tip label={t.settings.exportConfig}>
+                <OverlayIconButton onClick={() => void exportConfig()}>
+                  <IconDownload className="size-3.5" />
+                </OverlayIconButton>
+              </Tip>
+              <Tip label={t.settings.importConfig}>
+                <OverlayIconButton
+                  onClick={() => {
+                    triggerHaptic('open')
+                    importInputRef.current?.click()
+                  }}
+                >
+                  <IconUpload className="size-3.5" />
+                </OverlayIconButton>
+              </Tip>
+              <Tip label={t.settings.resetToDefaults}>
+                <OverlayIconButton
+                  className="hover:text-destructive"
+                  onClick={() => {
+                    triggerHaptic('warning')
+                    void resetConfig()
+                  }}
+                >
+                  <IconRefresh className="size-3.5" />
+                </OverlayIconButton>
+              </Tip>
+            </div>
+            <Tip label="Back to Chat">
+              <OverlayIconButton onClick={onClose}>
+                <IconArrowLeft className="size-3.5" />
               </OverlayIconButton>
             </Tip>
           </div>
         </OverlaySidebar>
 
-        <OverlayMain className="px-0 pb-0 pt-[calc(var(--titlebar-height)+1rem)]">
-          {activeView === 'config:appearance' ? (
-            <AppearanceSettings />
-          ) : activeView === 'about' ? (
-            <AboutSettings />
-          ) : activeView === 'gateway' ? (
-            <GatewaySettings />
-          ) : activeView.startsWith('config:') ? (
-            <ConfigSettings
-              activeSectionId={activeView.slice('config:'.length)}
-              importInputRef={importInputRef}
-              onConfigSaved={onConfigSaved}
-              onMainModelChanged={onMainModelChanged}
-            />
-          ) : activeView === 'providers' ? (
-            <ProvidersSettings onViewChange={setProviderView} view={providerView} />
-          ) : activeView === 'keys' ? (
-            <KeysSettings view={keysView} />
-          ) : activeView === 'mcp' ? (
-            <McpSettings gateway={gateway} onConfigSaved={onConfigSaved} />
-          ) : (
-            <SessionsSettings />
-          )}
+        <OverlayMain className="pl-0 pr-3 pb-3 pt-[calc(var(--titlebar-height)+8px)] flex flex-col">
+          <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[14px] border border-[color:var(--ui-stroke-secondary)] bg-[color:var(--ui-surface-background)] shadow-2xl p-6">
+            <div className="min-h-0 min-w-0 flex-1 overflow-y-auto pr-1">
+              {activeView === 'config:appearance' ? (
+                <AppearanceSettings />
+              ) : activeView === 'about' ? (
+                <AboutSettings />
+              ) : activeView === 'gateway' ? (
+                <GatewaySettings />
+              ) : activeView.startsWith('config:') ? (
+                <ConfigSettings
+                  activeSectionId={activeView.slice('config:'.length)}
+                  importInputRef={importInputRef}
+                  onConfigSaved={onConfigSaved}
+                  onMainModelChanged={onMainModelChanged}
+                />
+              ) : activeView === 'providers' ? (
+                <ProvidersSettings onViewChange={setProviderView} view={providerView} />
+              ) : activeView === 'keys' ? (
+                <KeysSettings view={keysView} />
+              ) : activeView === 'mcp' ? (
+                <McpSettings gateway={gateway} onConfigSaved={onConfigSaved} />
+              ) : (
+                <SessionsSettings />
+              )}
+            </div>
+          </div>
         </OverlayMain>
       </OverlaySplitLayout>
     </OverlayView>
