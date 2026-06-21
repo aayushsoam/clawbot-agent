@@ -85,163 +85,30 @@ export function SettingsView({ gateway, onClose, onConfigSaved, onMainModelChang
   }
 
   return (
-    <OverlayView closeLabel={t.settings.closeSettings} onClose={onClose}>
-      <OverlaySplitLayout>
-        <OverlaySidebar>
-          {SECTIONS.map(s => {
-            const view = `config:${s.id}` as SettingsViewId
-
-            return (
-              <OverlayNavItem
-                active={activeView === view}
-                icon={s.icon}
-                key={s.id}
-                label={t.settings.sections[s.id] ?? s.label}
-                onClick={() => setActiveView(view)}
-              />
-            )
-          })}
-          <div className="my-2 h-px bg-border/30" />
-          <OverlayNavItem
-            active={activeView === 'providers'}
-            icon={Zap}
-            label="Providers"
-            onClick={() => setActiveView('providers')}
-          />
-          {activeView === 'providers' && (
-            <div className="ml-3.5 flex flex-col gap-0.5 pl-1.5">
-              <OverlayNavItem
-                active={providerView === 'accounts'}
-                icon={Sparkles}
-                label="Accounts"
-                nested
-                onClick={() => openProviderView('accounts')}
-              />
-              <OverlayNavItem
-                active={providerView === 'keys'}
-                icon={KeyRound}
-                label="API keys"
-                nested
-                onClick={() => openProviderView('keys')}
-              />
-            </div>
-          )}
-          <OverlayNavItem
-            active={activeView === 'gateway'}
-            icon={Globe}
-            label={t.settings.nav.gateway}
-            onClick={() => setActiveView('gateway')}
-          />
-          <OverlayNavItem
-            active={activeView === 'keys'}
-            icon={KeyRound}
-            label={t.settings.nav.apiKeys}
-            onClick={() => setActiveView('keys')}
-          />
-          {activeView === 'keys' && (
-            <div className="ml-3.5 flex flex-col gap-0.5 pl-1.5">
-              <OverlayNavItem
-                active={keysView === 'tools'}
-                icon={Wrench}
-                label="Tools"
-                nested
-                onClick={() => openKeysView('tools')}
-              />
-              <OverlayNavItem
-                active={keysView === 'settings'}
-                icon={Settings2}
-                label="Settings"
-                nested
-                onClick={() => openKeysView('settings')}
-              />
-            </div>
-          )}
-          <OverlayNavItem
-            active={activeView === 'mcp'}
-            icon={Wrench}
-            label={t.settings.nav.mcp}
-            onClick={() => setActiveView('mcp')}
-          />
-          <OverlayNavItem
-            active={activeView === 'sessions'}
-            icon={Archive}
-            label={t.settings.nav.archivedChats}
-            onClick={() => setActiveView('sessions')}
-          />
-          <div className="my-2 h-px bg-border/30" />
-          <OverlayNavItem
-            active={activeView === 'about'}
-            icon={Info}
-            label={t.settings.nav.about}
-            onClick={() => setActiveView('about')}
-          />
-          <div className="mt-auto flex items-center justify-between gap-1 pt-2 w-full">
-            <div className="flex items-center gap-1">
-              <Tip label={t.settings.exportConfig}>
-                <OverlayIconButton onClick={() => void exportConfig()}>
-                  <IconDownload className="size-3.5" />
-                </OverlayIconButton>
-              </Tip>
-              <Tip label={t.settings.importConfig}>
-                <OverlayIconButton
-                  onClick={() => {
-                    triggerHaptic('open')
-                    importInputRef.current?.click()
-                  }}
-                >
-                  <IconUpload className="size-3.5" />
-                </OverlayIconButton>
-              </Tip>
-              <Tip label={t.settings.resetToDefaults}>
-                <OverlayIconButton
-                  className="hover:text-destructive"
-                  onClick={() => {
-                    triggerHaptic('warning')
-                    void resetConfig()
-                  }}
-                >
-                  <IconRefresh className="size-3.5" />
-                </OverlayIconButton>
-              </Tip>
-            </div>
-            <Tip label="Back to Chat">
-              <OverlayIconButton onClick={onClose}>
-                <IconArrowLeft className="size-3.5" />
-              </OverlayIconButton>
-            </Tip>
-          </div>
-        </OverlaySidebar>
-
-        <OverlayMain className="pl-0 pr-3 pb-3 pt-[calc(var(--titlebar-height)+8px)] flex flex-col">
-          <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[14px] border border-[color:var(--ui-stroke-secondary)] bg-[color:var(--ui-surface-background)] shadow-2xl p-6">
-            <div className="min-h-0 min-w-0 flex-1 overflow-y-auto pr-1">
-              {activeView === 'config:appearance' ? (
-                <AppearanceSettings />
-              ) : activeView === 'about' ? (
-                <AboutSettings />
-              ) : activeView === 'gateway' ? (
-                <GatewaySettings />
-              ) : activeView.startsWith('config:') ? (
-                <ConfigSettings
-                  activeSectionId={activeView.slice('config:'.length)}
-                  importInputRef={importInputRef}
-                  onConfigSaved={onConfigSaved}
-                  onMainModelChanged={onMainModelChanged}
-                />
-              ) : activeView === 'providers' ? (
-                <ProvidersSettings onViewChange={setProviderView} view={providerView} />
-              ) : activeView === 'keys' ? (
-                <KeysSettings view={keysView} />
-              ) : activeView === 'mcp' ? (
-                <McpSettings gateway={gateway} onConfigSaved={onConfigSaved} />
-              ) : (
-                <SessionsSettings />
-              )}
-            </div>
-          </div>
-        </OverlayMain>
-      </OverlaySplitLayout>
-    </OverlayView>
+    <div className="flex flex-1 flex-col min-h-0 min-w-0 overflow-y-auto p-6">
+      {activeView === 'config:appearance' ? (
+        <AppearanceSettings />
+      ) : activeView === 'about' ? (
+        <AboutSettings />
+      ) : activeView === 'gateway' ? (
+        <GatewaySettings />
+      ) : activeView.startsWith('config:') ? (
+        <ConfigSettings
+          activeSectionId={activeView.slice('config:'.length)}
+          importInputRef={importInputRef}
+          onConfigSaved={onConfigSaved}
+          onMainModelChanged={onMainModelChanged}
+        />
+      ) : activeView === 'providers' ? (
+        <ProvidersSettings onViewChange={setProviderView} view={providerView} />
+      ) : activeView === 'keys' ? (
+        <KeysSettings view={keysView} />
+      ) : activeView === 'mcp' ? (
+        <McpSettings gateway={gateway} onConfigSaved={onConfigSaved} />
+      ) : (
+        <SessionsSettings />
+      )}
+    </div>
   )
 }
 

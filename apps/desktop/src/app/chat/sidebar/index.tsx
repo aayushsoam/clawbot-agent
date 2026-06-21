@@ -17,7 +17,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { useStore } from '@nanostores/react'
 import type * as React from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Codicon } from '@/components/ui/codicon'
@@ -80,6 +80,27 @@ import type { SidebarNavItem } from '../../types'
 import { ProfileRail } from './profile-switcher'
 import { SidebarSessionRow } from './session-row'
 import { VirtualSessionList } from './virtual-session-list'
+
+import { IconDownload, IconRefresh, IconUpload, IconArrowLeft } from '@tabler/icons-react'
+import { Archive, Globe, Info, KeyRound, Settings2, Sparkles, Wrench, Zap } from '@/lib/icons'
+import { SECTIONS } from '../../settings/constants'
+import type { SettingsView as SettingsViewId } from '../../settings/types'
+import { PROVIDER_VIEWS, type ProviderView } from '../../settings/providers-settings'
+import { KEYS_VIEWS, type KeysView } from '../../settings/keys-settings'
+import { useRouteEnumParam } from '../../hooks/use-route-enum-param'
+import { getClawbotConfigDefaults, getClawbotConfigRecord, saveClawbotConfig } from '@/clawbot'
+import { triggerHaptic } from '@/lib/haptics'
+import { notifyError } from '@/store/notifications'
+
+const SETTINGS_VIEWS = [
+  ...SECTIONS.map(s => `config:${s.id}`),
+  'providers',
+  'gateway',
+  'keys',
+  'mcp',
+  'sessions',
+  'about'
+]
 
 const VIRTUALIZE_THRESHOLD = 25
 
@@ -225,6 +246,315 @@ interface ChatSidebarProps extends React.ComponentProps<typeof Sidebar> {
   onNewSessionInWorkspace: (path: null | string) => void
 }
 
+export function SettingsSidebar({ onClose }: { onClose: () => void }) {
+  const { t } = useI18n()
+  const sidebarOpen = useStore($sidebarOpen)
+  const [activeView, setActiveView] = useRouteEnumParam('tab', SETTINGS_VIEWS, 'config:model' as SettingsViewId)
+  const [providerView, setProviderView] = useRouteEnumParam<ProviderView>('pview', PROVIDER_VIEWS, 'accounts')
+  const [keysView, setKeysView] = useRouteEnumParam<KeysView>('kview', KEYS_VIEWS, 'tools')
+
+  const openProviderView = (view: ProviderView) => {
+    setActiveView('providers')
+    setProviderView(view)
+  }
+
+  const openKeysView = (view: KeysView) => {
+    setActiveView('keys')
+    setKeysView(view)
+  }
+
+  const importInputRef = useRef<HTMLInputElement | null>(null)
+
+  const exportConfig = async () => {
+    try {
+      const cfg = await getClawbotConfigRecord()
+      const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'clawbot-config.json'
+      a.click()
+      URL.revokeObjectURL(url)
+      triggerHaptic('success')
+    } catch (err) {
+      notifyError(err, t.settings.exportFailed)
+    }
+  }
+
+  const resetConfig = async () => {
+    if (!window.confirm(t.settings.resetConfirm)) {
+      return
+    }
+
+    try {
+      await saveClawbotConfig(await getClawbotConfigDefaults())
+      triggerHaptic('success')
+      window.location.reload()
+    } catch (err) {
+      notifyError(err, t.settings.resetFailed)
+    }
+  }
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = async () => {
+      try {
+        await saveClawbotConfig(JSON.parse(String(reader.result)))
+        triggerHaptic('success')
+        window.location.reload()
+      } catch (err) {
+        notifyError(err, 'Invalid config JSON')
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = ''
+  }
+
+  return (
+    <Sidebar
+      className={cn(
+        'relative h-full min-w-0 overflow-hidden border-0 text-foreground transition-none',
+        sidebarOpen
+          ? 'bg-transparent opacity-100'
+          : 'pointer-events-none bg-transparent opacity-0'
+      )}
+      collapsible="none"
+    >
+      <SidebarContent className="gap-0 overflow-hidden bg-transparent px-2.5 flex flex-col h-full animate-in fade-in duration-200">
+        <div className="shrink-0 flex items-center px-2 pb-2 pt-[calc(var(--titlebar-height)+0.5rem)] border-b border-border/10">
+          <Button
+            className="flex items-center gap-1.5 h-7 px-2 text-muted-foreground hover:bg-(--ui-control-hover-background) hover:text-foreground rounded-md transition-colors"
+            onClick={onClose}
+            variant="ghost"
+          >
+            <IconArrowLeft className="size-4 shrink-0" />
+            <span className="text-[0.8125rem] font-medium">Back</span>
+          </Button>
+        </div>
+
+        <SidebarGroup className="shrink-0 p-0 pb-2 pt-2">
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-px">
+              {SECTIONS.map(s => {
+                const view = `config:${s.id}` as SettingsViewId
+                const active = activeView === view
+                const Icon = s.icon
+
+                return (
+                  <SidebarMenuItem key={s.id}>
+                    <SidebarMenuButton
+                      className={cn(
+                        'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                        active && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                      )}
+                      onClick={() => setActiveView(view)}
+                      type="button"
+                    >
+                      <Icon className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                      <span className="min-w-0 flex-1 truncate">{t.settings.sections[s.id] ?? s.label}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
+
+              <div className="my-2 h-px bg-border/30" />
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={cn(
+                    'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                    activeView === 'providers' && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                  )}
+                  onClick={() => setActiveView('providers')}
+                  type="button"
+                >
+                  <Zap className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                  <span className="min-w-0 flex-1 truncate">Providers</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {activeView === 'providers' && (
+                <div className="ml-3 flex flex-col gap-px pl-2.5 border-l border-border/10 my-1">
+                  <SidebarMenuButton
+                    className={cn(
+                      'flex h-6 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.75rem] font-medium text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground',
+                      providerView === 'accounts' && 'bg-(--ui-control-hover-background) text-foreground font-semibold'
+                    )}
+                    onClick={() => openProviderView('accounts')}
+                    type="button"
+                  >
+                    <Sparkles className="size-3.5 shrink-0" />
+                    <span>Accounts</span>
+                  </SidebarMenuButton>
+                  <SidebarMenuButton
+                    className={cn(
+                      'flex h-6 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.75rem] font-medium text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground',
+                      providerView === 'keys' && 'bg-(--ui-control-hover-background) text-foreground font-semibold'
+                    )}
+                    onClick={() => openProviderView('keys')}
+                    type="button"
+                  >
+                    <KeyRound className="size-3.5 shrink-0" />
+                    <span>API keys</span>
+                  </SidebarMenuButton>
+                </div>
+              )}
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={cn(
+                    'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                    activeView === 'gateway' && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                  )}
+                  onClick={() => setActiveView('gateway')}
+                  type="button"
+                >
+                  <Globe className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                  <span className="min-w-0 flex-1 truncate">{t.settings.nav.gateway}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={cn(
+                    'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                    activeView === 'keys' && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                  )}
+                  onClick={() => setActiveView('keys')}
+                  type="button"
+                >
+                  <KeyRound className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                  <span className="min-w-0 flex-1 truncate">{t.settings.nav.apiKeys}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {activeView === 'keys' && (
+                <div className="ml-3 flex flex-col gap-px pl-2.5 border-l border-border/10 my-1">
+                  <SidebarMenuButton
+                    className={cn(
+                      'flex h-6 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.75rem] font-medium text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground',
+                      keysView === 'tools' && 'bg-(--ui-control-hover-background) text-foreground font-semibold'
+                    )}
+                    onClick={() => openKeysView('tools')}
+                    type="button"
+                  >
+                    <Wrench className="size-3.5 shrink-0" />
+                    <span>Tools</span>
+                  </SidebarMenuButton>
+                  <SidebarMenuButton
+                    className={cn(
+                      'flex h-6 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.75rem] font-medium text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground',
+                      keysView === 'settings' && 'bg-(--ui-control-hover-background) text-foreground font-semibold'
+                    )}
+                    onClick={() => openKeysView('settings')}
+                    type="button"
+                  >
+                    <Settings2 className="size-3.5 shrink-0" />
+                    <span>Settings</span>
+                  </SidebarMenuButton>
+                </div>
+              )}
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={cn(
+                    'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                    activeView === 'mcp' && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                  )}
+                  onClick={() => setActiveView('mcp')}
+                  type="button"
+                >
+                  <Wrench className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                  <span className="min-w-0 flex-1 truncate">{t.settings.nav.mcp}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={cn(
+                    'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                    activeView === 'sessions' && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                  )}
+                  onClick={() => setActiveView('sessions')}
+                  type="button"
+                >
+                  <Archive className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                  <span className="min-w-0 flex-1 truncate">{t.settings.nav.archivedChats}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <div className="my-2 h-px bg-border/30" />
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={cn(
+                    'flex h-7 w-full justify-start gap-2 rounded-md border border-transparent px-2 text-left text-[0.8125rem] font-medium text-(--ui-text-secondary) transition-colors duration-100 ease-out hover:bg-(--ui-control-hover-background) hover:text-foreground hover:transition-none',
+                    activeView === 'about' && 'border-(--ui-stroke-tertiary) bg-(--ui-control-active-background) text-foreground shadow-none'
+                  )}
+                  onClick={() => setActiveView('about')}
+                  type="button"
+                >
+                  <Info className="size-4 shrink-0 text-[color-mix(in_srgb,currentColor_72%,transparent)]" />
+                  <span className="min-w-0 flex-1 truncate">{t.settings.nav.about}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <div className="mt-auto flex items-center justify-between gap-1 pb-3 pt-2 border-t border-border/10 w-full">
+          <div className="flex items-center gap-1">
+            <Tip label={t.settings.exportConfig}>
+              <Button
+                className="h-7 w-7 justify-center p-0 text-muted-foreground hover:bg-(--ui-control-hover-background) hover:text-foreground"
+                onClick={() => void exportConfig()}
+                variant="ghost"
+              >
+                <IconDownload className="size-3.5" />
+              </Button>
+            </Tip>
+            <Tip label={t.settings.importConfig}>
+              <Button
+                className="h-7 w-7 justify-center p-0 text-muted-foreground hover:bg-(--ui-control-hover-background) hover:text-foreground"
+                onClick={() => {
+                  triggerHaptic('open')
+                  importInputRef.current?.click()
+                }}
+                variant="ghost"
+              >
+                <IconUpload className="size-3.5" />
+              </Button>
+            </Tip>
+            <Tip label={t.settings.resetToDefaults}>
+              <Button
+                className="h-7 w-7 justify-center p-0 text-muted-foreground hover:bg-(--ui-control-hover-background) hover:text-destructive"
+                onClick={() => {
+                  triggerHaptic('warning')
+                  void resetConfig()
+                }}
+                variant="ghost"
+              >
+                <IconRefresh className="size-3.5" />
+              </Button>
+            </Tip>
+          </div>
+        </div>
+
+        <input
+          accept=".json,application/json"
+          className="hidden"
+          onChange={handleImport}
+          ref={importInputRef}
+          type="file"
+        />
+      </SidebarContent>
+    </Sidebar>
+  )
+}
+
 export function ChatSidebar({
   currentView,
   onNavigate,
@@ -238,6 +568,7 @@ export function ChatSidebar({
   const { t } = useI18n()
   const s = t.sidebar
   const sidebarOpen = useStore($sidebarOpen)
+
   const panesFlipped = useStore($panesFlipped)
   const agentsGrouped = useStore($sidebarAgentsGrouped)
   const pinnedSessionIds = useStore($pinnedSessionIds)

@@ -62,7 +62,7 @@ import {
   PREVIEW_RAIL_MIN_WIDTH,
   PREVIEW_RAIL_PANE_WIDTH
 } from './chat/right-rail'
-import { ChatSidebar } from './chat/sidebar'
+import { ChatSidebar, SettingsSidebar } from './chat/sidebar'
 import { CommandPalette } from './command-palette'
 import { useGatewayBoot } from './gateway/hooks/use-gateway-boot'
 import { useGatewayRequest } from './gateway/hooks/use-gateway-request'
@@ -518,6 +518,7 @@ export function DesktopController() {
     branchCurrentSession,
     createBackendSessionForSend,
     openSettings,
+    closeSettings,
     removeSession,
     resumeSession,
     selectSidebarItem,
@@ -538,6 +539,14 @@ export function DesktopController() {
     syncSessionStateToView,
     updateSessionState
   })
+
+  const handleOpenSettings = useCallback(() => {
+    if (currentView === 'settings') {
+      closeSettings()
+    } else {
+      openSettings()
+    }
+  }, [currentView, openSettings, closeSettings])
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -727,7 +736,9 @@ export function DesktopController() {
     toggleCommandCenter
   })
 
-  const sidebar = (
+  const sidebar = currentView === 'settings' ? (
+    <SettingsSidebar onClose={closeSettings} />
+  ) : (
     <ChatSidebar
       currentView={currentView}
       onArchiveSession={sessionId => void archiveSession(sessionId)}
@@ -762,26 +773,6 @@ export function DesktopController() {
       <BootFailureOverlay />
       <CommandPalette />
 
-      {settingsOpen && (
-        <Suspense fallback={null}>
-          <SettingsView
-            gateway={gatewayRef.current}
-            onClose={closeOverlayToPreviousRoute}
-            onConfigSaved={() => {
-              void refreshClawbotConfig()
-              void refreshCurrentModel()
-              void queryClient.invalidateQueries({ queryKey: ['model-options'] })
-            }}
-            onMainModelChanged={(provider, model) => {
-              setCurrentProvider(provider)
-              setCurrentModel(model)
-              updateModelOptionsCache(provider, model, true)
-              void refreshCurrentModel()
-              void queryClient.invalidateQueries({ queryKey: ['model-options'] })
-            }}
-          />
-        </Suspense>
-      )}
 
       {commandCenterOpen && (
         <Suspense fallback={null}>
@@ -891,7 +882,7 @@ export function DesktopController() {
     <AppShell
       leftStatusbarItems={leftStatusbarItems}
       leftTitlebarTools={titlebarToolGroups.flat.left}
-      onOpenSettings={openSettings}
+      onOpenSettings={handleOpenSettings}
       overlays={overlays}
       statusbarItems={statusbarItems}
       titlebarTools={titlebarToolGroups.flat.right}
@@ -947,7 +938,29 @@ export function DesktopController() {
               />
               <Route element={null} path="cron" />
               <Route element={null} path="profiles" />
-              <Route element={null} path="settings" />
+              <Route
+                element = {
+                  <Suspense fallback={null}>
+                    <SettingsView
+                      gateway={gatewayRef.current}
+                      onClose={closeSettings}
+                      onConfigSaved={() => {
+                        void refreshClawbotConfig()
+                        void refreshCurrentModel()
+                        void queryClient.invalidateQueries({ queryKey: ['model-options'] })
+                      }}
+                      onMainModelChanged={(provider, model) => {
+                        setCurrentProvider(provider)
+                        setCurrentModel(model)
+                        updateModelOptionsCache(provider, model, true)
+                        void refreshCurrentModel()
+                        void queryClient.invalidateQueries({ queryKey: ['model-options'] })
+                      }}
+                    />
+                  </Suspense>
+                }
+                path="settings"
+              />
               <Route element={null} path="command-center" />
               <Route element={null} path="agents" />
               <Route element={<Navigate replace to={NEW_CHAT_ROUTE} />} path="new" />
