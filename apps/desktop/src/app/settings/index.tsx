@@ -85,7 +85,7 @@ export function SettingsView({ gateway, onClose, onConfigSaved, onMainModelChang
   }
 
   return (
-    <div className="flex flex-1 flex-col min-h-0 min-w-0 overflow-y-auto p-6">
+    <div className="flex h-full flex-col min-h-0 min-w-0 overflow-y-auto p-6">
       {activeView === 'config:appearance' ? (
         <AppearanceSettings />
       ) : activeView === 'about' ? (
