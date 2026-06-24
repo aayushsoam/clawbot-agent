@@ -12,7 +12,7 @@ export function SidebarStatusStrip() {
   if (status === null) {
     return (
       <div className="px-5 py-1.5" aria-hidden>
-        <div className="h-2 w-[80%] max-w-full animate-pulse rounded-sm bg-midground/10" />
+        <div className="h-2 w-[80%] max-w-full animate-pulse rounded-sm bg-foreground/8" />
       </div>
     );
   }
@@ -29,11 +29,11 @@ export function SidebarStatusStrip() {
         "px-5 pb-2 pt-0.5",
         "text-muted-foreground/70",
         "transition-colors hover:text-muted-foreground/90",
-        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-midground/40",
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20",
         "focus-visible:ring-inset",
       )}
     >
-      <div className="flex flex-col gap-1 font-mondwest text-[0.55rem] leading-snug tracking-[0.12em]">
+      <div className="flex flex-col gap-1 font-sans text-[0.7rem] leading-snug tracking-normal">
         <p className="break-words">
           <span className="text-muted-foreground/50">{gatewayStatusLabel}</span>{" "}
           <span className={cn("font-medium", gw.tone)}>{gw.label}</span>

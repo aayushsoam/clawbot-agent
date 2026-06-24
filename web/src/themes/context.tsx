@@ -353,8 +353,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       .then((resp) => {
         if (cancelled) return;
         if (resp.themes?.length) {
+          const filtered = resp.themes.filter(
+            (t) => BUILTIN_THEMES[t.name] !== undefined || t.definition !== undefined
+          );
           setAvailableThemes(
-            resp.themes.map((t) => ({
+            filtered.map((t) => ({
               name: t.name,
               label: t.label,
               description: t.description,
@@ -363,16 +366,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
           );
           // Index any definitions the server shipped (user themes).
           const defs: Record<string, DashboardTheme> = {};
-          for (const entry of resp.themes) {
+          for (const entry of filtered) {
             if (entry.definition) {
               defs[entry.name] = entry.definition;
             }
           }
           if (Object.keys(defs).length > 0) setUserThemeDefs(defs);
-        }
-        if (resp.active && resp.active !== themeName) {
-          setThemeName(resp.active);
-          window.localStorage.setItem(STORAGE_KEY, resp.active);
+
+          if (resp.active && resp.active !== themeName) {
+            const knownNames = new Set<string>([
+              ...Object.keys(BUILTIN_THEMES),
+              ...filtered.map((t) => t.name),
+            ]);
+            const next = knownNames.has(resp.active) ? resp.active : "default";
+            setThemeName(next);
+            window.localStorage.setItem(STORAGE_KEY, next);
+          }
         }
       })
       .catch(() => {});

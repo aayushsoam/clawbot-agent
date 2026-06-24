@@ -47,13 +47,11 @@ export function PageHeaderProvider({
 
   return (
     <PageHeaderContext.Provider value={value}>
-      <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden">
+      <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden bg-card border border-border rounded-lg lg:rounded-xl shadow-2xl m-2 sm:m-3.5">
         <header
           className={cn(
             "z-1 w-full shrink-0",
             "box-border h-14 min-h-14",
-            "border-b border-current/20",
-            "bg-background-base/40 backdrop-blur-sm",
             "overflow-hidden",
             "sm:min-h-0",
           )}
@@ -69,8 +67,7 @@ export function PageHeaderProvider({
           >
             <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
               <h1
-                className="font-expanded min-w-0 truncate text-sm font-bold tracking-[0.08em] text-midground"
-                style={{ mixBlendMode: "plus-lighter" }}
+                className="font-sans min-w-0 truncate text-sm font-bold tracking-wide text-foreground"
               >
                 {displayTitle}
               </h1>

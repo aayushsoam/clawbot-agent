@@ -65,7 +65,7 @@ export function ConfirmDialog({
         ref={dialogRef}
         className={cn(
           "relative w-full max-w-md mx-4",
-          "border border-border bg-card shadow-lg",
+          "border border-border bg-card shadow-lg rounded-lg",
           "animate-[dialog-in_180ms_ease-out]",
         )}
       >
@@ -82,7 +82,7 @@ export function ConfirmDialog({
           <div className="flex-1 min-w-0 flex flex-col gap-1">
             <h2
               id="confirm-dialog-title"
-              className="font-expanded text-sm font-bold tracking-[0.08em] uppercase blend-lighter"
+              className="font-sans text-sm font-bold tracking-wide text-foreground"
             >
               {title}
             </h2>
@@ -90,7 +90,7 @@ export function ConfirmDialog({
             {description && (
               <p
                 id="confirm-dialog-desc"
-                className="font-mondwest text-xs text-muted-foreground leading-relaxed"
+                className="font-sans text-xs text-muted-foreground leading-relaxed"
               >
                 {description}
               </p>

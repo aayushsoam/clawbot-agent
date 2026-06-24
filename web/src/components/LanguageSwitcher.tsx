@@ -4,6 +4,7 @@ import { Typography } from "@/components/NouiTypography";
 import { useI18n } from "@/i18n/context";
 import { LOCALE_META } from "@/i18n";
 import type { Locale } from "@/i18n";
+import { cn } from "@/lib/utils";
 
 /**
  * Language picker — shows the current language's flag + endonym, opens a
@@ -13,7 +14,7 @@ import type { Locale } from "@/i18n";
  * Replaces the older two-state EN↔ZH toggle now that we ship 16 locales
  * (en, zh, zh-hant, ja, de, es, fr, tr, uk, af, ko, it, ga, pt, ru, hu).
  */
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ dropUp = false }: { dropUp?: boolean }) {
   const { locale, setLocale, t } = useI18n();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,8 +58,7 @@ export function LanguageSwitcher() {
         <span className="inline-flex items-center gap-1.5">
           <span className="text-base leading-none">{current.flag}</span>
           <Typography
-            mondwest
-            className="hidden sm:inline tracking-wide uppercase text-[0.65rem]"
+            className="hidden sm:inline tracking-wide uppercase text-[0.65rem] font-semibold text-foreground/80"
           >
             {locale === "en" ? "EN" : current.name}
           </Typography>
@@ -69,7 +69,10 @@ export function LanguageSwitcher() {
         <div
           role="listbox"
           aria-label={t.language.switchTo}
-          className="absolute right-0 top-full mt-1 z-50 min-w-[10rem] rounded-md border border-border bg-popover shadow-md py-1 max-h-80 overflow-y-auto"
+          className={cn(
+            "absolute z-50 min-w-[10rem] rounded-md border border-border bg-popover shadow-md py-1 max-h-80 overflow-y-auto",
+            dropUp ? "right-0 bottom-full mb-1" : "right-0 top-full mt-1"
+          )}
         >
           {allLocales.map(([code, meta]) => {
             const selected = code === locale;

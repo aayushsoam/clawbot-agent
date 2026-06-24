@@ -31,7 +31,7 @@ export function Backdrop() {
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
           backgroundColor: "var(--background-base)",
-          mixBlendMode: "difference",
+          mixBlendMode: "var(--component-backdrop-blend-mode, difference)" as any,
         }}
       />
 
@@ -69,7 +69,7 @@ export function Backdrop() {
           background:
             "radial-gradient(ellipse at 0% 0%, transparent 60%, var(--warm-glow) 100%)",
           mixBlendMode: "lighten",
-          opacity: 0.22,
+          opacity: "var(--component-backdrop-glow-opacity, 0.22)" as any,
         }}
       />
 

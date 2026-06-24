@@ -128,28 +128,28 @@ code { font-size: 0.875rem; }
    extensively. Rather than rewrite every call site, we expose those
    tokens on top of the Soam palette so classes continue to resolve. */
 @theme inline {
-  /* Remap foreground to midground so `text-foreground` / `bg-foreground`
-     stay visible — in LENS_0, `--foreground` itself has alpha 0. */
+  --color-background-base: var(--background-base);
+  --color-background: var(--background-base);
   --color-foreground: var(--midground);
 
-  --color-card: color-mix(in srgb, var(--midground-base) 4%, var(--background-base));
+  --color-card: color-mix(in srgb, var(--midground-base) 6%, var(--background-base));
   --color-card-foreground: var(--midground);
   --color-primary: var(--midground);
   --color-primary-foreground: var(--background-base);
-  --color-secondary: color-mix(in srgb, var(--midground-base) 6%, var(--background-base));
+  --color-secondary: color-mix(in srgb, var(--midground-base) 8%, var(--background-base));
   --color-secondary-foreground: var(--midground);
-  --color-muted: color-mix(in srgb, var(--midground-base) 8%, var(--background-base));
-  --color-muted-foreground: color-mix(in srgb, var(--midground-base) 55%, transparent);
-  --color-accent: color-mix(in srgb, var(--midground-base) 10%, var(--background-base));
+  --color-muted: color-mix(in srgb, var(--midground-base) 10%, var(--background-base));
+  --color-muted-foreground: color-mix(in srgb, var(--midground-base) 48%, transparent);
+  --color-accent: color-mix(in srgb, var(--midground-base) 12%, var(--background-base));
   --color-accent-foreground: var(--midground);
-  --color-destructive: #fb2c36;
+  --color-destructive: #cf2d56;
   --color-destructive-foreground: #ffffff;
-  --color-success: #4ade80;
+  --color-success: #55a583;
   --color-warning: #ffbd38;
-  --color-border: color-mix(in srgb, var(--midground-base) 15%, transparent);
-  --color-input: color-mix(in srgb, var(--midground-base) 15%, transparent);
+  --color-border: color-mix(in srgb, var(--midground-base) 12%, transparent);
+  --color-input: color-mix(in srgb, var(--midground-base) 18%, transparent);
   --color-ring: var(--midground);
-  --color-popover: color-mix(in srgb, var(--midground-base) 4%, var(--background-base));
+  --color-popover: color-mix(in srgb, var(--midground-base) 5%, var(--background-base));
   --color-popover-foreground: var(--midground);
 
   --radius-sm: calc(var(--theme-radius) - 4px);

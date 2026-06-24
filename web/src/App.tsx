@@ -67,8 +67,6 @@ import ProfilesPage from "@/pages/ProfilesPage";
 import SkillsPage from "@/pages/SkillsPage";
 import PluginsPage from "@/pages/PluginsPage";
 import ChatPage from "@/pages/ChatPage";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useI18n } from "@/i18n";
 import type { Translations } from "@/i18n/types";
 import { PluginPage, PluginSlot, usePlugins } from "@/plugins";
@@ -416,7 +414,7 @@ export default function App() {
   return (
     <div
       data-layout-variant={layoutVariant}
-      className="font-mondwest flex h-dvh max-h-dvh min-h-0 flex-col overflow-hidden bg-black uppercase text-midground antialiased"
+      className="font-sans flex h-dvh max-h-dvh min-h-0 flex-col overflow-hidden bg-background-base text-midground antialiased"
     >
       <SelectionSwitcher />
       <Backdrop />
@@ -426,8 +424,8 @@ export default function App() {
         className={cn(
           "lg:hidden fixed top-0 left-0 right-0 z-40 h-12",
           "flex items-center gap-2 px-3",
-          "border-b border-current/20",
-          "bg-background-base/90 backdrop-blur-sm",
+          "border-b border-foreground/8",
+          "bg-background-base/95 backdrop-blur-md",
         )}
         style={{
           background: "var(--component-header-background)",
@@ -442,14 +440,13 @@ export default function App() {
           aria-label={t.app.openNavigation}
           aria-expanded={mobileOpen}
           aria-controls="app-sidebar"
-          className="text-midground/70 hover:text-midground"
+          className="text-foreground/60 hover:text-foreground"
         >
           <Menu />
         </Button>
 
         <Typography
-          className="font-bold text-[0.95rem] leading-[0.95] tracking-[0.05em] text-midground"
-          style={{ mixBlendMode: "plus-lighter" }}
+          className="font-bold text-[0.95rem] leading-[0.95] tracking-[0.05em] text-foreground/90"
         >
           {t.app.brand}
         </Typography>
@@ -476,30 +473,26 @@ export default function App() {
             aria-label={t.app.navigation}
             className={cn(
               "fixed top-0 left-0 z-50 flex h-dvh max-h-dvh w-64 min-h-0 flex-col",
-              "border-r border-current/20",
-              "bg-background-base/95 backdrop-blur-sm",
+              "border-r border-foreground/8",
               "transition-transform duration-200 ease-out",
               mobileOpen ? "translate-x-0" : "-translate-x-full",
               "lg:sticky lg:top-0 lg:translate-x-0 lg:shrink-0",
             )}
             style={{
-              background: "var(--component-sidebar-background)",
-              clipPath: "var(--component-sidebar-clip-path)",
-              borderImage: "var(--component-sidebar-border-image)",
+              background: "var(--component-sidebar-background, var(--background-base))",
             }}
           >
             <div
               className={cn(
                 "flex h-14 shrink-0 items-center justify-between gap-2 px-4",
-                "border-b border-current/20",
+                "border-b border-foreground/8",
               )}
             >
               <div className="flex items-center gap-2">
                 <PluginSlot name="header-left" />
 
                 <Typography
-                  className="font-bold text-[1.125rem] leading-[0.95] tracking-[0.0525rem] text-midground"
-                  style={{ mixBlendMode: "plus-lighter" }}
+                  className="font-bold text-[1.125rem] leading-[0.95] tracking-[0.0525rem] text-foreground/90"
                 >
                   Clawbot
                   <br />
@@ -512,14 +505,14 @@ export default function App() {
                 size="icon"
                 onClick={closeMobile}
                 aria-label={t.app.closeNavigation}
-                className="lg:hidden text-midground/70 hover:text-midground"
+                className="lg:hidden text-foreground/60 hover:text-foreground"
               >
                 <X />
               </Button>
             </div>
 
             <nav
-              className="min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden border-t border-current/10 py-2"
+              className="min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden border-t border-foreground/6 py-2"
               aria-label={t.app.navigation}
             >
               <ul className="flex flex-col">
@@ -536,13 +529,13 @@ export default function App() {
               {sidebarNav.pluginItems.length > 0 && (
                 <div
                   aria-labelledby="clawbot-sidebar-plugin-nav-heading"
-                  className="flex flex-col border-t border-current/10 pb-2"
+                  className="flex flex-col border-t border-foreground/6 pb-2"
                   role="group"
                 >
                   <span
                     className={cn(
-                      "px-5 pt-2.5 pb-1",
-                      "font-mondwest text-[0.6rem] tracking-[0.15em] uppercase opacity-30",
+                      "px-5 pt-3 pb-1",
+                      "font-sans text-[0.65rem] tracking-wider uppercase font-semibold text-foreground/40",
                     )}
                     id="clawbot-sidebar-plugin-nav-heading"
                   >
@@ -565,20 +558,6 @@ export default function App() {
 
             <SidebarSystemActions onNavigate={closeMobile} />
 
-            <div
-              className={cn(
-                "flex shrink-0 items-center justify-between gap-2",
-                "px-3 py-2",
-                "border-t border-current/20",
-              )}
-            >
-              <div className="flex min-w-0 items-center gap-2">
-                <PluginSlot name="header-right" />
-                <ThemeSwitcher dropUp />
-                <LanguageSwitcher />
-              </div>
-            </div>
-
             <SidebarFooter />
           </aside>
 
@@ -586,10 +565,7 @@ export default function App() {
             <div
               className={cn(
                 "relative z-2 flex min-w-0 min-h-0 flex-1 flex-col",
-                "px-3 sm:px-6",
-                isChatRoute
-                  ? "pb-3 pt-1 sm:pb-4 sm:pt-2 lg:pt-4"
-                  : "pt-2 sm:pt-4 lg:pt-6 pb-4 sm:pb-8",
+                "p-2 sm:p-3.5",
                 isDocsRoute && "min-h-0 flex-1",
               )}
             >
@@ -668,36 +644,18 @@ function SidebarNavLink({ closeMobile, item, t }: SidebarNavLinkProps) {
         className={({ isActive }) =>
           cn(
             "group relative flex items-center gap-3",
-            "px-5 py-2.5",
-            "font-mondwest text-[0.8rem] tracking-[0.12em]",
-            "whitespace-nowrap transition-colors cursor-pointer",
-            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-midground",
-            isActive ? "text-midground" : "opacity-60 hover:opacity-100",
+            "mx-3 my-0.5 px-4 py-2 rounded-lg",
+            "font-sans text-[0.85rem] tracking-wide",
+            "whitespace-nowrap transition-all cursor-pointer",
+            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/30",
+            isActive
+              ? "bg-accent text-accent-foreground font-medium"
+              : "text-foreground/60 hover:text-foreground/90 hover:bg-foreground/[0.03]",
           )
         }
-        style={{
-          clipPath: "var(--component-tab-clip-path)",
-        }}
       >
-        {({ isActive }) => (
-          <>
-            <Icon className="h-3.5 w-3.5 shrink-0" />
-            <span className="truncate">{navLabel}</span>
-
-            <span
-              aria-hidden
-              className="absolute inset-y-0.5 left-1.5 right-1.5 bg-midground opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-5"
-            />
-
-            {isActive && (
-              <span
-                aria-hidden
-                className="absolute left-0 top-0 bottom-0 w-px bg-midground"
-                style={{ mixBlendMode: "plus-lighter" }}
-              />
-            )}
-          </>
-        )}
+        <Icon className="h-4 w-4 shrink-0" />
+        <span className="truncate">{navLabel}</span>
       </NavLink>
     </li>
   );
@@ -737,14 +695,14 @@ function SidebarSystemActions({ onNavigate }: { onNavigate: () => void }) {
     <div
       className={cn(
         "shrink-0 flex flex-col",
-        "border-t border-current/10",
+        "border-t border-foreground/6",
         "py-1",
       )}
     >
       <span
         className={cn(
-          "px-5 pt-0.5 pb-0.5",
-          "font-mondwest text-[0.6rem] tracking-[0.15em] uppercase opacity-30",
+          "px-5 pt-2 pb-0.5",
+          "font-sans text-[0.65rem] tracking-wider uppercase font-semibold text-foreground/40",
         )}
       >
         {t.app.system}
@@ -769,12 +727,12 @@ function SidebarSystemActions({ onNavigate }: { onNavigate: () => void }) {
                 aria-busy={busy}
                 active={busy}
                 className={cn(
-                  "gap-3 px-5 py-1.5 whitespace-nowrap",
-                  "font-mondwest text-[0.75rem] tracking-[0.1em]",
-                  "transition-opacity",
+                  "gap-3 mx-3 my-0.5 px-4 py-1.5 rounded-lg whitespace-nowrap",
+                  "font-sans text-[0.8rem] tracking-wide",
+                  "transition-all",
                   busy
-                    ? "text-midground opacity-100"
-                    : "opacity-60 hover:opacity-100",
+                    ? "bg-accent text-foreground opacity-100 font-medium"
+                    : "text-foreground/50 hover:text-foreground/80 hover:bg-foreground/[0.03]",
                   "disabled:opacity-30",
                 )}
               >
@@ -785,26 +743,13 @@ function SidebarSystemActions({ onNavigate }: { onNavigate: () => void }) {
                 ) : (
                   <Icon
                     className={cn(
-                      "h-3.5 w-3.5 shrink-0",
+                      "h-4 w-4 shrink-0",
                       isActionRunning && !spin && "animate-pulse",
                     )}
                   />
                 )}
 
                 <span className="truncate">{displayLabel}</span>
-
-                <span
-                  aria-hidden
-                  className="absolute inset-y-0.5 left-1.5 right-1.5 bg-midground opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-5"
-                />
-
-                {busy && (
-                  <span
-                    aria-hidden
-                    className="absolute left-0 top-0 bottom-0 w-px bg-midground"
-                    style={{ mixBlendMode: "plus-lighter" }}
-                  />
-                )}
               </ListItem>
             </li>
           );

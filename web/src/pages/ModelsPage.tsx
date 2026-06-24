@@ -259,7 +259,7 @@ function UseAsMenu({
             )}
           </button>
 
-          <div className="border-t border-border/50 px-3 py-1.5 text-[9px] uppercase tracking-wider text-muted-foreground">
+          <div className="border-t border-border/50 px-3 py-1.5 text-[9px] tracking-wide text-muted-foreground">
             Auxiliary task
           </div>
 
@@ -535,7 +535,7 @@ function AuxiliaryTasksModal({
           <div className="flex items-center justify-between gap-3 pr-8">
             <h2
               id="aux-modal-title"
-              className="font-display text-base tracking-wider uppercase"
+              className="font-sans text-base font-bold tracking-wide"
             >
               Auxiliary Tasks
             </h2>
@@ -685,7 +685,7 @@ function ModelSettingsPanel({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-0.5">
               <Star className="h-3 w-3 text-primary" />
-              <span className="text-xs font-medium uppercase tracking-wider">
+              <span className="text-xs font-medium tracking-wide">
                 Main model
               </span>
             </div>
@@ -709,7 +709,7 @@ function ModelSettingsPanel({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 mb-0.5">
               <Cpu className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs font-medium uppercase tracking-wider">
+              <span className="text-xs font-medium tracking-wide">
                 Auxiliary tasks
               </span>
             </div>

@@ -4346,12 +4346,7 @@ def mount_spa(application: FastAPI):
 # definitions live in the frontend (web/src/themes/presets.ts).
 _BUILTIN_DASHBOARD_THEMES = [
     {"name": "default",       "label": "Clawbot Teal",         "description": "Classic dark teal — the canonical Clawbot look"},
-    {"name": "default-large", "label": "Clawbot Teal (Large)", "description": "Clawbot Teal with bigger fonts and roomier spacing"},
-    {"name": "midnight",      "label": "Midnight",            "description": "Deep blue-violet with cool accents"},
-    {"name": "ember",     "label": "Ember",          "description": "Warm crimson and bronze — forge vibes"},
-    {"name": "mono",      "label": "Mono",           "description": "Clean grayscale — minimal and focused"},
-    {"name": "cyberpunk", "label": "Cyberpunk",      "description": "Neon green on black — matrix terminal"},
-    {"name": "rose",      "label": "Rosé",           "description": "Soft pink and warm ivory — easy on the eyes"},
+    {"name": "clawbot-white", "label": "Clawbot Light",        "description": "Clean light mode layout"},
 ]
 
 

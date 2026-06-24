@@ -5,7 +5,7 @@ import { usePageHeader } from "@/contexts/usePageHeader";
 import { cn } from "@/lib/utils";
 import { PluginSlot } from "@/plugins";
 
-export const CLAWBOT_DOCS_URL = "https://clawbot-agent.aayushsoam.com/docs/";
+export const CLAWBOT_DOCS_URL = "https://clawbot-agent.vercel.app/";
 
 const DS_BUTTON_OUTLINED_LINK_CN = cn(
   "group relative inline-grid grid-cols-[auto_1fr_auto] items-center",

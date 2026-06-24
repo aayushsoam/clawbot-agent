@@ -16,9 +16,11 @@ import { ga } from "./ga";
 import { pt } from "./pt";
 import { ru } from "./ru";
 import { hu } from "./hu";
+import { hi } from "./hi";
 
 const TRANSLATIONS: Record<Locale, Translations> = {
   en,
+  hi,
   zh,
   "zh-hant": zhHant,
   ja,
@@ -42,6 +44,7 @@ const TRANSLATIONS: Record<Locale, Translations> = {
 // LanguageSwitcher and any future settings page can share the same list.
 export const LOCALE_META: Record<Locale, { name: string; flag: string }> = {
   en: { name: "English", flag: "🇬🇧" },
+  hi: { name: "हिन्दी", flag: "🇮🇳" },
   zh: { name: "简体中文", flag: "🇨🇳" },
   "zh-hant": { name: "繁體中文", flag: "🇹🇼" },
   ja: { name: "日本語", flag: "🇯🇵" },

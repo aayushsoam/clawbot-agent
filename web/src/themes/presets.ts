@@ -40,176 +40,61 @@ const DEFAULT_LAYOUT: ThemeLayout = {
 
 export const defaultTheme: DashboardTheme = {
   name: "default",
-  label: "Clawbot Black",
-  description: "Pure black theme — OLED friendly",
+  label: "Clawbot Teal",
+  description: "Black background with vibrant teal accents",
   palette: {
     background: { hex: "#000000", alpha: 1 },
-    midground: { hex: "#ffe6cb", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(255, 189, 56, 0.35)",
-    noiseOpacity: 1,
+    midground: { hex: "#ffffff", alpha: 1 },
+    foreground: { hex: "#ffffff", alpha: 1 },
+    warmGlow: "rgba(0, 210, 196, 0.18)",
+    noiseOpacity: 0.7,
+  },
+  colorOverrides: {
+    primary: "#00d2c4",
+    primaryForeground: "#000000",
+    accent: "rgba(0, 210, 196, 0.15)",
+    accentForeground: "#00d2c4",
+    border: "rgba(0, 210, 196, 0.2)",
+    ring: "#00d2c4",
   },
   typography: DEFAULT_TYPOGRAPHY,
   layout: DEFAULT_LAYOUT,
 };
 
-export const midnightTheme: DashboardTheme = {
-  name: "midnight",
-  label: "Midnight",
-  description: "Deep blue-violet with cool accents",
+export const clawbotWhiteTheme: DashboardTheme = {
+  name: "clawbot-white",
+  label: "Clawbot Light",
+  description: "Clean light mode layout",
   palette: {
-    background: { hex: "#0a0a1f", alpha: 1 },
-    midground: { hex: "#d4c8ff", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(167, 139, 250, 0.32)",
-    noiseOpacity: 0.8,
-  },
-  typography: {
-    ...DEFAULT_TYPOGRAPHY,
-    fontSans: `"Inter", ${SYSTEM_SANS}`,
-    fontMono: `"JetBrains Mono", ${SYSTEM_MONO}`,
-    fontUrl:
-      "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap",
-    letterSpacing: "-0.005em",
-  },
-  layout: {
-    ...DEFAULT_LAYOUT,
-    radius: "0.75rem",
-  },
-};
-
-export const emberTheme: DashboardTheme = {
-  name: "ember",
-  label: "Ember",
-  description: "Warm crimson and bronze — forge vibes",
-  palette: {
-    background: { hex: "#1a0a06", alpha: 1 },
-    midground: { hex: "#ffd8b0", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(249, 115, 22, 0.38)",
-    noiseOpacity: 1,
-  },
-  typography: {
-    ...DEFAULT_TYPOGRAPHY,
-    fontSans: `"Spectral", Georgia, "Times New Roman", serif`,
-    fontMono: `"IBM Plex Mono", ${SYSTEM_MONO}`,
-    fontUrl:
-      "https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap",
-  },
-  layout: {
-    ...DEFAULT_LAYOUT,
-    radius: "0.25rem",
+    background: { hex: "#f1f5f9", alpha: 1 },
+    midground: { hex: "#0f172a", alpha: 1 },
+    foreground: { hex: "#000000", alpha: 1 },
+    warmGlow: "rgba(15, 23, 42, 0.05)",
+    noiseOpacity: 0.1,
   },
   colorOverrides: {
-    destructive: "#c92d0f",
-    warning: "#f97316",
+    card: "#ffffff",
+    cardForeground: "#0f172a",
+    popover: "#ffffff",
+    popoverForeground: "#0f172a",
+    border: "#cbd5e1",
   },
-};
-
-export const monoTheme: DashboardTheme = {
-  name: "mono",
-  label: "Mono",
-  description: "Clean grayscale — minimal and focused",
-  palette: {
-    background: { hex: "#0e0e0e", alpha: 1 },
-    midground: { hex: "#eaeaea", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(255, 255, 255, 0.1)",
-    noiseOpacity: 0.6,
+  componentStyles: {
+    sidebar: {
+      background: "#ffffff",
+    },
+    backdrop: {
+      blendMode: "normal",
+      fillerOpacity: "0",
+      glowOpacity: "0",
+    },
   },
-  typography: {
-    ...DEFAULT_TYPOGRAPHY,
-    fontSans: `"IBM Plex Sans", ${SYSTEM_SANS}`,
-    fontMono: `"IBM Plex Mono", ${SYSTEM_MONO}`,
-    fontUrl:
-      "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
-  },
-  layout: {
-    ...DEFAULT_LAYOUT,
-    radius: "0",
-  },
-};
-
-export const cyberpunkTheme: DashboardTheme = {
-  name: "cyberpunk",
-  label: "Cyberpunk",
-  description: "Neon green on black — matrix terminal",
-  palette: {
-    background: { hex: "#040608", alpha: 1 },
-    midground: { hex: "#9bffcf", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(0, 255, 136, 0.22)",
-    noiseOpacity: 1.2,
-  },
-  typography: {
-    ...DEFAULT_TYPOGRAPHY,
-    fontSans: `"Share Tech Mono", "JetBrains Mono", ${SYSTEM_MONO}`,
-    fontMono: `"Share Tech Mono", "JetBrains Mono", ${SYSTEM_MONO}`,
-    fontUrl:
-      "https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;700&display=swap",
-  },
-  layout: {
-    ...DEFAULT_LAYOUT,
-    radius: "0",
-  },
-  colorOverrides: {
-    success: "#00ff88",
-    warning: "#FF6600",
-    destructive: "#ff0055",
-  },
-};
-
-export const roseTheme: DashboardTheme = {
-  name: "rose",
-  label: "Rosé",
-  description: "Soft pink and warm ivory — easy on the eyes",
-  palette: {
-    background: { hex: "#1a0f15", alpha: 1 },
-    midground: { hex: "#ffd4e1", alpha: 1 },
-    foreground: { hex: "#ffffff", alpha: 0 },
-    warmGlow: "rgba(249, 168, 212, 0.3)",
-    noiseOpacity: 0.9,
-  },
-  typography: {
-    ...DEFAULT_TYPOGRAPHY,
-    fontSans: `"Fraunces", Georgia, serif`,
-    fontMono: `"DM Mono", ${SYSTEM_MONO}`,
-    fontUrl:
-      "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Mono:wght@400;500&display=swap",
-  },
-  layout: {
-    ...DEFAULT_LAYOUT,
-    radius: "1rem",
-  },
-};
-
-/**
- * Same look as ``defaultTheme`` but with a larger root font size, looser
- * line-height, and ``spacious`` density so every rem-based size in the
- * dashboard scales up. For users who find the default 15px UI too dense.
- */
-export const defaultLargeTheme: DashboardTheme = {
-  name: "default-large",
-  label: "Clawbot Teal (Large)",
-  description: "Clawbot Teal with bigger fonts and roomier spacing",
-  palette: defaultTheme.palette,
-  typography: {
-    ...DEFAULT_TYPOGRAPHY,
-    baseSize: "18px",
-    lineHeight: "1.65",
-  },
-  layout: {
-    ...DEFAULT_LAYOUT,
-    density: "spacious",
-  },
+  typography: DEFAULT_TYPOGRAPHY,
+  layout: DEFAULT_LAYOUT,
 };
 
 export const BUILTIN_THEMES: Record<string, DashboardTheme> = {
   default: defaultTheme,
-  "default-large": defaultLargeTheme,
-  midnight: midnightTheme,
-  ember: emberTheme,
-  mono: monoTheme,
-  cyberpunk: cyberpunkTheme,
-  rose: roseTheme,
+  "clawbot-white": clawbotWhiteTheme,
 };
+
