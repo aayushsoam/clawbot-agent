@@ -290,3 +290,22 @@ pre.prism-code.language-ascii code {
   background: linear-gradient(135deg, #0b0f14 0%, #111827 100%);
   padding: 4rem 0;
 }
+
+/* Center the search bar in the navbar on desktop screens */
+@media (min-width: 997px) {
+  .navbar__inner {
+    position: relative;
+  }
+  
+  div[class*="navbarSearchContainer"] {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 !important;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+}
+
