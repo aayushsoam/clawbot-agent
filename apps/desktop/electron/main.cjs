@@ -126,6 +126,9 @@ if (REMOTE_DISPLAY_REASON) {
 app.commandLine.appendSwitch('disable-renderer-backgrounding')
 app.commandLine.appendSwitch('disable-backgrounding-occluded-windows')
 app.commandLine.appendSwitch('disable-background-timer-throttling')
+// Suppress Chromium's internal Mojo/Widget warnings and other non-fatal logs in the console
+app.commandLine.appendSwitch('log-level', '3')
+
 
 const SOURCE_REPO_ROOT = path.resolve(APP_ROOT, '../..')
 

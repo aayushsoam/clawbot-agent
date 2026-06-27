@@ -135,7 +135,14 @@ function filePathForTarget(target: PreviewTarget) {
   try {
     const url = new URL(target.url)
 
-    return url.protocol === 'file:' ? decodeURIComponent(url.pathname) : target.url
+    if (url.protocol === 'file:') {
+      let pathname = decodeURIComponent(url.pathname)
+      if (/^\/[a-zA-Z]:[/\\]/.test(pathname)) {
+        pathname = pathname.slice(1)
+      }
+      return pathname
+    }
+    return target.url
   } catch {
     return target.url
   }

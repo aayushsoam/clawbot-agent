@@ -10165,6 +10165,8 @@ def cmd_gui(args: argparse.Namespace):
     if getattr(args, "cwd", None):
         env["CLAWBOT_DESKTOP_CWD"] = str(Path(args.cwd).expanduser().resolve())
     env.setdefault("NODE_NO_WARNINGS", "1")
+    env["ELECTRON_ENABLE_LOGGING"] = "0"
+
 
     source_mode = getattr(args, "source", False)
     skip_build = getattr(args, "skip_build", False)

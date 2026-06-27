@@ -58,6 +58,9 @@ export const $sidebarAgentsGrouped = atom(storedBoolean(SIDEBAR_AGENTS_GROUPED_S
 // preview rail move to the left — a mirror of the default layout.
 export const $panesFlipped = atom(storedBoolean(PANES_FLIPPED_STORAGE_KEY, false))
 export const $isSidebarResizing = atom(false)
+export const $chatBrowserSplitOpen = atom<boolean>(false)
+export const $chatBrowserUrl = atom<string>('https://www.google.com')
+
 export const $sessionsLimit = atom(SIDEBAR_SESSIONS_PAGE_SIZE)
 
 $pinnedSessionIds.subscribe(ids => persistStringArray(SIDEBAR_PINNED_STORAGE_KEY, [...ids]))

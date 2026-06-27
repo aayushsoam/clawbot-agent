@@ -18,6 +18,7 @@ import { ChevronDown, Loader2 } from '@/lib/icons'
 import { $gateway } from '@/store/gateway'
 import { notifyError } from '@/store/notifications'
 import { $approvalRequest, type ApprovalRequest, clearApprovalRequest } from '@/store/prompts'
+import { $chatBrowserSplitOpen, $chatBrowserUrl } from '@/store/layout'
 
 import type { ToolPart } from './tool-fallback-model'
 
@@ -34,7 +35,7 @@ import type { ToolPart } from './tool-fallback-model'
 // approval at a time, so the single pending row of those tools IS the row that
 // raised it. The command/description text comes from `$approvalRequest` (the
 // event payload), which is the only place that data reliably exists.
-export const APPROVAL_TOOLS = new Set(['terminal', 'execute_code'])
+export const APPROVAL_TOOLS = new Set(['terminal', 'execute_code', 'browser_navigate'])
 
 // Canonical gateway choices (ui-tui/src/components/prompts.tsx).
 type ApprovalChoice = 'once' | 'session' | 'always' | 'deny'
@@ -44,6 +45,10 @@ export const PendingToolApproval: FC<{ part: ToolPart }> = ({ part }) => {
 
   if (!request || !APPROVAL_TOOLS.has(part.toolName)) {
     return null
+  }
+
+  if (part.toolName === 'browser_navigate') {
+    return <BrowserApprovalBar request={request} />
   }
 
   return <ApprovalBar request={request} />
@@ -203,6 +208,94 @@ const ApprovalBar: FC<{ request: ApprovalRequest }> = ({ request }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  )
+}
+
+function extractUrl(command: string): string {
+  const trimmed = command.trim()
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed
+  }
+  const match = trimmed.match(/https?:\/\/[^\s'")]+/i)
+  if (match) {
+    return match[0]
+  }
+  return 'https://www.google.com'
+}
+
+const BrowserApprovalBar: FC<{ request: ApprovalRequest }> = ({ request }) => {
+  const gateway = useStore($gateway)
+  const [submitting, setSubmitting] = useState<ApprovalChoice | null>(null)
+  const busy = submitting !== null
+
+  const respond = useCallback(
+    async (choice: ApprovalChoice, useLocalBrowser?: boolean) => {
+      if (busy || !$approvalRequest.get()) {
+        return
+      }
+
+      if (!gateway) {
+        notifyError(new Error('Clawbot gateway is not connected'), 'Could not send approval response')
+        return
+      }
+
+      setSubmitting(choice)
+
+      try {
+        if (choice !== 'deny' && useLocalBrowser) {
+          const url = extractUrl(request.command)
+          $chatBrowserUrl.set(url)
+          $chatBrowserSplitOpen.set(true)
+        }
+
+        await gateway.request<{ resolved?: boolean }>('approval.respond', {
+          choice,
+          session_id: request.sessionId ?? undefined
+        })
+        triggerHaptic(choice === 'deny' ? 'cancel' : 'submit')
+        clearApprovalRequest(request.sessionId)
+      } catch (error) {
+        notifyError(error, 'Could not send approval response')
+        setSubmitting(null)
+      }
+    },
+    [busy, gateway, request.sessionId, request.command]
+  )
+
+  return (
+    <div className="mt-1 flex flex-col gap-1.5 ps-5" data-slot="browser-approval-inline">
+      <div className="text-xs text-(--ui-text-secondary) font-medium">
+        Clawbot wants to navigate to: <code className="font-mono text-primary bg-primary/5 px-1 rounded">{request.command}</code>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button
+          className="h-7 gap-1 rounded-md px-3 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+          disabled={busy}
+          onClick={() => void respond('once', true)}
+          size="xs"
+        >
+          {submitting === 'once' ? <Loader2 className="size-3 animate-spin" /> : 'Clawbot Browser'}
+        </Button>
+        <Button
+          className="h-7 gap-1 rounded-md px-3 text-xs font-medium"
+          disabled={busy}
+          onClick={() => void respond('once', false)}
+          size="xs"
+          variant="outline"
+        >
+          {submitting === 'once' ? <Loader2 className="size-3 animate-spin" /> : 'Local Browser'}
+        </Button>
+        <Button
+          className="h-7 gap-1.5 rounded-md px-3 text-xs font-normal text-(--ui-text-tertiary) hover:text-foreground"
+          disabled={busy}
+          onClick={() => void respond('deny')}
+          size="xs"
+          variant="ghost"
+        >
+          Reject
+        </Button>
+      </div>
     </div>
   )
 }

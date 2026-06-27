@@ -833,6 +833,8 @@ export function DesktopController() {
       onThreadMessagesChange={handleThreadMessagesChange}
       onToggleSelectedPin={toggleSelectedPin}
       onTranscribeAudio={transcribeVoiceAudio}
+      onRestartPreviewServer={restartPreviewServer}
+      setTitlebarToolGroup={setTitlebarToolGroup}
     />
   )
 
@@ -843,7 +845,7 @@ export function DesktopController() {
 
   const previewPane = (
     <Pane
-      disabled={!chatOpen || (!previewTarget && !filePreviewTarget)}
+      disabled={true}
       id="preview"
       key="preview"
       maxWidth={PREVIEW_RAIL_MAX_WIDTH}

@@ -6,6 +6,7 @@ import type { SetTitlebarToolGroup, TitlebarTool } from '@/app/shell/titlebar-co
 import { Tip } from '@/components/ui/tooltip'
 import { Bug } from '@/lib/icons'
 import { cn } from '@/lib/utils'
+import { $chatBrowserSplitOpen, $chatBrowserUrl } from '@/store/layout'
 import { notify, notifyError } from '@/store/notifications'
 import { $previewServerRestart, failPreviewServerRestart, type PreviewTarget } from '@/store/preview'
 
@@ -19,6 +20,7 @@ import {
 } from './preview-console'
 import { type ConsoleEntry, createPreviewConsoleState } from './preview-console-state'
 import { LocalFilePreview, PreviewEmptyState } from './preview-file'
+import { Codicon } from '@/components/ui/codicon'
 
 type PreviewWebview = HTMLElement & {
   closeDevTools?: () => void
@@ -27,6 +29,7 @@ type PreviewWebview = HTMLElement & {
   openDevTools?: () => void
   reload?: () => void
   reloadIgnoringCache?: () => void
+  loadURL?: (url: string) => void
 }
 
 interface PreviewPaneProps {
@@ -140,6 +143,116 @@ export function PreviewPane({
   const [localReloadKey, setLocalReloadKey] = useState(0)
   const isWebPreview = target.kind === 'url' || (target.previewKind === 'html' && target.renderMode !== 'source')
   const currentLabel = compactUrl(currentUrl)
+
+  const engineHostRef = useRef<HTMLDivElement | null>(null)
+  const engineWebviewRef = useRef<PreviewWebview | null>(null)
+  const splitOpen = useStore($chatBrowserSplitOpen)
+  const engineUrl = useStore($chatBrowserUrl)
+  const [engineInputUrl, setEngineInputUrl] = useState(engineUrl)
+
+  const handleEngineNavigate = useCallback((url: string) => {
+    let targetUrl = url.trim()
+    if (!targetUrl) return
+
+    const looksLikeUrl =
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(targetUrl) ||
+      targetUrl.startsWith('localhost:') ||
+      targetUrl.startsWith('127.0.0.1:')
+
+    if (!looksLikeUrl) {
+      targetUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`
+    } else if (!/^https?:\/\//i.test(targetUrl)) {
+      targetUrl = `http://${targetUrl}`
+    }
+
+    $chatBrowserUrl.set(targetUrl)
+  }, [])
+
+  useEffect(() => {
+    setEngineInputUrl(engineUrl)
+    const webview = engineWebviewRef.current
+    if (webview) {
+      try {
+        const currentSrc = webview.getAttribute('src')
+        if (currentSrc === engineUrl) {
+          return
+        }
+
+        if (webview.getURL) {
+          const currentActiveUrl = webview.getURL()
+          if (currentActiveUrl && currentActiveUrl !== 'about:blank' && currentActiveUrl !== engineUrl) {
+            webview.loadURL?.(engineUrl)
+          }
+        } else {
+          webview.setAttribute('src', engineUrl)
+        }
+      } catch (err) {
+        try {
+          webview.setAttribute('src', engineUrl)
+        } catch (e) {}
+      }
+    }
+  }, [engineUrl])
+
+  const handleEngineGoBack = useCallback(() => {
+    const webview = engineWebviewRef.current as any
+    if (webview && typeof webview.goBack === 'function') {
+      webview.goBack()
+    }
+  }, [])
+
+  const handleEngineGoForward = useCallback(() => {
+    const webview = engineWebviewRef.current as any
+    if (webview && typeof webview.goForward === 'function') {
+      webview.goForward()
+    }
+  }, [])
+
+  const handleEngineReload = useCallback(() => {
+    const webview = engineWebviewRef.current as any
+    if (webview && typeof webview.reload === 'function') {
+      webview.reload()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!splitOpen || !isWebPreview) {
+      engineWebviewRef.current = null
+      return
+    }
+
+    const host = engineHostRef.current
+    if (!host) {
+      return
+    }
+
+    host.replaceChildren()
+    engineWebviewRef.current = null
+
+    const webview = document.createElement('webview') as PreviewWebview
+    webview.className = 'flex h-full w-full flex-1 bg-transparent'
+    webview.setAttribute('partition', 'persist:clawbot-preview-engine')
+    webview.setAttribute('src', $chatBrowserUrl.get())
+    webview.setAttribute('webpreferences', 'contextIsolation=yes,nodeIntegration=no,sandbox=yes')
+
+    const onNavigate = (event: Event) => {
+      const detail = event as Event & { url?: string }
+      if (detail.url) {
+        $chatBrowserUrl.set(detail.url)
+      }
+    }
+
+    webview.addEventListener('did-navigate', onNavigate)
+    webview.addEventListener('did-navigate-in-page', onNavigate)
+    host.appendChild(webview)
+    engineWebviewRef.current = webview
+
+    return () => {
+      webview.removeEventListener('did-navigate', onNavigate)
+      webview.removeEventListener('did-navigate-in-page', onNavigate)
+      webview.remove()
+    }
+  }, [splitOpen, isWebPreview])
 
   const previewLabel =
     target.label && target.label.replace(/\/$/, '') !== currentLabel.replace(/\/$/, '') ? target.label : currentLabel
@@ -284,6 +397,13 @@ export function PreviewPane({
       ...(isWebPreview
         ? [
             {
+              active: splitOpen,
+              icon: <Codicon name="chrome" size="0.875rem" />,
+              id: `${TITLEBAR_GROUP_ID}-split`,
+              label: splitOpen ? 'Show Web Preview' : 'Show Google Engine',
+              onSelect: () => $chatBrowserSplitOpen.set(!splitOpen)
+            },
+            {
               active: consoleOpen,
               icon: <PreviewConsoleTitlebarIcon consoleState={consoleState} />,
               id: `${TITLEBAR_GROUP_ID}-console`,
@@ -304,7 +424,7 @@ export function PreviewPane({
     setTitlebarToolGroup(TITLEBAR_GROUP_ID, tools)
 
     return () => setTitlebarToolGroup(TITLEBAR_GROUP_ID, [])
-  }, [consoleOpen, consoleState, devtoolsOpen, isWebPreview, setTitlebarToolGroup, toggleDevTools])
+  }, [consoleOpen, consoleState, devtoolsOpen, isWebPreview, setTitlebarToolGroup, toggleDevTools, splitOpen])
 
   useEffect(() => {
     if (!consoleOpen) {
@@ -626,31 +746,83 @@ export function PreviewPane({
           className="pointer-events-auto relative min-h-0 flex-1 overflow-hidden bg-transparent"
           ref={previewContentRef}
         >
-          <div
-            className={cn(
-              'absolute inset-0 flex bg-transparent',
-              (!isWebPreview || loadError) && 'pointer-events-none opacity-0'
-            )}
-            ref={hostRef}
-          />
-          {!isWebPreview && <LocalFilePreview reloadKey={localReloadKey} target={target} />}
-          {loadError && (
-            <PreviewLoadError
-              consoleHeight={consoleOpen ? consoleHeight : 0}
-              error={loadError}
-              onRestartServer={target.kind === 'url' && onRestartServer ? () => void restartServer() : undefined}
-              onRetry={reloadPreview}
-              restarting={restartingServer}
-            />
-          )}
+          {splitOpen ? (
+            <div className="absolute inset-0 flex bg-transparent">
+              <div className="flex-1 h-full min-w-0 flex flex-col bg-(--ui-editor-surface-background)">
+                {/* Search / URL bar */}
+                <div className="flex h-9 shrink-0 items-center gap-1 border-b border-(--ui-stroke-tertiary) bg-black/20 px-2">
+                  <button
+                    className="grid size-5 place-items-center rounded text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground"
+                    onClick={handleEngineGoBack}
+                    type="button"
+                  >
+                    <Codicon name="arrow-left" size="0.75rem" />
+                  </button>
+                  <button
+                    className="grid size-5 place-items-center rounded text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground"
+                    onClick={handleEngineGoForward}
+                    type="button"
+                  >
+                    <Codicon name="arrow-right" size="0.75rem" />
+                  </button>
+                  <button
+                    className="grid size-5 place-items-center rounded text-(--ui-text-tertiary) hover:bg-(--ui-control-hover-background) hover:text-foreground"
+                    onClick={handleEngineReload}
+                    type="button"
+                  >
+                    <Codicon name="refresh" size="0.75rem" />
+                  </button>
+                  <div className="flex flex-1 items-center gap-1 rounded-sm border border-(--ui-stroke-tertiary) bg-black/10 px-1.5 py-0.5">
+                    <Codicon className="text-muted-foreground/50" name="globe" size="0.6875rem" />
+                    <input
+                      className="w-full bg-transparent text-[0.625rem] text-foreground placeholder-muted-foreground/30 outline-none"
+                      onKeyDown={event => {
+                        if (event.key === 'Enter') {
+                          handleEngineNavigate((event.target as HTMLInputElement).value)
+                        }
+                      }}
+                      placeholder="Search Google or type URL..."
+                      type="text"
+                      value={engineInputUrl}
+                      onChange={e => setEngineInputUrl(e.target.value)}
+                    />
+                  </div>
+                </div>
+                {/* Webview container */}
+                <div ref={engineHostRef} className="flex-1 min-w-0 h-full relative" />
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="absolute inset-0 flex bg-transparent">
+                <div
+                  className={cn(
+                    'flex-1 h-full min-w-0 bg-transparent relative',
+                    (!isWebPreview || loadError) && 'pointer-events-none opacity-0'
+                  )}
+                  ref={hostRef}
+                />
+              </div>
+              {!isWebPreview && <LocalFilePreview reloadKey={localReloadKey} target={target} />}
+              {loadError && (
+                <PreviewLoadError
+                  consoleHeight={consoleOpen ? consoleHeight : 0}
+                  error={loadError}
+                  onRestartServer={target.kind === 'url' && onRestartServer ? () => void restartServer() : undefined}
+                  onRetry={reloadPreview}
+                  restarting={restartingServer}
+                />
+              )}
 
-          {isWebPreview && consoleOpen && (
-            <PreviewConsolePanel
-              consoleBodyRef={consoleBodyRef}
-              consoleShouldStickRef={consoleShouldStickRef}
-              consoleState={consoleState}
-              startConsoleResize={startConsoleResize}
-            />
+              {isWebPreview && consoleOpen && (
+                <PreviewConsolePanel
+                  consoleBodyRef={consoleBodyRef}
+                  consoleShouldStickRef={consoleShouldStickRef}
+                  consoleState={consoleState}
+                  startConsoleResize={startConsoleResize}
+                />
+              )}
+            </>
           )}
         </div>
       </div>

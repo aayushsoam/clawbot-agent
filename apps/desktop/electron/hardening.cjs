@@ -152,6 +152,10 @@ function resolveRequestedPathForIpc(filePath, options = {}) {
     raw = path.join(os.homedir(), raw.slice(1))
   }
 
+  if (process.platform === 'win32' && /^[/\\][a-zA-Z]:[/\\]/.test(raw)) {
+    raw = raw.slice(1)
+  }
+
   if (/^file:/i.test(raw)) {
     let resolvedPath
     try {
@@ -230,13 +234,49 @@ async function resolveDirectoryForIpc(dirPath, options = {}) {
 async function resolveReadableFileForIpc(filePath, options = {}) {
   const purpose = String(options.purpose || 'File read')
   const fsImpl = options.fs || fs
-  const resolvedPath = resolveRequestedPathForIpc(filePath, { baseDir: options.baseDir, purpose })
+  let resolvedPath = resolveRequestedPathForIpc(filePath, { baseDir: options.baseDir, purpose })
 
   if (options.blockSensitive !== false) {
     rejectSensitiveFilePath(resolvedPath, purpose)
   }
 
-  const stat = await statForIpc(fsImpl, resolvedPath, purpose, 'file')
+  let stat
+  try {
+    stat = await statForIpc(fsImpl, resolvedPath, purpose, 'file')
+  } catch (err) {
+    console.error('[Clawbot IPC Error] File path resolution failed:', { filePath, resolvedPath, error: err.message, code: err.code })
+    if (err.code === 'ENOENT' && (resolvedPath.includes('screenshots') || resolvedPath.includes('cache'))) {
+      const dir = path.dirname(resolvedPath)
+      const ext = path.extname(resolvedPath)
+      try {
+        const files = await fsImpl.promises.readdir(dir)
+        const matches = files.filter(f => f.startsWith('browser_screenshot_') && f.endsWith(ext))
+        if (matches.length > 0) {
+          const stats = await Promise.all(
+            matches.map(async f => {
+              const p = path.join(dir, f)
+              const s = await fsImpl.promises.stat(p)
+              return { path: p, stat: s }
+            })
+          )
+          stats.sort((a, b) => b.stat.mtimeMs - a.stat.mtimeMs)
+          const candidate = stats[0]
+          if (candidate && (Date.now() - candidate.stat.mtimeMs < 300000)) {
+            resolvedPath = candidate.path
+            stat = candidate.stat
+          } else {
+            throw err
+          }
+        } else {
+          throw err
+        }
+      } catch {
+        throw err
+      }
+    } else {
+      throw err
+    }
+  }
 
   if (stat.isDirectory()) {
     throw ipcPathError('EISDIR', `${purpose} failed: path points to a directory.`)

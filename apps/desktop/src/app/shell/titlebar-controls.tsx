@@ -12,6 +12,7 @@ import {
   $fileBrowserOpen,
   $panesFlipped,
   $sidebarOpen,
+  $chatBrowserSplitOpen,
   toggleFileBrowserOpen,
   togglePanesFlipped,
   toggleSidebarOpen
@@ -54,6 +55,7 @@ export function TitlebarControls({ leftTools = [], tools = [], onOpenSettings }:
   const sidebarOpen = useStore($sidebarOpen)
   const panesFlipped = useStore($panesFlipped)
   const terminalOpen = useStore($terminalTakeover)
+  const chatBrowserSplitOpen = useStore($chatBrowserSplitOpen)
 
   const toggleHaptics = () => {
     if (!hapticsMuted) {
@@ -106,6 +108,21 @@ export function TitlebarControls({ leftTools = [], tools = [], onOpenSettings }:
     onSelect: () => {
       triggerHaptic('tap')
       rightEdge.toggle()
+    }
+  }
+
+  const chromeTool: TitlebarTool = {
+    active: chatBrowserSplitOpen,
+    icon: <ChromeIcon className="size-3.5" />,
+    id: 'chrome-split',
+    className: cn(
+      'hover:text-foreground',
+      chatBrowserSplitOpen ? 'text-primary' : 'text-foreground'
+    ),
+    label: chatBrowserSplitOpen ? 'Show Web Preview' : 'Show Google Engine',
+    onSelect: () => {
+      triggerHaptic('tap')
+      $chatBrowserSplitOpen.set(!chatBrowserSplitOpen)
     }
   }
 
@@ -192,6 +209,7 @@ export function TitlebarControls({ leftTools = [], tools = [], onOpenSettings }:
         {visibleSystemToolsBeforeSettings.map(tool => (
           <TitlebarToolButton key={tool.id} navigate={navigate} tool={tool} />
         ))}
+        <TitlebarToolButton navigate={navigate} tool={chromeTool} />
         {settingsTool && <TitlebarToolButton navigate={navigate} tool={settingsTool} />}
         <TitlebarToolButton navigate={navigate} tool={terminalTool} />
         <TitlebarToolButton navigate={navigate} tool={rightSidebarTool} />
@@ -244,5 +262,25 @@ function TitlebarToolButton({ navigate, tool }: { navigate: ReturnType<typeof us
     >
       {tool.icon}
     </Button>
+  )
+}
+
+function ChromeIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="4" />
+      <line x1="21.17" x2="12" y1="8" y2="8" />
+      <line x1="3.95" x2="8.54" y1="6.06" y2="14" />
+      <line x1="10.88" x2="15.46" y1="21.94" y2="14" />
+    </svg>
   )
 }

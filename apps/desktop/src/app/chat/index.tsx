@@ -7,7 +7,7 @@ import {
 import { useStore } from '@nanostores/react'
 import { useQuery } from '@tanstack/react-query'
 import type * as React from 'react'
-import { Suspense, useCallback, useMemo, useRef } from 'react'
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { Thread } from '@/components/assistant-ui/thread'
@@ -21,7 +21,8 @@ import { quickModelOptions, sessionTitle, toRuntimeMessage } from '@/lib/chat-ru
 import { useIncrementalExternalStoreRuntime } from '@/lib/incremental-external-store-runtime'
 import { cn } from '@/lib/utils'
 import type { ComposerAttachment } from '@/store/composer'
-import { $pinnedSessionIds } from '@/store/layout'
+import { $pinnedSessionIds, $chatBrowserSplitOpen, $chatBrowserUrl } from '@/store/layout'
+import { $filePreviewTabs, $previewTarget } from '@/store/preview'
 import { $gatewaySwapTarget } from '@/store/profile'
 import {
   $activeSessionId,
@@ -55,6 +56,8 @@ import type { DroppedFile } from './hooks/use-composer-actions'
 import { useFileDropZone } from './hooks/use-file-drop-zone'
 import { SessionActionsMenu } from './sidebar/session-actions-menu'
 import { lastVisibleMessageIsUser, threadLoadingState } from './thread-loading'
+import { ChatPreviewRail } from './right-rail'
+import type { SetTitlebarToolGroup } from '../shell/titlebar-controls'
 
 interface ChatViewProps extends Omit<React.ComponentProps<'div'>, 'onSubmit'> {
   gateway: ClawbotGateway | null
@@ -81,6 +84,8 @@ interface ChatViewProps extends Omit<React.ComponentProps<'div'>, 'onSubmit'> {
   onEdit: (message: AppendMessage) => Promise<void>
   onReload: (parentId: string | null) => Promise<void>
   onTranscribeAudio?: (audio: Blob) => Promise<string>
+  onRestartPreviewServer?: (url: string, context?: string) => Promise<string>
+  setTitlebarToolGroup?: SetTitlebarToolGroup
 }
 
 interface ChatHeaderProps {
@@ -170,7 +175,9 @@ export function ChatView({
   onThreadMessagesChange,
   onEdit,
   onReload,
-  onTranscribeAudio
+  onTranscribeAudio,
+  onRestartPreviewServer,
+  setTitlebarToolGroup
 }: ChatViewProps) {
   const location = useLocation()
   const activeSessionId = useStore($activeSessionId)
@@ -317,6 +324,29 @@ export function ChatView({
     requestComposerInsertRefs([sessionInlineRef(session)], { target: 'main' })
   }, [])
 
+  const isBrowserOpen = useStore($chatBrowserSplitOpen)
+  const browserUrl = useStore($chatBrowserUrl)
+  const previewTarget = useStore($previewTarget)
+  const filePreviewTabs = useStore($filePreviewTabs)
+  const hasPreview = Boolean(previewTarget || filePreviewTabs.length > 0 || isBrowserOpen)
+
+  useEffect(() => {
+    if (!gateway) return
+    const offEvent = gateway.onEvent((event: any) => {
+      if (event.type === 'tool.start') {
+        const payload = event.payload
+        if (payload?.name === 'browser_navigate') {
+          const args = payload.arguments || payload.args
+          const url = typeof args === 'object' && args ? (args as any).url || (args as any).command : undefined
+          if (url && $chatBrowserSplitOpen.get()) {
+            $chatBrowserUrl.set(url)
+          }
+        }
+      }
+    })
+    return () => offEvent()
+  }, [gateway])
+
   const { dragKind, dropHandlers } = useFileDropZone({ enabled: showChatBar, onDropFiles, onDropSession })
 
   return (
@@ -342,45 +372,57 @@ export function ChatView({
         {...dropHandlers}
       >
         <AssistantRuntimeProvider runtime={runtime}>
-          <Thread
-            clampToComposer={showChatBar}
-            cwd={currentCwd}
-            gateway={gateway}
-            intro={showIntro ? { personality: introPersonality, seed: introSeed } : undefined}
-            loading={threadLoading}
-            onBranchInNewChat={onBranchInNewChat}
-            onCancel={onCancel}
-            sessionId={activeSessionId}
-            sessionKey={threadKey}
-          />
-          {showChatBar && (
-            <Suspense fallback={<ChatBarFallback />}>
-              <ChatBar
-                busy={busy}
+          <div className="flex h-full w-full items-stretch">
+            <div className="flex flex-1 flex-col min-w-0 h-full relative">
+              <Thread
+                clampToComposer={showChatBar}
                 cwd={currentCwd}
-                disabled={!gatewayOpen}
-                focusKey={activeSessionId}
                 gateway={gateway}
-                maxRecordingSeconds={maxVoiceRecordingSeconds}
-                onAddContextRef={onAddContextRef}
-                onAddUrl={onAddUrl}
-                onAttachDroppedItems={onAttachDroppedItems}
-                onAttachImageBlob={onAttachImageBlob}
+                intro={showIntro ? { personality: introPersonality, seed: introSeed } : undefined}
+                loading={threadLoading}
+                onBranchInNewChat={onBranchInNewChat}
                 onCancel={onCancel}
-                onPasteClipboardImage={onPasteClipboardImage}
-                onPickFiles={onPickFiles}
-                onPickFolders={onPickFolders}
-                onPickImages={onPickImages}
-                onRemoveAttachment={onRemoveAttachment}
-                onSteer={onSteer}
-                onSubmit={onSubmit}
-                onTranscribeAudio={onTranscribeAudio}
-                queueSessionKey={selectedSessionId || activeSessionId}
                 sessionId={activeSessionId}
-                state={chatBarState}
+                sessionKey={threadKey}
               />
-            </Suspense>
-          )}
+              {showChatBar && (
+                <Suspense fallback={<ChatBarFallback />}>
+                  <ChatBar
+                    busy={busy}
+                    cwd={currentCwd}
+                    disabled={!gatewayOpen}
+                    focusKey={activeSessionId}
+                    gateway={gateway}
+                    maxRecordingSeconds={maxVoiceRecordingSeconds}
+                    onAddContextRef={onAddContextRef}
+                    onAddUrl={onAddUrl}
+                    onAttachDroppedItems={onAttachDroppedItems}
+                    onAttachImageBlob={onAttachImageBlob}
+                    onCancel={onCancel}
+                    onPasteClipboardImage={onPasteClipboardImage}
+                    onPickFiles={onPickFiles}
+                    onPickFolders={onPickFolders}
+                    onPickImages={onPickImages}
+                    onRemoveAttachment={onRemoveAttachment}
+                    onSteer={onSteer}
+                    onSubmit={onSubmit}
+                    onTranscribeAudio={onTranscribeAudio}
+                    queueSessionKey={selectedSessionId || activeSessionId}
+                    sessionId={activeSessionId}
+                    state={chatBarState}
+                  />
+                </Suspense>
+              )}
+            </div>
+            {hasPreview && (
+              <div className="w-[50%] h-full shrink-0 border-l border-(--ui-stroke-tertiary)">
+                <ChatPreviewRail
+                  onRestartServer={onRestartPreviewServer}
+                  setTitlebarToolGroup={setTitlebarToolGroup}
+                />
+              </div>
+            )}
+          </div>
         </AssistantRuntimeProvider>
         <ChatDropOverlay kind={dragKind} />
         <ChatSwapOverlay profile={gatewaySwapTarget} />

@@ -33,7 +33,11 @@ export function compactUrl(value: string): string {
     const url = new URL(value)
 
     if (url.protocol === 'file:') {
-      return decodeURIComponent(url.pathname)
+      let pathname = decodeURIComponent(url.pathname)
+      if (/^\/[a-zA-Z]:[/\\]/.test(pathname)) {
+        pathname = pathname.slice(1)
+      }
+      return pathname
     }
 
     return `${url.host}${url.pathname}${url.search}`

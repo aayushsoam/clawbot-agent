@@ -83,9 +83,17 @@ export function filePathFromMediaPath(path: string): string {
   }
 
   try {
-    return decodeURIComponent(new URL(path).pathname)
+    let pathname = decodeURIComponent(new URL(path).pathname)
+    if (/^\/[a-zA-Z]:[/\\]/.test(pathname)) {
+      pathname = pathname.slice(1)
+    }
+    return pathname
   } catch {
-    return path.replace(/^file:\/\//, '')
+    let cleaned = path.replace(/^file:\/\//, '')
+    if (/^\/[a-zA-Z]:[/\\]/.test(cleaned)) {
+      cleaned = cleaned.slice(1)
+    }
+    return cleaned
   }
 }
 

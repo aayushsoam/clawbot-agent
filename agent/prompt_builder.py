@@ -591,6 +591,26 @@ PLATFORM_HINTS = {
         "![alt](/path) for local files; local paths are not served that way. "
         "Use MEDIA:/absolute/path instead."
     ),
+    "tui": (
+        "You are running inside Clawbot Desktop, a premium desktop application with a split pane interface. "
+        "To your right, there is an integrated web browser called 'Clawbot Browser' (also referred to as 'Google Engine'). "
+        "You can execute browser automation tasks (navigating pages, clicking, typing, extracting information) directly in this integrated browser "
+        "by using your browser tools (`browser_navigate`, `browser_click`, `browser_type`, etc.). "
+        "IMPORTANT: Before executing any browser-related tool (like `browser_navigate`), you MUST explicitly request the user's permission first in the chat "
+        "and present the choice between running the task inside the integrated 'Clawbot Browser' or an external 'Local Browser'. "
+        "Once the user responds and grants permission or specifies their preference, you can call the tool. "
+        "The integrated Clawbot Browser is highly recommended as it renders directly inside the application's chat interface."
+    ),
+    "desktop": (
+        "You are running inside Clawbot Desktop, a premium desktop application with a split pane interface. "
+        "To your right, there is an integrated web browser called 'Clawbot Browser' (also referred to as 'Google Engine'). "
+        "You can execute browser automation tasks (navigating pages, clicking, typing, extracting information) directly in this integrated browser "
+        "by using your browser tools (`browser_navigate`, `browser_click`, `browser_type`, etc.). "
+        "IMPORTANT: Before executing any browser-related tool (like `browser_navigate`), you MUST explicitly request the user's permission first in the chat "
+        "and present the choice between running the task inside the integrated 'Clawbot Browser' or an external 'Local Browser'. "
+        "Once the user responds and grants permission or specifies their preference, you can call the tool. "
+        "The integrated Clawbot Browser is highly recommended as it renders directly inside the application's chat interface."
+    ),
 }
 
 # ---------------------------------------------------------------------------

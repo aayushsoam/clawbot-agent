@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import {
   $rightRailActiveTabId,
   RIGHT_RAIL_PREVIEW_TAB_ID,
+  $chatBrowserSplitOpen,
   type RightRailTabId,
   selectRightRailTab
 } from '@/store/layout'
@@ -56,13 +57,17 @@ export function ChatPreviewRail({ onRestartServer, setTitlebarToolGroup }: ChatP
   const activeTabId = useStore($rightRailActiveTabId)
   const filePreviewTabs = useStore($filePreviewTabs)
   const previewTarget = useStore($previewTarget)
+  const isBrowserOpen = useStore($chatBrowserSplitOpen)
 
   const tabs = useMemo<readonly RailTab[]>(
     () => [
       ...(previewTarget ? [{ id: RIGHT_RAIL_PREVIEW_TAB_ID, label: 'Preview', target: previewTarget } as RailTab] : []),
-      ...filePreviewTabs.map(({ id, target }) => ({ id, label: tabLabelFor(target), target }) as RailTab)
+      ...filePreviewTabs.map(({ id, target }) => ({ id, label: tabLabelFor(target), target }) as RailTab),
+      ...(previewTarget === null && filePreviewTabs.length === 0 && isBrowserOpen
+        ? [{ id: RIGHT_RAIL_PREVIEW_TAB_ID, label: 'Browser', target: { kind: 'url', url: 'https://www.google.com' } } as RailTab]
+        : [])
     ],
-    [filePreviewTabs, previewTarget]
+    [filePreviewTabs, previewTarget, isBrowserOpen]
   )
 
   const activeTab = tabs.find(tab => tab.id === activeTabId) ?? tabs[0]
