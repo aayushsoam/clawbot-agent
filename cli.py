@@ -3268,6 +3268,11 @@ class ClawbotCLI:
         txt = getattr(self, "_spinner_text", "")
         if not txt:
             return ""
+        
+        # Calculate rotating frame from the Claude spinner characters
+        frame_idx = int(time.monotonic() * 8) % 6
+        frame = ['·', '✢', '✺', '✶', '✻', '✽'][frame_idx]
+        
         t0 = getattr(self, "_tool_start_time", 0) or 0
         if t0 > 0:
             elapsed = time.monotonic() - t0
@@ -3279,8 +3284,8 @@ class ClawbotCLI:
             else:
                 # Keep width stable before the 60s rollover as well.
                 elapsed_str = f"{elapsed:5.1f}s"
-            return f"  {txt}  ({elapsed_str})"
-        return f"  {txt}"
+            return f"  {frame} {txt}  ({elapsed_str})"
+        return f"  {frame} {txt}"
 
     def _voice_record_key_label(self) -> str:
         """Return the configured voice push-to-talk key formatted for UI.
@@ -12901,6 +12906,16 @@ class ClawbotCLI:
             spinner_line = cli_ref._render_spinner_text()
             if not spinner_line:
                 return []
+            
+            # Highlight the rotating spinner frame with class:spinner-frame
+            if len(spinner_line) >= 4 and spinner_line.startswith("  "):
+                frame = spinner_line[2:3]
+                rest = spinner_line[3:]
+                return [
+                    ('class:hint', '  '),
+                    ('class:spinner-frame', frame),
+                    ('class:hint', rest)
+                ]
             return [('class:hint', spinner_line)]
 
         def get_spinner_height():
@@ -13381,6 +13396,7 @@ class ClawbotCLI:
             'placeholder': '#888888 italic',
             'prompt': '',
             'prompt-working': '#888888 italic',
+            'spinner-frame': '#FF6600',
             'hint': '#888888 italic',
             'status-bar': 'bg:#1a1a2e #C0C0C0',
             'status-bar-strong': 'bg:#1a1a2e #FF6600 bold',
@@ -13517,7 +13533,7 @@ class ClawbotCLI:
                 if not self._app:
                     time.sleep(0.1)
                     continue
-                if self._command_running:
+                if self._command_running or getattr(self, "_agent_running", False):
                     self._invalidate(min_interval=0.1)
                     time.sleep(0.1)
                 else:

@@ -911,6 +911,7 @@ def get_prompt_toolkit_style_overrides() -> Dict[str, str]:
         "placeholder": f"{dim} italic",
         "prompt": prompt,
         "prompt-working": f"{dim} italic",
+        "spinner-frame": title,
         "hint": f"{dim} italic",
         "status-bar": f"bg:{status_bg} {status_text}",
         "status-bar-strong": f"bg:{status_bg} {status_strong} bold",

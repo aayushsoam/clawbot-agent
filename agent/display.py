@@ -569,17 +569,15 @@ class KawaiiSpinner:
         'pulse': ['◜', '◠', '◝', '◞', '◡', '◟'],
         'brain': ['🧠', '💭', '💡', '✨', '💫', '🌟', '💡', '💭'],
         'sparkle': ['⁺', '˚', '*', '✧', '✦', '✧', '*', '˚'],
+        'claude': ['·', '✢', '✺', '✶', '✻', '✽'],
     }
 
     KAWAII_WAITING = [
-        "(｡◕‿◕｡)", "(◕‿◕✿)", "٩(◕‿◕｡)۶", "(✿◠‿◠)", "( ˘▽˘)っ",
-        "♪(´ε` )", "(◕ᴗ◕✿)", "ヾ(＾∇＾)", "(≧◡≦)", "(★ω★)",
+        ""
     ]
 
     KAWAII_THINKING = [
-        "(｡•́︿•̀｡)", "(◔_◔)", "(¬‿¬)", "( •_•)>⌐■-■", "(⌐■_■)",
-        "(´･_･`)", "◉_◉", "(°ロ°)", "( ˘⌣˘)♡", "ヽ(>∀<☆)☆",
-        "٩(๑❛ᴗ❛๑)۶", "(⊙_⊙)", "(¬_¬)", "( ͡° ͜ʖ ͡°)", "ಠ_ಠ",
+        ""
     ]
 
     THINKING_VERBS = [
@@ -627,9 +625,9 @@ class KawaiiSpinner:
             pass
         return cls.THINKING_VERBS
 
-    def __init__(self, message: str = "", spinner_type: str = 'dots', print_fn=None):
-        self.message = message
-        self.spinner_frames = self.SPINNERS.get(spinner_type, self.SPINNERS['dots'])
+    def __init__(self, message: str = "", spinner_type: str = 'claude', print_fn=None):
+        self.message = message.strip()
+        self.spinner_frames = self.SPINNERS.get(spinner_type, self.SPINNERS['claude'])
         self.running = False
         self.thread = None
         self.frame_idx = 0

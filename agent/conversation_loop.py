@@ -900,9 +900,7 @@ def run_conversation(
                 # (works in both streaming and non-streaming modes)
                 agent.thinking_callback(f"{face} {verb}...")
             elif not agent._has_stream_consumers() and agent._should_start_quiet_spinner():
-                # Raw KawaiiSpinner only when no streaming consumers and the
-                # spinner output has a safe sink.
-                spinner_type = random.choice(['brain', 'sparkle', 'pulse', 'moon', 'star'])
+                spinner_type = 'claude'
                 thinking_spinner = KawaiiSpinner(f"{face} {verb}...", spinner_type=spinner_type, print_fn=agent._print_fn)
                 thinking_spinner.start()
         

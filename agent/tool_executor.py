@@ -273,7 +273,7 @@ def execute_tool_calls_concurrent(agent, assistant_message, messages: list, effe
     spinner = None
     if agent._should_emit_quiet_tool_messages() and agent._should_start_quiet_spinner():
         face = random.choice(KawaiiSpinner.get_waiting_faces())
-        spinner = KawaiiSpinner(f"{face} ⚡ running {num_tools} tools concurrently", spinner_type='dots', print_fn=agent._print_fn)
+        spinner = KawaiiSpinner(f"{face} ⚡ running {num_tools} tools concurrently", spinner_type='claude', print_fn=agent._print_fn)
         spinner.start()
 
     try:
@@ -679,7 +679,7 @@ def execute_tool_calls_sequential(agent, assistant_message, messages: list, effe
             spinner = None
             if agent._should_emit_quiet_tool_messages() and agent._should_start_quiet_spinner():
                 face = random.choice(KawaiiSpinner.get_waiting_faces())
-                spinner = KawaiiSpinner(f"{face} {spinner_label}", spinner_type='dots', print_fn=agent._print_fn)
+                spinner = KawaiiSpinner(f"{face} {spinner_label}", spinner_type='claude', print_fn=agent._print_fn)
                 spinner.start()
             agent._delegate_spinner = spinner
             _delegate_result = None
@@ -701,7 +701,7 @@ def execute_tool_calls_sequential(agent, assistant_message, messages: list, effe
                 face = random.choice(KawaiiSpinner.get_waiting_faces())
                 emoji = _get_tool_emoji(function_name)
                 preview = _build_tool_preview(function_name, function_args) or function_name
-                spinner = KawaiiSpinner(f"{face} {emoji} {preview}", spinner_type='dots', print_fn=agent._print_fn)
+                spinner = KawaiiSpinner(f"{face} {emoji} {preview}", spinner_type='claude', print_fn=agent._print_fn)
                 spinner.start()
             _ce_result = None
             try:
@@ -725,7 +725,7 @@ def execute_tool_calls_sequential(agent, assistant_message, messages: list, effe
                 face = random.choice(KawaiiSpinner.get_waiting_faces())
                 emoji = _get_tool_emoji(function_name)
                 preview = _build_tool_preview(function_name, function_args) or function_name
-                spinner = KawaiiSpinner(f"{face} {emoji} {preview}", spinner_type='dots', print_fn=agent._print_fn)
+                spinner = KawaiiSpinner(f"{face} {emoji} {preview}", spinner_type='claude', print_fn=agent._print_fn)
                 spinner.start()
             _mem_result = None
             try:
@@ -747,7 +747,7 @@ def execute_tool_calls_sequential(agent, assistant_message, messages: list, effe
                 face = random.choice(KawaiiSpinner.get_waiting_faces())
                 emoji = _get_tool_emoji(function_name)
                 preview = _build_tool_preview(function_name, function_args) or function_name
-                spinner = KawaiiSpinner(f"{face} {emoji} {preview}", spinner_type='dots', print_fn=agent._print_fn)
+                spinner = KawaiiSpinner(f"{face} {emoji} {preview}", spinner_type='claude', print_fn=agent._print_fn)
                 spinner.start()
             _spinner_result = None
             try:
