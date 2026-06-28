@@ -103,7 +103,7 @@ describe('input metrics helpers', () => {
   it('counts the prompt gap as its own cell', () => {
     expect(composerPromptWidth('>')).toBe(2)
     expect(composerPromptWidth('❯')).toBe(2)
-    expect(composerPromptWidth('Ψ >')).toBe(4)
+    expect(composerPromptWidth('💧 >')).toBe(4)
   })
 
   it('reserves gutters on wide panes without starving narrow composer width', () => {

@@ -254,7 +254,7 @@ describe('fromSkin', () => {
     const { DEFAULT_THEME, fromSkin } = await importThemeWithCleanEnv()
 
     expect(fromSkin({}, { prompt_symbol: ' ⚔ ❯ \n' }).brand.prompt).toBe('⚔ ❯')
-    expect(fromSkin({}, { prompt_symbol: ' Ψ > \n' }).brand.prompt).toBe('Ψ >')
+    expect(fromSkin({}, { prompt_symbol: ' 💧 > \n' }).brand.prompt).toBe('💧 >')
     expect(fromSkin({}, { prompt_symbol: '\n\t' }).brand.prompt).toBe(DEFAULT_THEME.brand.prompt)
   })
 

@@ -21,7 +21,7 @@ describe('virtual height estimates', () => {
     const msg: Msg = { role: 'user', text: 'x'.repeat(21) }
 
     expect(estimatedMsgHeight(msg, 26, { compact: false, details: false, userPrompt: '❯' })).toBe(3)
-    expect(estimatedMsgHeight(msg, 26, { compact: false, details: false, userPrompt: 'Ψ >' })).toBe(4)
+    expect(estimatedMsgHeight(msg, 26, { compact: false, details: false, userPrompt: '💧 >' })).toBe(4)
   })
 
   it('includes detail sections when visible', () => {

@@ -102,8 +102,8 @@ BUILT-IN SKINS
 - ``ares``    — Crimson/bronze war-god theme with custom spinner wings
 - ``mono``    — Clean grayscale monochrome
 - ``slate``   — Cool blue developer-focused theme
-- ``daylight`` — Light background theme with dark text and blue accents
-- ``warm-lightmode`` — Warm brown/gold text for light terminal backgrounds
+- ``earth``    — Austere grayscale with persistence
+- ``flame's``  — Volcanic theme with burnt orange and ember
 
 USER SKINS
 ==========
@@ -359,96 +359,8 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
         },
         "tool_prefix": "┊",
     },
-    "daylight": {
-        "name": "daylight",
-        "description": "Light theme for bright terminals with dark text and cool blue accents",
-        "colors": {
-            "banner_border": "#2563EB",
-            "banner_title": "#0F172A",
-            "banner_accent": "#1D4ED8",
-            "banner_dim": "#475569",
-            "banner_text": "#111827",
-            "ui_accent": "#2563EB",
-            "ui_label": "#0F766E",
-            "ui_ok": "#15803D",
-            "ui_error": "#B91C1C",
-            "ui_warn": "#B45309",
-            "prompt": "#111827",
-            "input_rule": "#93C5FD",
-            "response_border": "#2563EB",
-            "session_label": "#1D4ED8",
-            "session_border": "#64748B",
-            "status_bar_bg": "#E5EDF8",
-            "status_bar_text": "#111827",
-            "status_bar_strong": "#0F172A",
-            "status_bar_dim": "#475569",
-            "status_bar_good": "#15803D",
-            "status_bar_warn": "#B45309",
-            "status_bar_bad": "#B45309",
-            "status_bar_critical": "#B91C1C",
-            "voice_status_bg": "#E5EDF8",
-            "completion_menu_bg": "#F8FAFC",
-            "completion_menu_current_bg": "#DBEAFE",
-            "completion_menu_meta_bg": "#EEF2FF",
-            "completion_menu_meta_current_bg": "#BFDBFE",
-        },
-        "spinner": {},
-        "branding": {
-            "agent_name": "Clawbot Agent",
-            "welcome": "Welcome to Clawbot Agent! Type your message or /help for commands.",
-            "goodbye": "Goodbye! ⚡",
-            "response_label": " ⚡Clawbot ",
-            "prompt_symbol": "❯",
-            "help_header": "[?] Available Commands",
-        },
-        "tool_prefix": "│",
-    },
-    "warm-lightmode": {
-        "name": "warm-lightmode",
-        "description": "Warm light mode — dark brown/gold text for light terminal backgrounds",
-        "colors": {
-            "banner_border": "#8B6914",
-            "banner_title": "#5C3D11",
-            "banner_accent": "#8B4513",
-            "banner_dim": "#8B7355",
-            "banner_text": "#2C1810",
-            "ui_accent": "#8B4513",
-            "ui_label": "#5C3D11",
-            "ui_ok": "#2E7D32",
-            "ui_error": "#C62828",
-            "ui_warn": "#E65100",
-            "prompt": "#2C1810",
-            "input_rule": "#8B6914",
-            "response_border": "#8B6914",
-            "session_label": "#5C3D11",
-            "session_border": "#A0845C",
-            "status_bar_bg": "#F5F0E8",
-            "status_bar_text": "#2C1810",
-            "status_bar_strong": "#5C3D11",
-            "status_bar_dim": "#8B7355",
-            "status_bar_good": "#2E7D32",
-            "status_bar_warn": "#8B4513",
-            "status_bar_bad": "#E65100",
-            "status_bar_critical": "#C62828",
-            "voice_status_bg": "#F5F0E8",
-            "completion_menu_bg": "#F5EFE0",
-            "completion_menu_current_bg": "#E8DCC8",
-            "completion_menu_meta_bg": "#F0E8D8",
-            "completion_menu_meta_current_bg": "#DFCFB0",
-        },
-        "spinner": {},
-        "branding": {
-            "agent_name": "Clawbot Agent",
-            "welcome": "Welcome to Clawbot Agent! Type your message or /help for commands.",
-            "goodbye": "Goodbye! \u2695",
-            "response_label": " \u2695 Clawbot ",
-            "prompt_symbol": "\u276f",
-            "help_header": "(^_^)? Available Commands",
-        },
-        "tool_prefix": "\u250a",
-    },
-    "poseidon": {
-        "name": "poseidon",
+    "water": {
+        "name": "water",
         "description": "Ocean-god theme — deep blue and seafoam",
         "colors": {
             "banner_border": "#2A6FB9",
@@ -476,8 +388,8 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             "session_border": "#496884",
         },
         "spinner": {
-            "waiting_faces": ["(≈)", "(Ψ)", "(∿)", "(◌)", "(◠)"],
-            "thinking_faces": ["(Ψ)", "(∿)", "(≈)", "(⌁)", "(◌)"],
+            "waiting_faces": ["(≈)", "(💧)", "(∿)", "(◌)", "(◠)"],
+            "thinking_faces": ["(💧)", "(∿)", "(≈)", "(⌁)", "(◌)"],
             "thinking_verbs": [
                 "charting currents", "sounding the depth", "reading foam lines",
                 "steering the trident", "tracking undertow", "plotting sea lanes",
@@ -485,67 +397,74 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             ],
             "wings": [
                 ["⟪≈", "≈⟫"],
-                ["⟪Ψ", "Ψ⟫"],
+                ["⟪💧", "💧⟫"],
                 ["⟪∿", "∿⟫"],
                 ["⟪◌", "◌⟫"],
             ],
         },
         "branding": {
-            "agent_name": "Poseidon Agent",
-            "welcome": "Welcome to Poseidon Agent! Type your message or /help for commands.",
-            "goodbye": "Fair winds! Ψ",
-            "response_label": " Ψ Poseidon ",
-            "prompt_symbol": "Ψ",
-            "help_header": "(Ψ) Available Commands",
+            "agent_name": "Water Agent",
+            "welcome": "Welcome to Water Agent! Type your message or /help for commands.",
+            "goodbye": "Fair winds! 💧",
+            "response_label": "  Water ",
+            "prompt_symbol": "💧",
+            "help_header": "(💧) Available Commands",
         },
         "tool_prefix": "│",
-        "banner_logo": """[bold #B8E8FF]██████╗  ██████╗ ███████╗███████╗██╗██████╗  ██████╗ ███╗   ██╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
-[bold #97D6FF]██╔══██╗██╔═══██╗██╔════╝██╔════╝██║██╔══██╗██╔═══██╗████╗  ██║      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
-[#75C1F6]██████╔╝██║   ██║███████╗█████╗  ██║██║  ██║██║   ██║██╔██╗ ██║█████╗███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║[/]
-[#4FA2E0]██╔═══╝ ██║   ██║╚════██║██╔══╝  ██║██║  ██║██║   ██║██║╚██╗██║╚════╝██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║[/]
-[#2E7CC7]██║     ╚██████╔╝███████║███████╗██║██████╔╝╚██████╔╝██║ ╚████║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║[/]
-[#1B4F95]╚═╝      ╚═════╝ ╚══════╝╚══════╝╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═══╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝[/]""",
-        "banner_hero": """[#2A6FB9]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#5DB8F5]⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#5DB8F5]⠀⠀⠀⠀⠀⠀⠀⢠⣿⠏⠀Ψ⠀⠹⣿⡄⠀⠀⠀⠀⠀⠀⠀[/]
-[#A9DFFF]⠀⠀⠀⠀⠀⠀⠀⣿⡟⠀⠀⠀⠀⠀⢻⣿⠀⠀⠀⠀⠀⠀⠀[/]
-[#A9DFFF]⠀⠀⠀≈≈≈≈≈⣿⡇⠀⠀⠀⠀⠀⢸⣿≈≈≈≈≈⠀⠀⠀[/]
-[#5DB8F5]⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀[/]
-[#2A6FB9]⠀⠀⠀⠀⠀⠀⠀⢿⣧⠀⠀⠀⠀⠀⣼⡿⠀⠀⠀⠀⠀⠀⠀[/]
-[#2A6FB9]⠀⠀⠀⠀⠀⠀⠀⠘⢿⣷⣄⣀⣠⣾⡿⠃⠀⠀⠀⠀⠀⠀⠀[/]
-[#153C73]⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#153C73]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
+        "banner_logo": """[bold #B8E8FF]██╗    ██╗ █████╗ ████████╗███████╗██████╗      █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
+[bold #97D6FF]██║    ██║██╔══██╗╚══██╔══╝██╔════╝██╔══██╗    ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
+[#75C1F6]██║ █╗ ██║███████║   ██║   █████╗  ██████╔╝    ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   [/]
+[#4FA2E0]██║███╗██║██╔══██║   ██║   ██╔══╝  ██╔══██╗    ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   [/]
+[#2E7CC7]╚███╔███╔╝██║  ██║   ██║   ███████╗██║  ██║    ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   [/]
+[#1B4F95] ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   [/]""",
+        "banner_hero": """[#caf0ff]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠔⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
+[#b8e8ff]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡂⠀⢀⠈⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
+[#a0daff]⠀⠀⠀⠀⠀⠀⠀⠀⢀⠔⠁⠐⠄⣀⢠⠔⠁⡀⠀⠀⠀⠀⠀⠀⠀[/]
+[#80ccff]⠀⠀⠀⠀⠀⠀⠀⢠⠂⠠⠈⠄⠂⡀⠄⡀⢂⠐⢀⠀⠀⠀⠀⠀⠀[/]
+[#60bbf5]⠀⠀⠀⠀⠀⠀⡠⠁⢀⠂⢁⠐⠠⠐⢀⠐⡀⠐⢠⢂⠀⠀⠀⠀⠀[/]
+[#4db0f0]⠀⠀⠀⠀⠀⡔⠉⢀⠂⠔⣀⡨⠂⠈⠄⢁⠠⠑⠃⣀⠣⠀⠀⠀⠀[/]
+[#38a4eb]⠀⠀⠀⠀⡔⠂⠔⡀⠨⠄⢄⠀⠄⠡⠈⡀⠄⠢⠌⠁⡐⣡⠀⠀⠀[/]
+[#2e9de6]⠀⠀⠀⡸⠀⣐⣠⢄⠁⠄⠂⠡⡈⠄⠂⢠⠔⠃⡀⠂⠄⠐⢢⠀⠀[/]
+[#2595e0]⠀⠀⠰⣠⢏⡳⢜⡚⡄⠠⠁⢂⠈⠄⡈⢁⠀⠂⠄⠁⠄⢡⡴⡂⠀[/]
+[#1e8bda]⠀⠀⡾⢡⠞⣰⠣⢎⡍⢳⠤⢦⣀⡂⠄⠂⢈⠐⠈⢠⡜⣫⠳⣙⡀[/]
+[#1880d4]⠀⢘⠧⡹⣘⠥⣋⢖⡩⢣⠞⣢⠱⡚⡴⢌⠀⢄⣡⢏⡜⣡⢻⠴⡅[/]
+[#1275cd]⠘⢨⣷⣳⣌⡚⡔⣣⢙⠦⣙⠦⡹⠱⣌⢣⡫⣙⠒⡎⡜⣡⣛⣜⠃[/]
+[#0d6abf]⠀⠀⢷⣻⠾⣽⢾⣤⣋⢜⡡⢞⡡⣳⣞⣯⢷⣬⢷⢾⣝⣷⣻⠾⠁[/]
+[#0a5faf]⠀⠀⠘⣽⣻⡽⣞⣳⣟⡾⣶⣳⢟⣳⡽⣞⣻⣞⢯⣟⡾⢧⣟⠃⠀[/]
+[#0855a0]⠀⠀⠀⠘⢿⣿⣿⣿⣾⣿⣵⣯⣟⣳⢿⣹⠷⣞⣿⣺⣽⡿⠃⠀⠀[/]
+[#074a90]⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀[/]
+[#063f7e]⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⣿⡿⡿⠿⠿⠛⠁⠀⠀⠀⠀⠀⠀[/]
 [#5DB8F5]⠀⠀⠀⠀⠀≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈⠀⠀⠀⠀⠀[/]
 [#A9DFFF]⠀⠀⠀⠀⠀⠀≈≈≈≈≈≈≈≈≈≈≈≈≈⠀⠀⠀⠀⠀⠀[/]
 [dim #153C73]⠀⠀⠀⠀⠀⠀⠀deep waters hold⠀⠀⠀⠀⠀⠀⠀[/]""",
     },
-    "sisyphus": {
-        "name": "sisyphus",
-        "description": "Sisyphean theme — austere grayscale with persistence",
+    "earth": {
+        "name": "earth",
+        "description": "Earth theme — vibrant blue oceans, green continents, and white clouds",
         "colors": {
-            "banner_border": "#B7B7B7",
-            "banner_title": "#F5F5F5",
-            "banner_accent": "#E7E7E7",
-            "banner_dim": "#4A4A4A",
-            "banner_text": "#D3D3D3",
-            "ui_accent": "#E7E7E7",
-            "ui_label": "#D3D3D3",
-            "ui_ok": "#919191",
+            "banner_border": "#2EAB6F",
+            "banner_title": "#EAF7FF",
+            "banner_accent": "#52C47C",
+            "banner_dim": "#1B4F72",
+            "banner_text": "#D4EDDA",
+            "ui_accent": "#4FA2E0",
+            "ui_label": "#7BC96F",
+            "ui_ok": "#2ECC71",
             "ui_error": "#E7E7E7",
             "ui_warn": "#B7B7B7",
-            "prompt": "#F5F5F5",
-            "input_rule": "#656565",
-            "response_border": "#B7B7B7",
-            "status_bar_bg": "#202020",
-            "status_bar_text": "#D3D3D3",
-            "status_bar_strong": "#F5F5F5",
-            "status_bar_dim": "#656565",
-            "status_bar_good": "#B7B7B7",
+            "prompt": "#EAF7FF",
+            "input_rule": "#2A6F97",
+            "response_border": "#2EAB6F",
+            "status_bar_bg": "#121E2C",
+            "status_bar_text": "#EAF7FF",
+            "status_bar_strong": "#52C47C",
+            "status_bar_dim": "#4A6D8C",
+            "status_bar_good": "#2ECC71",
             "status_bar_warn": "#D3D3D3",
             "status_bar_bad": "#E7E7E7",
-            "status_bar_critical": "#F5F5F5",
-            "session_label": "#919191",
-            "session_border": "#656565",
+            "status_bar_critical": "#E74C3C",
+            "session_label": "#7BC96F",
+            "session_border": "#1B4F72",
         },
         "spinner": {
             "waiting_faces": ["(◉)", "(◌)", "(◬)", "(⬤)", "(::)"],
@@ -563,37 +482,46 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             ],
         },
         "branding": {
-            "agent_name": "Sisyphus Agent",
-            "welcome": "Welcome to Sisyphus Agent! Type your message or /help for commands.",
-            "goodbye": "The boulder waits. ◉",
-            "response_label": " ◉ Sisyphus ",
-            "prompt_symbol": "◉",
-            "help_header": "(◉) Available Commands",
+            "agent_name": "Earth Agent",
+            "welcome": "Welcome to Earth Agent! Type your message or /help for commands.",
+            "goodbye": "The boulder waits. 🌍",
+            "response_label": " 🌍 Earth ",
+            "prompt_symbol": "🌍",
+            "help_header": "(🌍) Available Commands",
         },
         "tool_prefix": "│",
-        "banner_logo": """[bold #F5F5F5]███████╗██╗███████╗██╗   ██╗██████╗ ██╗  ██╗██╗   ██╗███████╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
-[bold #E7E7E7]██╔════╝██║██╔════╝╚██╗ ██╔╝██╔══██╗██║  ██║██║   ██║██╔════╝      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
-[#D7D7D7]███████╗██║███████╗ ╚████╔╝ ██████╔╝███████║██║   ██║███████╗█████╗███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║[/]
-[#BFBFBF]╚════██║██║╚════██║  ╚██╔╝  ██╔═══╝ ██╔══██║██║   ██║╚════██║╚════╝██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║[/]
-[#8F8F8F]███████║██║███████║   ██║   ██║     ██║  ██║╚██████╔╝███████║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║[/]
-[#626262]╚══════╝╚═╝╚══════╝   ╚═╝   ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝[/]""",
-        "banner_hero": """[#B7B7B7]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#D3D3D3]⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#E7E7E7]⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀[/]
-[#F5F5F5]⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀[/]
-[#E7E7E7]⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀[/]
-[#D3D3D3]⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀[/]
-[#B7B7B7]⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#919191]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#656565]⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#656565]⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#4A4A4A]⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#4A4A4A]⠀⠀⠀⠀⠀⣀⣴⣿⣿⣿⣿⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀[/]
-[#656565]⠀⠀⠀━━━━━━━━━━━━━━━━━━━━━━━⠀⠀⠀[/]
-[dim #4A4A4A]⠀⠀⠀⠀⠀⠀⠀⠀⠀the boulder⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]""",
+        "banner_logo": """[bold #FFFFFF]███████╗█████╗  ██████╗ ████████╗██╗  ██╗       █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
+[bold #E0F2FE]██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██║  ██║      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
+[#38BDF8]█████╗  ███████║██████╔╝   ██║   ███████║█████╗███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║[/]
+[#0EA5E9]██╔══╝  ██╔══██║██╔══██╗   ██║   ██╔══██║╚════╝██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║[/]
+[#22C55E]███████╗██║  ██║██║  ██║   ██║   ██║  ██║      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║[/]
+[#15803D]╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝[/]""",
+        "banner_hero": """⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⣀⣠⢤⣖⣶⣯⣿⣿⣛⣙⣻⣶⣶⣤⣄⡀[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⣀⣴⣻⠽⠛⠋⠉[/]⠀⠀⠀⠀[#3E7CB1]⣀[/][#5B8C3A]⣤[/][#3E7CB1]⣤⣴⣴⣿⠉⠛⠿⣷⣤⡀[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⣀⣴⣿⣿⣋⣠⣶⣶⣤⣶⣶⣿[/][#5B8C3A]⣿⣿⣿⣿⣿⡿⠟[/][#3E7CB1]⠙⠻⠦[/]⠀[#3E7CB1]⠉⠙⢷⣄[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀[#3E7CB1]⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#5B8C3A]⣿⣿⣿⣿⣿⣿⣿⣶⣿[/][#3E7CB1]⣿⣶⠆⣀⡀⠘⡝⣦⡀[/]⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀[#3E7CB1]⣼[/][#5B8C3A]⣽⣿⣿⣿⡿⢿⣿[/][#3E7CB1]⣿⣿⣿⣿⣿[/][#5B8C3A]⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#3E7CB1]⣿⡃⠈⠑⣦⣩⠁⠳⡀[/]⠀⠀⠀⠀⠀⠀
+⠀⠀[#3E7CB1]⢠⣯[/][#5B8C3A]⣿⣿⣿⣿⠃[/]⠀⠀⠀⠀[#3E7CB1]⠈⢻⣿[/][#5B8C3A]⣿[/][#3E7CB1]⣿[/][#5B8C3A]⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#3E7CB1]⡛⠛⠻⣦⣰⣿⡟[/]⠀⠀[#3E7CB1]⠈⢧[/]⠀⠀⠀⠀⠀
+⠀[#3E7CB1]⢰⢿[/][#5B8C3A]⣿⣿⣿⡟⡁[/]⠀⠀⠀⠀⠀⠀[#5B8C3A]⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#3E7CB1]⣿⣿⣷⣶⣤⡌⠉[/]⠀⠀⠀⠀⠀[#3E7CB1]⠹⡄[/]⠀⠀⠀
+⠀[#3E7CB1]⣿[/][#5B8C3A]⣿⣿⣿⣿⣦[/]⠀⠀⠀⠀⠀⠀[#5B8C3A]⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#3E7CB1]⣿⣿⣿⣿⣿⣿⣿⣿⣅⡀[/]⠀⠀⠀⠀⠀⠀[#3E7CB1]⢺⡆[/]⠀⠀
+[#3E7CB1]⣼⣿⣿[/][#5B8C3A]⣿⣿⣿⣿[/]⠀⠀⠀⠀[#5B8C3A]⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#3E7CB1]⣿⣿⣿⣿⣿⣿⣿⠛⠉⠁⢀[/]⠀⠀⠀⠀⠀[#3E7CB1]⠘⣇[/]⠀⠀
+[#3E7CB1]⣟⣿⣿⣿[/][#5B8C3A]⣿⣿⣿⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿[/][#3E7CB1]⣿⣿⣿⣟⣙⠇[/]⠀⠀⠀[#3E7CB1]⢿⣧⣄⡀[/]⠀⠀[#3E7CB1]⢸⡇[/]⠀⠀
+[#3E7CB1]⣿⣿⣿⣿⣿[/][#5B8C3A]⣿⣿⣿⣿⣿⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉⠙[/][#3E7CB1]⠛⡿⣿⣿⣿⣿⣿⣦[/]⠀⠀⠀[#3E7CB1]⠉⣿⣷[/]⠀⠀⠀[#3E7CB1]⣷[/]⠀⠀
+[#3E7CB1]⣿⣿⣿⣿⣿⣿⣿⣿[/][#5B8C3A]⣿⠆[/]⠀⠀[#5B8C3A]⠛⠛⢹⣿⣿⣿⣿⠇[/]⠀⠀⠀⠀⠀⠀[#3E7CB1]⠸⣿⠿⠟[/][#5B8C3A]⠋[/]⠀⠀[#3E7CB1]⣀⣀[/]⠀[#3E7CB1]⠉[/]⠀⠀⠀⠀[#3E7CB1]⣼⡇[/]
+[#3E7CB1]⣻⣿⣿⣿⣿⣿⣿[/][#5B8C3A]⣿⡟[/]⠀⠀⠀⠀⠀[#5B8C3A]⠘⠿⣿⣿⠉[/]⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⠻[/][#5B8C3A]⢦⡄[/]⠀⠀[#5B8C3A]⢠[/][#3E7CB1]⣿⣿⣠⣶⢾⠶⣿⣿⣿[/]⠀
+[#3E7CB1]⢸⣿⣿⣿⣟⣿⡿⠛[/]⠀⠀⠀⠀⠀⠀⠀⠀[#5B8C3A]⠈[/][#3E7CB1]⠹⢷⣶[/]⠀⠀⠀⠀⠀[#3E7CB1]⠲⠿[/][#5B8C3A]⡷⣾⣷⣀⠸⣿⠿[/][#3E7CB1]⠏⢰⠟⣀⡀[/]⠀[#3E7CB1]⢸⡃[/]⠀
+[#3E7CB1]⠈⣿⣿⣿⣿⣿⣿⣿⡆[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#5B8C3A]⠁⢻⣿⣷⣄⣤⣴[/][#3E7CB1]⠾⠚⠋⣡⣶⣾⡏[/]⠀
+⠀[#3E7CB1]⠸⣿⣿⣿⣿⣿⣿⠆[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#5B8C3A]⠈[/]⠀[#5B8C3A]⠈⠁[/]⠀⠀[#3E7CB1]⣰⣾⣿⣿⣿⡏[/]⠀
+⠀⠀[#3E7CB1]⠹⣿⣿⣿⣿⡏[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⣀⣼⣿⣿⣿⣿⡟⠁[/]⠀
+⠀⠀⠀[#3E7CB1]⠙⣿⣿⣿⣅[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⣾⣿⣿⣿⣿⣿⠟[/]⠀⠀⠀
+⠀⠀⠀⠀[#3E7CB1]⠈⠻⣿⣿⣦⡀[/]⠀[#3E7CB1]⣀[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⢸⣿⠿⠋⣿⠟⠁[/]⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀[#3E7CB1]⠈⠻⣿⣿⣸⣿⣷⡄[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⠘⠋⠁⣠⠞⠁[/]⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⠈⠛⠿⣮⡛⠃[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⢀⣀⠴⠊⠁[/]⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⠈⠙⠓⠦⢤⣀⣀⣀⣀⣀[/]⠀⠀⠀⠀[#3E7CB1]⢀⣠⣤⡶⠟⠋[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀[#3E7CB1]⠈⠁⠉⠉⠉⠉⠉⠉⠉⠉⠁[/]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀""",
     },
-    "charizard": {
-        "name": "charizard",
+    "flame's": {
+        "name": "flame's",
         "description": "Volcanic theme — burnt orange and ember",
         "colors": {
             "banner_border": "#C75B1D",
@@ -636,33 +564,38 @@ _BUILTIN_SKINS: Dict[str, Dict[str, Any]] = {
             ],
         },
         "branding": {
-            "agent_name": "Charizard Agent",
-            "welcome": "Welcome to Charizard Agent! Type your message or /help for commands.",
-            "goodbye": "Flame out! ✦",
-            "response_label": " ✦ Charizard ",
-            "prompt_symbol": "✦",
-            "help_header": "(✦) Available Commands",
+            "agent_name": "Flame's Agent",
+            "welcome": "Welcome to Flame's Agent! Type your message or /help for commands.",
+            "goodbye": "Flame out! 🔥",
+            "response_label": " 🔥 Flame's ",
+            "prompt_symbol": "🔥",
+            "help_header": "(🔥) Available Commands",
         },
         "tool_prefix": "│",
-        "banner_logo": """[bold #FFF0D4] ██████╗██╗  ██╗ █████╗ ██████╗ ██╗███████╗ █████╗ ██████╗ ██████╗        █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
-[bold #FFD39A]██╔════╝██║  ██║██╔══██╗██╔══██╗██║╚══███╔╝██╔══██╗██╔══██╗██╔══██╗      ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
-[#F29C38]██║     ███████║███████║██████╔╝██║  ███╔╝ ███████║██████╔╝██║  ██║█████╗███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║[/]
-[#E2832B]██║     ██╔══██║██╔══██║██╔══██╗██║ ███╔╝  ██╔══██║██╔══██╗██║  ██║╚════╝██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║[/]
-[#C75B1D]╚██████╗██║  ██║██║  ██║██║  ██║██║███████╗██║  ██║██║  ██║██████╔╝      ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║[/]
-[#7A3511] ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝       ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝[/]""",
-        "banner_hero": """[#FFD39A]⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⠶⠶⠶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#F29C38]⠀⠀⠀⠀⠀⠀⣴⠟⠁⠀⠀⠀⠀⠈⠻⣦⠀⠀⠀⠀⠀⠀[/]
-[#F29C38]⠀⠀⠀⠀⠀⣼⠏⠀⠀⠀✦⠀⠀⠀⠀⠹⣧⠀⠀⠀⠀⠀[/]
-[#E2832B]⠀⠀⠀⠀⢰⡟⠀⠀⣀⣤⣤⣤⣀⠀⠀⠀⢻⡆⠀⠀⠀⠀[/]
-[#E2832B]⠀⠀⣠⡾⠛⠁⣠⣾⠟⠉⠀⠉⠻⣷⣄⠀⠈⠛⢷⣄⠀⠀[/]
-[#C75B1D]⠀⣼⠟⠀⢀⣾⠟⠁⠀⠀⠀⠀⠀⠈⠻⣷⡀⠀⠻⣧⠀[/]
-[#C75B1D]⢸⡟⠀⠀⣿⡟⠀⠀⠀🔥⠀⠀⠀⠀⢻⣿⠀⠀⢻⡇[/]
-[#7A3511]⠀⠻⣦⡀⠘⢿⣧⡀⠀⠀⠀⠀⠀⢀⣼⡿⠃⢀⣴⠟⠀[/]
-[#7A3511]⠀⠀⠈⠻⣦⣀⠙⢿⣷⣤⣤⣤⣾⡿⠋⣀⣴⠟⠁⠀⠀[/]
-[#C75B1D]⠀⠀⠀⠀⠈⠙⠛⠶⠤⠭⠭⠤⠶⠛⠋⠁⠀⠀⠀⠀[/]
-[#F29C38]⠀⠀⠀⠀⠀⠀⠀⠀⣰⡿⢿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[#F29C38]⠀⠀⠀⠀⠀⠀⠀⣼⡟⠀⠀⢻⣧⠀⠀⠀⠀⠀⠀⠀⠀[/]
-[dim #7A3511]⠀⠀⠀⠀⠀⠀⠀tail flame lit⠀⠀⠀⠀⠀⠀⠀⠀[/]""",
+        "banner_logo": """[bold #FFF0D4]███████╗██╗      █████╗ ███╗   ███╗███████╗███████╗    █████╗  ██████╗ ███████╗███╗   ██╗████████╗[/]
+[bold #FFD39A]██╔════╝██║     ██╔══██╗████╗ ████║██╔════╝██╔════╝   ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝[/]
+[#F29C38]█████╗  ██║     ███████║██╔████╔██║█████╗  ███████╗   ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   [/]
+[#E2832B]██╔══╝  ██║     ██╔══██║██║╚██╔╝██║██╔══╝  ╚════██║   ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   [/]
+[#C75B1D]██║     ███████╗██║  ██║██║ ╚═╝ ██║███████╗███████║   ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   [/]
+[#7A3511]╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   [/]""",
+ 
+   "banner_hero": """[#FFD39A]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⡄[/]
+[#F29C38]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⡄[/]
+[#F29C38]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣧[/]
+[#E2832B]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⡆[/]
+[#E2832B]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⠃⠀⠀⠀⣀[/]
+[#C75B1D]⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⡟⠀⠀⣤⣶⠋[/]
+[#C75B1D]⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⠇⢀⣿⣿⡟[/]
+[#7A3511]⠀⠀⠀⠀⣤⡶⠀⢰⣿⣿⣿⣿⣿⣿⣿⣯⠀⣾⣿⣿⣧[/]
+[#7A3511]⠀⠀⣴⣿⣿⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄[/]
+[#C75B1D]⠀⣸⣿⣿⣿⡇⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄[/]
+[#C75B1D]⠀⣿⣿⣿⣿⣷⣀⣘⣿⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷[/]
+[#F29C38]⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣿⣿⣿⣿⡇⢻⣿⣿⣿⣿⣿[/]
+[#F29C38]⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠈⠙⠛⠋⠀⠈⢻⣿⣿⣿⣿[/]
+[#E2832B]⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡟[/]
+[#E2832B]⠀⠈⢿⣿⣿⡿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⢸⣿⣿⡿⠁[/]
+[#7A3511]⠀⠀⠈⠛⣿⣷⡀⠉⠙⠛⠛⠉⠀⠀⠀⠀⠀⠀⢠⣾⣿⠛⠁[/]
+[dim #7A3511]⠀⠀⠀⠀⠘⠻⠧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠼⠛[/]""",
     },
 }
 
@@ -780,8 +713,9 @@ def load_skin(name: str) -> SkinConfig:
             return _build_skin_config(data)
 
     # Check built-in skins
-    if name in _BUILTIN_SKINS:
-        return _build_skin_config(_BUILTIN_SKINS[name])
+    name_lower = name.lower()
+    if name_lower in _BUILTIN_SKINS:
+        return _build_skin_config(_BUILTIN_SKINS[name_lower])
 
     # Fallback to default
     logger.warning("Skin '%s' not found, using default", name)

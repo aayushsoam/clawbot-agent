@@ -92,28 +92,6 @@ class TestBuiltinSkins:
         assert skin.name == "slate"
         assert skin.get_color("banner_title") == "#7eb8f6"
 
-    def test_daylight_skin_loads(self):
-        from clawbot_cli.skin_engine import load_skin
-
-        skin = load_skin("daylight")
-        assert skin.name == "daylight"
-        assert skin.tool_prefix == "│"
-        assert skin.get_color("banner_title") == "#0F172A"
-        assert skin.get_color("status_bar_bg") == "#E5EDF8"
-        assert skin.get_color("voice_status_bg") == "#E5EDF8"
-        assert skin.get_color("completion_menu_bg") == "#F8FAFC"
-        assert skin.get_color("completion_menu_current_bg") == "#DBEAFE"
-        assert skin.get_color("completion_menu_meta_bg") == "#EEF2FF"
-        assert skin.get_color("completion_menu_meta_current_bg") == "#BFDBFE"
-
-    def test_warm_lightmode_skin_loads(self):
-        from clawbot_cli.skin_engine import load_skin
-
-        skin = load_skin("warm-lightmode")
-        assert skin.name == "warm-lightmode"
-        assert skin.get_color("banner_text") == "#2C1810"
-        assert skin.get_color("completion_menu_bg") == "#F5EFE0"
-
     def test_unknown_skin_falls_back_to_default(self):
         from clawbot_cli.skin_engine import load_skin
         skin = load_skin("nonexistent_skin_xyz")
@@ -157,8 +135,8 @@ class TestSkinManagement:
         assert "ares" in names
         assert "mono" in names
         assert "slate" in names
-        assert "daylight" in names
-        assert "warm-lightmode" in names
+        assert "earth" in names
+        assert "flame's" in names
         for s in skins:
             assert "source" in s
             assert s["source"] == "builtin"
@@ -396,7 +374,7 @@ class TestCliBrandingHelpers:
         assert overrides["sudo-prompt"] == f"{skin.get_color('ui_error')} bold"
         assert overrides["approval-title"] == f"{skin.get_color('ui_warn')} bold"
 
-        set_active_skin("daylight")
+        set_active_skin("Water")
         skin = get_active_skin()
         overrides = get_prompt_toolkit_style_overrides()
         assert overrides["status-bar"] == f"bg:{skin.get_color('status_bar_bg')} {skin.get_color('banner_text')}"

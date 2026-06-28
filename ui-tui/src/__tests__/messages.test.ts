@@ -43,7 +43,7 @@ describe('MessageLine', () => {
 
     const t = {
       ...DEFAULT_THEME,
-      brand: { ...DEFAULT_THEME.brand, prompt: 'Ψ >' }
+      brand: { ...DEFAULT_THEME.brand, prompt: '💧 >' }
     }
 
     const instance = renderSync(
@@ -67,7 +67,7 @@ describe('MessageLine', () => {
       .split('\n')
       .find(line => line.includes('Okay'))
 
-    expect(renderedLine).toContain('Ψ > Okay')
+    expect(renderedLine).toContain('💧 > Okay')
   })
 })
 

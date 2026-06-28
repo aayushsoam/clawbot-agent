@@ -989,9 +989,9 @@ display:
   #   slate          — Cool blue developer-focused
   #   daylight       — Bright light-mode theme
   #   warm-lightmode — Warm paper-tone light-mode theme
-  #   poseidon       — Sea-green/teal Olympian theme
-  #   sisyphus       — Earthy stone-and-moss theme
-  #   charizard      — Fiery orange dragon theme
+  #   Water       — Sea-green/teal Olympian theme
+  #   Earth       — Earthy stone-and-moss theme
+  #   flame's      — Fiery orange dragon theme
   #
   # Custom skins: drop a YAML file in ~/.clawbot/skins/<name>.yaml
   # Schema (all fields optional, missing values inherit from default):
