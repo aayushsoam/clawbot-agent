@@ -113,37 +113,12 @@ function Build-LogoRow {
 }
 
 function Write-Banner {
-    $C1 = 'MMLDDDMM'
-    $L1 = 'MMLMMMMM'
-    $A1 = 'MMLDDDMLMM'
-    $W1 = 'MMLMMMLMMMLMM'
-    $B1 = 'MMLDDDMLMM'
-    $O1 = 'MMLDDDMLMM'
-    $T1 = 'MMLUUUUUMM'
+    $row1 = 'MMLDDDMMMMLMMMMMMMLDDDLMMMMLMMMLMMMLMMMMLDDDLMMMMLDDDLMMMDDDLDDDMM'
+    $row2 = 'MMLMMMMMMMLMMMMMMMLUUULMMMMLMMMLMMMLMMMMLUUULMMMMLMMMLMMMMMMLMMMMM'
+    $row3 = 'MMLUUUMMMMLUUUUMMMLMMMLMMMMLUUULUUULMMMMLUUULMMMMLUUULMMMMMMLMMMMM'
 
-    $C2 = 'MMLMMMMM'
-    $L2 = 'MMLMMMMM'
-    $A2 = 'MMLUUUMLMM'
-    $W2 = 'MMLMMMLMMMLMM'
-    $B2 = 'MMLUUUMMMM'
-    $O2 = 'MMLMMMLMM'
-    $T2 = 'MMMMLMMMMM'
-
-    $C3 = 'MMLUUUMM'
-    $L3 = 'MMLUUUUM'
-    $A3 = 'MMLMMMLMM'
-    $W3 = 'MMLUUULUUULMM'
-    $B3 = 'MMLUUUMLMM'
-    $O3 = 'MMLUUUMLMM'
-    $T3 = 'MMMMLMMMMM'
-
-    $sep = 'MM'
-
-    $border = 'D' * 78
-    $borderBottom = 'U' * 78
-    $row1 = $C1 + $sep + $L1 + $sep + $A1 + $sep + $W1 + $sep + $B1 + $sep + $O1 + $sep + $T1
-    $row2 = $C2 + $sep + $L2 + $sep + $A2 + $sep + $W2 + $sep + $B2 + $sep + $O2 + $sep + $T2
-    $row3 = $C3 + $sep + $L3 + $sep + $A3 + $sep + $W3 + $sep + $B3 + $sep + $O3 + $sep + $T3
+    $border = 'D' * 66
+    $borderBottom = 'U' * 66
 
     Write-Host ""
     Write-Host (Build-LogoRow $border) -ForegroundColor Magenta
