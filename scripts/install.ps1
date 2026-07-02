@@ -1,4 +1,4 @@
-﻿# ============================================================================
+# ============================================================================
 # Clawbot Agent Installer for Windows
 # ============================================================================
 # Installation script for Windows (PowerShell).
@@ -84,32 +84,63 @@ $InstallStageProtocolVersion = 1
 
 function Write-Banner {
     Write-Host ""
-    Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
-    Write-Host "|             * Clawbot Agent Installer                   |" -ForegroundColor Magenta
-    Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
-    Write-Host "|          An open source AI agent by Aayush soam         |" -ForegroundColor Magenta
-    Write-Host "+---------------------------------------------------------+" -ForegroundColor Magenta
+    Write-Host "    ██████╗██╗      █████╗ ██╗    ██╗██████╗  ██████╗ ████████╗" -ForegroundColor Magenta
+    Write-Host "   ██╔════╝██║     ██╔══██╗██║    ██║██╔══██╗██╔═══██╗╚══██╔══╝" -ForegroundColor Magenta
+    Write-Host "   ██║     ██║     ███████║██║ █╗ ██║██████╔╝██║   ██║   ██║   " -ForegroundColor Magenta
+    Write-Host "   ██║     ██║     ██╔══██║██║███╗██║██╔══██╗██║   ██║   ██║   " -ForegroundColor Magenta
+    Write-Host "   ╚██████╗███████╗██║  ██║╚███╔███╔╝██████╔╝╚██████╔╝   ██║   " -ForegroundColor Magenta
+    Write-Host "    ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═════╝  ╚═════╝    ╚═╝   " -ForegroundColor Magenta
     Write-Host ""
-} 
+    Write-Host "  🤖 Clawbot Agent Installer" -ForegroundColor White
+    Write-Host "  Built different. Built by Aayush Soam." -ForegroundColor Cyan
+    Write-Host ""
+}
+
+function Write-Step {
+    param([int]$Current, [int]$Total, [string]$Title)
+    Write-Host ""
+    Write-Host -NoNewline "[$Current/$Total]" -ForegroundColor Magenta
+    Write-Host " $Title" -ForegroundColor White
+}
+
+function Write-Bar {
+    Write-Host "│" -ForegroundColor DarkCyan
+}
 
 function Write-Info {
     param([string]$Message)
-    Write-Host "-> $Message" -ForegroundColor Cyan
+    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  · " -ForegroundColor DarkGray
+    Write-Host "$Message" -ForegroundColor DarkGray
 }
 
 function Write-Success {
     param([string]$Message)
-    Write-Host "[OK] $Message" -ForegroundColor Green
+    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  ✓ " -ForegroundColor Green
+    Write-Host "$Message"
 }
 
 function Write-Warn {
     param([string]$Message)
-    Write-Host "[!] $Message" -ForegroundColor Yellow
+    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  ⚠ " -ForegroundColor Yellow
+    Write-Host "$Message" -ForegroundColor Yellow
 }
 
 function Write-Err {
     param([string]$Message)
-    Write-Host "[X] $Message" -ForegroundColor Red
+    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  ✗ " -ForegroundColor Red
+    Write-Host "$Message" -ForegroundColor Red
+}
+
+function Write-Final {
+    param([string]$Title, [string]$Tagline = "Your AI agent is ready. Time to build something amazing.")
+    Write-Host ""
+    Write-Host "  🤖 $Title" -ForegroundColor Green
+    Write-Host "  $Tagline" -ForegroundColor Cyan
+    Write-Host ""
 }
 
 # --- Ensure-mode helpers ---
