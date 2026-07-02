@@ -2213,6 +2213,9 @@ main() {
     detect_os
     prompt_install_target
     resolve_install_layout
+
+    log_step 1 3 "Preparing environment"
+    log_bar
     install_uv
     check_python
     check_git
@@ -2224,7 +2227,10 @@ main() {
     fi
     check_network_prerequisites
     install_system_packages
+    log_bar
 
+    log_step 2 3 "Installing Clawbot Agent"
+    log_bar
     clone_repo
     setup_venv
     install_deps
@@ -2233,13 +2239,17 @@ main() {
     else
         install_node_deps
     fi
+    log_bar
+
+    log_step 3 3 "Finalizing setup"
+    log_bar
     setup_path
     copy_config_templates
     run_setup_wizard
     maybe_start_gateway
+    log_bar
 
-    print_success
-
+    log_final "Clawbot Agent installed successfully!"
     echo "git" > "$CLAWBOT_HOME/.install_method"
 }
 

@@ -1944,11 +1944,7 @@ function Start-GatewayIfConfigured {
 }
 
 function Write-Completion {
-    Write-Host ""
-    Write-Host "+---------------------------------------------------------+" -ForegroundColor Green
-    Write-Host "|               ✅ Installation Complete!                 |" -ForegroundColor Green
-    Write-Host "+---------------------------------------------------------+" -ForegroundColor Green
-    Write-Host ""
+    Write-Final -Title "Clawbot Agent installed successfully!"
     
     # Show file locations
     Write-Host "* Your files:" -ForegroundColor Cyan
@@ -2218,8 +2214,25 @@ function Invoke-Stage {
 
 function Invoke-AllStages {
     Step-OutOfInstallDir
+    $lastCategory = ""
     foreach ($s in $InstallStages) {
+        $cat = $s.Category
+        if ($cat -ne $lastCategory) {
+            if ($lastCategory -ne "" -and $lastCategory -ne "post-install") {
+                Write-Bar
+            }
+            switch ($cat) {
+                "prereqs"      { Write-Step -Current 1 -Total 3 -Title "Preparing environment"; Write-Bar }
+                "install"      { Write-Step -Current 2 -Total 3 -Title "Installing Clawbot Agent"; Write-Bar }
+                "finalize"     { Write-Step -Current 3 -Total 3 -Title "Finalizing setup"; Write-Bar }
+                "post-install" { }
+            }
+            $lastCategory = $cat
+        }
         Invoke-Stage -StageDef $s
+    }
+    if ($lastCategory -ne "" -and $lastCategory -ne "post-install") {
+        Write-Bar
     }
 }
 
