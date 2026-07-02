@@ -127,7 +127,7 @@ function Write-Banner {
     Write-Host (Build-LogoRow $row3) -ForegroundColor Magenta
     Write-Host (Build-LogoRow $borderBottom) -ForegroundColor Magenta
     Write-Host ""
-    Write-Host "  🤖 Clawbot Agent Installer" -ForegroundColor White
+    Write-Host "  $($script:EmojiRobot) Clawbot Agent Installer" -ForegroundColor White
     Write-Host "  Built different. Built by Aayush Soam." -ForegroundColor Cyan
     Write-Host ""
 }
