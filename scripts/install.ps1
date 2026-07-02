@@ -82,14 +82,75 @@ $InstallStageProtocolVersion = 1
 # Helper functions
 # ============================================================================
 
+# Define Unicode characters dynamically to prevent encoding/parsing issues
+# under Windows ANSI/CP1252 code pages. The file remains pure ASCII.
+$script:S_BAR = [char]0x2502
+$script:S_STEP_ACTIVE = [char]0x25C6
+$script:S_STEP_DONE = [char]0x25C7
+$script:S_RADIO_ACTIVE = [char]0x25CF
+$script:S_RADIO_INACTIVE = [char]0x25CB
+$script:S_CHECK = [char]0x2713
+$script:S_WARN = [char]0x26A0
+$script:S_ERROR = [char]0x2717
+$script:S_INFO = [char]0x00B7
+$script:EmojiRobot = [string]::new([char[]]@(0xD83E, 0xDD16))
+
+function Build-LogoRow {
+    param([string]$Pattern)
+    $res = ""
+    for ($i = 0; $i -lt $Pattern.Length; $i++) {
+        $c = $Pattern[$i]
+        switch ($c) {
+            "M" { $res += [char]0x2588 } # █
+            "L" { $res += [char]0x2591 } # ░
+            "D" { $res += [char]0x2584 } # ▄
+            "U" { $res += [char]0x2580 } # ▀
+            "S" { $res += " " }          # space
+            default { $res += $c }
+        }
+    }
+    return $res
+}
+
 function Write-Banner {
+    $C1 = 'MMLDDDMM'
+    $L1 = 'MMLMMMMM'
+    $A1 = 'MMLDDDMLMM'
+    $W1 = 'MMLMMMLMMMLMM'
+    $B1 = 'MMLDDDMLMM'
+    $O1 = 'MMLDDDMLMM'
+    $T1 = 'MMLUUUUUMM'
+
+    $C2 = 'MMLMMMMM'
+    $L2 = 'MMLMMMMM'
+    $A2 = 'MMLUUUMLMM'
+    $W2 = 'MMLMMMLMMMLMM'
+    $B2 = 'MMLUUUMMMM'
+    $O2 = 'MMLMMMLMM'
+    $T2 = 'MMMMLMMMMM'
+
+    $C3 = 'MMLUUUMM'
+    $L3 = 'MMLUUUUM'
+    $A3 = 'MMLMMMLMM'
+    $W3 = 'MMLUUULUUULMM'
+    $B3 = 'MMLUUUMLMM'
+    $O3 = 'MMLUUUMLMM'
+    $T3 = 'MMMMLMMMMM'
+
+    $sep = 'MM'
+
+    $border = 'D' * 78
+    $borderBottom = 'U' * 78
+    $row1 = $C1 + $sep + $L1 + $sep + $A1 + $sep + $W1 + $sep + $B1 + $sep + $O1 + $sep + $T1
+    $row2 = $C2 + $sep + $L2 + $sep + $A2 + $sep + $W2 + $sep + $B2 + $sep + $O2 + $sep + $T2
+    $row3 = $C3 + $sep + $L3 + $sep + $A3 + $sep + $W3 + $sep + $B3 + $sep + $O3 + $sep + $T3
+
     Write-Host ""
-    Write-Host "    ██████╗██╗      █████╗ ██╗    ██╗██████╗  ██████╗ ████████╗" -ForegroundColor Magenta
-    Write-Host "   ██╔════╝██║     ██╔══██╗██║    ██║██╔══██╗██╔═══██╗╚══██╔══╝" -ForegroundColor Magenta
-    Write-Host "   ██║     ██║     ███████║██║ █╗ ██║██████╔╝██║   ██║   ██║   " -ForegroundColor Magenta
-    Write-Host "   ██║     ██║     ██╔══██║██║███╗██║██╔══██╗██║   ██║   ██║   " -ForegroundColor Magenta
-    Write-Host "   ╚██████╗███████╗██║  ██║╚███╔███╔╝██████╔╝╚██████╔╝   ██║   " -ForegroundColor Magenta
-    Write-Host "    ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═════╝  ╚═════╝    ╚═╝   " -ForegroundColor Magenta
+    Write-Host (Build-LogoRow $border) -ForegroundColor Magenta
+    Write-Host (Build-LogoRow $row1) -ForegroundColor Magenta
+    Write-Host (Build-LogoRow $row2) -ForegroundColor Magenta
+    Write-Host (Build-LogoRow $row3) -ForegroundColor Magenta
+    Write-Host (Build-LogoRow $borderBottom) -ForegroundColor Magenta
     Write-Host ""
     Write-Host "  🤖 Clawbot Agent Installer" -ForegroundColor White
     Write-Host "  Built different. Built by Aayush Soam." -ForegroundColor Cyan
@@ -104,41 +165,47 @@ function Write-Step {
 }
 
 function Write-Bar {
-    Write-Host "│" -ForegroundColor DarkCyan
+    Write-Host $script:S_BAR -ForegroundColor DarkCyan
 }
 
 function Write-Info {
     param([string]$Message)
-    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
-    Write-Host -NoNewline "  · " -ForegroundColor DarkGray
-    Write-Host "$Message" -ForegroundColor DarkGray
+    Write-Host -NoNewline $script:S_BAR -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  "
+    Write-Host -NoNewline $script:S_INFO -ForegroundColor DarkGray
+    Write-Host " $Message" -ForegroundColor DarkGray
 }
 
 function Write-Success {
     param([string]$Message)
-    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
-    Write-Host -NoNewline "  ✓ " -ForegroundColor Green
-    Write-Host "$Message"
+    Write-Host -NoNewline $script:S_BAR -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  "
+    Write-Host -NoNewline $script:S_CHECK -ForegroundColor Green
+    Write-Host " $Message"
 }
 
 function Write-Warn {
     param([string]$Message)
-    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
-    Write-Host -NoNewline "  ⚠ " -ForegroundColor Yellow
-    Write-Host "$Message" -ForegroundColor Yellow
+    Write-Host -NoNewline $script:S_BAR -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  "
+    Write-Host -NoNewline $script:S_WARN -ForegroundColor Yellow
+    Write-Host " $Message" -ForegroundColor Yellow
 }
 
 function Write-Err {
     param([string]$Message)
-    Write-Host -NoNewline "│" -ForegroundColor DarkCyan
-    Write-Host -NoNewline "  ✗ " -ForegroundColor Red
-    Write-Host "$Message" -ForegroundColor Red
+    Write-Host -NoNewline $script:S_BAR -ForegroundColor DarkCyan
+    Write-Host -NoNewline "  "
+    Write-Host -NoNewline $script:S_ERROR -ForegroundColor Red
+    Write-Host " $Message" -ForegroundColor Red
 }
 
 function Write-Final {
     param([string]$Title, [string]$Tagline = "Your AI agent is ready. Time to build something amazing.")
     Write-Host ""
-    Write-Host "  🤖 $Title" -ForegroundColor Green
+    Write-Host -NoNewline "  "
+    Write-Host -NoNewline $script:EmojiRobot -ForegroundColor Green
+    Write-Host " $Title" -ForegroundColor Green
     Write-Host "  $Tagline" -ForegroundColor Cyan
     Write-Host ""
 }
