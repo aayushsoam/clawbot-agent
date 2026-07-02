@@ -29,6 +29,12 @@ class Colors:
     BLUE = "\033[34m"
     MAGENTA = "\033[35m"
     CYAN = "\033[36m"
+    WHITE = "\033[37m"
+    GRAY = "\033[90m"
+    # True-color brand colors (Clawbot orange theme)
+    BRAND = "\033[1;38;2;255;140;0m"       # Bold orange #FF8C00
+    BRAND_DIM = "\033[38;2;204;112;0m"     # Dimmer orange
+    BAR_GRAY = "\033[38;2;120;120;120m"    # Sidebar │ color
 
 
 def color(text: str, *codes) -> str:

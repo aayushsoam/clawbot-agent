@@ -150,9 +150,10 @@ from clawbot_cli.colors import Colors, color
 
 
 def print_header(title: str):
-    """Print a section header."""
+    """Print a section header in @clack style."""
     print()
-    print(color(f"◆ {title}", Colors.CYAN, Colors.BOLD))
+    print(color("│", Colors.MAGENTA))
+    print(color(f"◆  {title}", Colors.MAGENTA, Colors.BOLD))
 
 
 from clawbot_cli.cli_output import (  # noqa: E402
@@ -3189,24 +3190,11 @@ def run_setup_wizard(args):
     if section:
         for key, label, func in SETUP_SECTIONS:
             if key == section:
-                print()
-                print(
-                    color(
-                        "┌─────────────────────────────────────────────────────────┐",
-                        Colors.MAGENTA,
-                    )
-                )
-                print(color(f"│     ⚡Clawbot Setup — {label:<34s} │", Colors.MAGENTA))
-                print(
-                    color(
-                        "└─────────────────────────────────────────────────────────┘",
-                        Colors.MAGENTA,
-                    )
-                )
+                from clawbot_cli.clack_ui import intro as _clack_intro, outro as _clack_outro
+                _clack_intro(f"⚡ Clawbot Setup — {label}", "Press Ctrl+C at any time to exit.")
                 func(config)
                 save_config(config)
-                print()
-                print_success(f"{label} configuration complete!")
+                _clack_outro(f"{label} configuration complete!")
                 return
 
         print_error(f"Unknown setup section: {section}")
@@ -3223,39 +3211,10 @@ def run_setup_wizard(args):
         or active_provider is not None
     )
 
-    print()
-    print(
-        color(
-            "┌─────────────────────────────────────────────────────────┐",
-            Colors.MAGENTA,
-        )
-    )
-    print(
-        color(
-            "│             ⚡Clawbot Agent Setup Wizard                │", Colors.MAGENTA
-        )
-    )
-    print(
-        color(
-            "├─────────────────────────────────────────────────────────┤",
-            Colors.MAGENTA,
-        )
-    )
-    print(
-        color(
-            "│  Let's configure your Clawbot Agent installation.       │", Colors.MAGENTA
-        )
-    )
-    print(
-        color(
-            "│  Press Ctrl+C at any time to exit.                      │", Colors.MAGENTA
-        )
-    )
-    print(
-        color(
-            "└─────────────────────────────────────────────────────────┘",
-            Colors.MAGENTA,
-        )
+    from clawbot_cli.clack_ui import intro as _clack_intro
+    _clack_intro(
+        "⚡ Clawbot Agent Setup Wizard",
+        "Let's configure your Clawbot Agent. Press Ctrl+C to exit.",
     )
 
     migration_ran = False
@@ -3348,6 +3307,9 @@ def run_setup_wizard(args):
         print_info(f"  cp {_backup_path} {config_path}")
     _print_setup_summary(config, clawbot_home)
 
+    from clawbot_cli.clack_ui import outro as _clack_outro
+    _clack_outro("Setup complete! Run 'clawbot' to start chatting. 🤖")
+
 
 def _run_first_time_quick_setup(config: dict, clawbot_home, is_existing: bool):
     """Streamlined first-time setup: provider, model, terminal & messaging.
@@ -3381,15 +3343,13 @@ def _run_first_time_quick_setup(config: dict, clawbot_home, is_existing: bool):
         setup_gateway(config)
         save_config(config)
 
-    print()
-    print_success("Setup complete! You're ready to go.")
-    print()
-    print_info("  Configure all settings:    clawbot setup")
-    if gateway_choice != 0:
-        print_info("  Connect Telegram/Discord:  clawbot setup gateway")
-    print()
-
     _print_setup_summary(config, clawbot_home)
+
+    from clawbot_cli.clack_ui import outro as _clack_outro, log_info as _clack_info
+    _clack_info("Configure all settings:    clawbot setup")
+    if gateway_choice != 0:
+        _clack_info("Connect Telegram/Discord:  clawbot setup gateway")
+    _clack_outro("Setup complete! You're ready to go. 🤖")
 
 
 def _run_quick_setup(config: dict, clawbot_home):

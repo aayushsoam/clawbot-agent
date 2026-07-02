@@ -171,29 +171,56 @@ done
 
 print_banner() {
     echo ""
-    echo -e "${MAGENTA}${BOLD}"
-    echo "┌─────────────────────────────────────────────────────────┐"
-    echo "│               Clawbot Agent Installer                   │"
-    echo "├─────────────────────────────────────────────────────────┤"
-    echo "│          An open source AI agent by Aayush soam         │"
-    echo "└─────────────────────────────────────────────────────────┘"
+    echo -e "${BOLD}${MAGENTA}"
+    echo "    ██████╗██╗      █████╗ ██╗    ██╗██████╗  ██████╗ ████████╗"
+    echo "   ██╔════╝██║     ██╔══██╗██║    ██║██╔══██╗██╔═══██╗╚══██╔══╝"
+    echo "   ██║     ██║     ███████║██║ █╗ ██║██████╔╝██║   ██║   ██║   "
+    echo "   ██║     ██║     ██╔══██║██║███╗██║██╔══██╗██║   ██║   ██║   "
+    echo "   ╚██████╗███████╗██║  ██║╚███╔███╔╝██████╔╝╚██████╔╝   ██║   "
+    echo "    ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═════╝  ╚═════╝    ╚═╝   "
     echo -e "${NC}"
+    echo -e "  ${BOLD}🤖 Clawbot Agent Installer${NC}"
+    echo -e "  ${CYAN}Built different. Built by Aayush Soam.${NC}"
+    echo ""
 }
 
+# Step progress header: [1/3] Title
+log_step() {
+    local current="$1"
+    local total="$2"
+    local title="$3"
+    echo ""
+    echo -e "${BOLD}${MAGENTA}[${current}/${total}]${NC} ${BOLD}${title}${NC}"
+}
+
+# Bar-prefixed log helpers (│ sidebar style)
 log_info() {
-    echo -e "${CYAN}→${NC} $1"
+    echo -e "${CYAN}│${NC}  ${CYAN}·${NC} $1"
 }
 
 log_success() {
-    echo -e "${GREEN}✓${NC} $1"
+    echo -e "${CYAN}│${NC}  ${GREEN}✓${NC} $1"
 }
 
 log_warn() {
-    echo -e "${YELLOW}⚠${NC} $1"
+    echo -e "${CYAN}│${NC}  ${YELLOW}⚠${NC} $1"
 }
 
 log_error() {
-    echo -e "${RED}✗${NC} $1"
+    echo -e "${CYAN}│${NC}  ${RED}✗${NC} $1"
+}
+
+log_bar() {
+    echo -e "${CYAN}│${NC}"
+}
+
+log_final() {
+    local message="$1"
+    local tagline="${2:-Your AI agent is ready. Time to build something amazing.}"
+    echo ""
+    echo -e "  ${GREEN}${BOLD}🤖 ${message}${NC}"
+    echo -e "  ${CYAN}${tagline}${NC}"
+    echo ""
 }
 
 prompt_yes_no() {

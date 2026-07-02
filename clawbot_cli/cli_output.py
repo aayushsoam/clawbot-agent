@@ -3,6 +3,9 @@
 Extracts the identical ``print_info/success/warning/error`` and ``prompt()``
 functions previously duplicated across setup.py, tools_config.py,
 mcp_config.py, and memory_setup.py.
+
+Also provides bar-prefixed (│) variants for use within @clack-style
+wizard flows via ``clack_ui``.
 """
 
 import getpass
@@ -36,6 +39,33 @@ def print_error(text: str) -> None:
 def print_header(text: str) -> None:
     """Print a bold yellow header."""
     print(color(f"\n  {text}", Colors.YELLOW))
+
+
+# ─── Bar-prefixed variants (for @clack-style wizard flows) ───────────────────
+
+
+def bar_info(text: str) -> None:
+    """Print info with │ sidebar: ``│  · message``"""
+    bar = color("│", Colors.BAR_GRAY)
+    print(f"{bar}  {color('·', Colors.DIM)} {color(text, Colors.DIM)}")
+
+
+def bar_success(text: str) -> None:
+    """Print success with │ sidebar: ``│  ✓ message``"""
+    bar = color("│", Colors.BAR_GRAY)
+    print(f"{bar}  {color('✓', Colors.GREEN)} {text}")
+
+
+def bar_warn(text: str) -> None:
+    """Print warning with │ sidebar: ``│  ⚠ message``"""
+    bar = color("│", Colors.BAR_GRAY)
+    print(f"{bar}  {color('⚠', Colors.YELLOW)} {text}")
+
+
+def bar_error(text: str) -> None:
+    """Print error with │ sidebar: ``│  ✗ message``"""
+    bar = color("│", Colors.BAR_GRAY)
+    print(f"{bar}  {color('✗', Colors.RED)} {text}")
 
 
 # ─── Input Prompts ────────────────────────────────────────────────────────────
@@ -76,3 +106,4 @@ def prompt_yes_no(question: str, default: bool = True) -> bool:
     if not answer:
         return default
     return answer.lower().startswith("y")
+
