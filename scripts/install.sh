@@ -171,7 +171,7 @@ done
 
 print_banner() {
     echo ""
-    echo -e "${BOLD}${MAGENTA}"
+    echo -e "${BOLD}${RED}"
     echo "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
     echo "██░▄▄▄████░███████░▄▄▄░████░███░███░████░▄▄▄░████░▄▄▄░███▄▄▄░▄▄▄██"
     echo "██░███████░███████░▀▀▀░████░███░███░████░▀▀▀░████░███░██████░█████"
@@ -189,7 +189,7 @@ log_step() {
     local total="$2"
     local title="$3"
     echo ""
-    echo -e "${BOLD}${MAGENTA}[${current}/${total}]${NC} ${BOLD}${title}${NC}"
+    echo -e "${BOLD}${RED}[${current}/${total}]${NC} ${BOLD}${title}${NC}"
 }
 
 # Bar-prefixed log helpers (│ sidebar style)

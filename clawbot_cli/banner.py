@@ -686,6 +686,7 @@ def build_welcome_banner(console: Console, model: str, cwd: str,
     outer_panel = Panel(
         layout_table,
         title=title_markup,
+        title_align="left",
         border_style=border_color,
         padding=(0, 2),
     )

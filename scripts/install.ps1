@@ -115,17 +115,17 @@ function Build-LogoRow {
 function Write-Banner {
     $row1 = 'MMLDDDMMMMLMMMMMMMLDDDLMMMMLMMMLMMMLMMMMLDDDLMMMMLDDDLMMMDDDLDDDMM'
     $row2 = 'MMLMMMMMMMLMMMMMMMLUUULMMMMLMMMLMMMLMMMMLUUULMMMMLMMMLMMMMMMLMMMMM'
-    $row3 = 'MMLUUUMMMMLUUUUMMMLMMMLMMMMLUUULUUULMMMMLUUULMMMMLUUULMMMMMMLMMMMM'
+    $row3 = 'MMLUUUMMMLUUUUMMMLMMMLMMMMLUUULUUULMMMMLUUULMMMMLUUULMMMMMMLMMMMM'
 
     $border = 'D' * 66
     $borderBottom = 'U' * 66
 
     Write-Host ""
-    Write-Host (Build-LogoRow $border) -ForegroundColor Magenta
-    Write-Host (Build-LogoRow $row1) -ForegroundColor Magenta
-    Write-Host (Build-LogoRow $row2) -ForegroundColor Magenta
-    Write-Host (Build-LogoRow $row3) -ForegroundColor Magenta
-    Write-Host (Build-LogoRow $borderBottom) -ForegroundColor Magenta
+    Write-Host (Build-LogoRow $border) -ForegroundColor Red
+    Write-Host (Build-LogoRow $row1) -ForegroundColor Red
+    Write-Host (Build-LogoRow $row2) -ForegroundColor Red
+    Write-Host (Build-LogoRow $row3) -ForegroundColor Red
+    Write-Host (Build-LogoRow $borderBottom) -ForegroundColor Red
     Write-Host ""
     Write-Host "  $($script:EmojiRobot) Clawbot Agent Installer" -ForegroundColor White
     Write-Host "  Built different. Built by Aayush Soam." -ForegroundColor Cyan
@@ -135,7 +135,7 @@ function Write-Banner {
 function Write-Step {
     param([int]$Current, [int]$Total, [string]$Title)
     Write-Host ""
-    Write-Host -NoNewline "[$Current/$Total]" -ForegroundColor Magenta
+    Write-Host -NoNewline "[$Current/$Total]" -ForegroundColor Red
     Write-Host " $Title" -ForegroundColor White
 }
 
