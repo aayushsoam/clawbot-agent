@@ -10737,12 +10737,16 @@ class ClawbotCLI:
                 pass
 
     def _set_terminal_title(self, title: str) -> None:
-        """Set the terminal window/tab title using ANSI OSC escape sequence."""
+        """Set the terminal window/tab title dynamically."""
         import sys
         try:
-            if sys.stdout.isatty():
-                sys.stdout.write(f"\x1b]0;{title}\x07")
-                sys.stdout.flush()
+            if sys.platform == "win32":
+                import ctypes
+                ctypes.windll.kernel32.SetConsoleTitleW(title)
+            else:
+                if sys.stdout.isatty():
+                    sys.stdout.write(f"\x1b]0;{title}\x07")
+                    sys.stdout.flush()
         except Exception:
             pass
 
