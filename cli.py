@@ -10736,6 +10736,16 @@ class ClawbotCLI:
             except Exception:
                 pass
 
+    def _set_terminal_title(self, title: str) -> None:
+        """Set the terminal window/tab title using ANSI OSC escape sequence."""
+        import sys
+        try:
+            if sys.stdout.isatty():
+                sys.stdout.write(f"\x1b]0;{title}\x07")
+                sys.stdout.flush()
+        except Exception:
+            pass
+
     def chat(self, message, images: list = None) -> Optional[str]:
         """
         Send a message to the agent and get a response.
@@ -10755,6 +10765,7 @@ class ClawbotCLI:
         Returns:
             The agent's response, or None on error
         """
+        self._set_terminal_title("Clawbot...")
         # Single-query and direct chat callers do not go through run(), so
         # register secure secret capture here as well.
         set_secret_capture_callback(self._secret_capture_callback)
@@ -11323,6 +11334,7 @@ class ClawbotCLI:
             print(f"Error: {e}")
             return None
         finally:
+            self._set_terminal_title("Clawbot")
             # Ensure streaming TTS resources are cleaned up even on error.
             # Normal path sends the sentinel at line ~3568; this is a safety
             # net for exception paths that skip it.  Duplicate sentinels are
@@ -11603,6 +11615,7 @@ class ClawbotCLI:
 
     def run(self):
         """Run the interactive CLI loop with persistent input at bottom."""
+        self._set_terminal_title("Clawbot")
         # Detect light/dark terminal mode now (before pt grabs the tty).
         # Caches the result so subsequent _hex_to_ansi / style calls
         # don't risk re-querying mid-render.
