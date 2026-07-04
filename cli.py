@@ -10744,9 +10744,9 @@ class ClawbotCLI:
                 import ctypes
                 ctypes.windll.kernel32.SetConsoleTitleW(title)
             else:
-                if sys.stdout.isatty():
-                    sys.stdout.write(f"\x1b]0;{title}\x07")
-                    sys.stdout.flush()
+                if sys.__stdout__ and sys.__stdout__.isatty():
+                    sys.__stdout__.write(f"\x1b]0;{title}\x07")
+                    sys.__stdout__.flush()
         except Exception:
             pass
 
