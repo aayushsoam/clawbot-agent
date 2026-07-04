@@ -1223,10 +1223,24 @@ function Install-Venv {
                 } catch { $false }
             } | Stop-Process -Force -ErrorAction SilentlyContinue
             Start-Sleep -Milliseconds 500
+        } catch {}
+
+        try {
+            Remove-Item -Recurse -Force "venv" -ErrorAction Stop
         } catch {
-            # Best effort
+            Write-Warn "Could not delete venv directory completely (files may be locked). Renaming locked shims..."
+            try {
+                $scriptsDir = Join-Path $InstallDir "venv\Scripts"
+                if (Test-Path $scriptsDir) {
+                    Get-ChildItem $scriptsDir -Filter "*.exe" | ForEach-Object {
+                        $uniqueOldName = $_.Name + ".old." + (Get-Date).Ticks
+                        Rename-Item $_.FullName -NewName $uniqueOldName -ErrorAction SilentlyContinue
+                    }
+                }
+            } catch {
+                # Best effort
+            }
         }
-        Remove-Item -Recurse -Force "venv"
     }
     
     # uv creates the venv and pins the Python version in one step
