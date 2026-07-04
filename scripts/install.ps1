@@ -1093,6 +1093,14 @@ function Install-Repository {
             # repository`` errors and failing with "not in a git directory".
             Write-Warn "Existing directory at $InstallDir is not a valid git repo -- replacing it."
             try {
+                try {
+                    Get-Process | Where-Object {
+                        try {
+                            $_.Path -and $_.Path.StartsWith($InstallDir, [System.StringComparison]::OrdinalIgnoreCase)
+                        } catch { $false }
+                    } | Stop-Process -Force -ErrorAction SilentlyContinue
+                    Start-Sleep -Milliseconds 500
+                } catch {}
                 Remove-Item -Recurse -Force $InstallDir -ErrorAction Stop
             } catch {
                 Write-Err "Could not remove $InstallDir : $_"
@@ -1207,6 +1215,17 @@ function Install-Venv {
     
     if (Test-Path "venv") {
         Write-Info "Virtual environment already exists, recreating..."
+        try {
+            $targetVenv = Join-Path $InstallDir "venv"
+            Get-Process | Where-Object {
+                try {
+                    $_.Path -and $_.Path.StartsWith($targetVenv, [System.StringComparison]::OrdinalIgnoreCase)
+                } catch { $false }
+            } | Stop-Process -Force -ErrorAction SilentlyContinue
+            Start-Sleep -Milliseconds 500
+        } catch {
+            # Best effort
+        }
         Remove-Item -Recurse -Force "venv"
     }
     
