@@ -13790,7 +13790,7 @@ class ClawbotCLI:
         
         # Install a custom asyncio exception handler that suppresses the
         # "Event loop is closed" RuntimeError from httpx transport cleanup
-        # and the "0 is not registered" KeyError from broken stdin ().
+        # and the "0 is not registered" KeyError from broken stdin (#6393).
         # The RuntimeError fix is defense-in-depth — the primary fix is
         # neuter_async_httpx_del which disables __del__ entirely.  The
         # KeyError fix handles macOS + uv-managed Python environments where
@@ -13800,7 +13800,7 @@ class ClawbotCLI:
             if isinstance(exc, RuntimeError) and "Event loop is closed" in str(exc):
                 return  # silently suppress
             if isinstance(exc, KeyError) and "is not registered" in str(exc):
-                return  # suppress selector registration failures ()
+                return  # suppress selector registration failures (#6393)
             if isinstance(exc, OSError) and getattr(exc, "errno", None) == errno.EIO:
                 return  # suppress I/O errors from broken stdout on interrupt (#13710)
             # Fall back to default handler for everything else
@@ -13808,7 +13808,7 @@ class ClawbotCLI:
 
         # Validate stdin before launching prompt_toolkit — on macOS with
         # uv-managed Python, fd 0 can be invalid or unregisterable with the
-        # asyncio selector, causing "KeyError: '0 is not registered'" ().
+        # asyncio selector, causing "KeyError: '0 is not registered'" (#6393).
         try:
             os.fstat(0)
         except OSError:
@@ -13823,7 +13823,7 @@ class ClawbotCLI:
 
         # On macOS with uv-managed Python, kqueue's selector cannot register
         # fd 0, raising OSError(EINVAL) from kqueue.control() when prompt_toolkit
-        # calls loop.add_reader (). Probe kqueue and, if it can't watch
+        # calls loop.add_reader (#6393). Probe kqueue and, if it can't watch
         # stdin, switch to a SelectSelector-backed event loop policy.
         if sys.platform == "darwin":
             try:
@@ -13863,7 +13863,7 @@ class ClawbotCLI:
         except (EOFError, KeyboardInterrupt, BrokenPipeError):
             pass
         except (KeyError, OSError) as _stdin_err:
-            # Catch selector registration failures from broken stdin ()
+            # Catch selector registration failures from broken stdin (#6393)
             # and I/O errors from broken stdout during interrupt (#13710).
             _errno = getattr(_stdin_err, "errno", None) if isinstance(_stdin_err, OSError) else None
             _msg = str(_stdin_err)
