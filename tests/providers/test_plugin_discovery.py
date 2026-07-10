@@ -46,19 +46,19 @@ def test_bundled_plugins_discovered():
         assert (child / "plugin.yaml").exists(), f"{child.name} missing plugin.yaml"
 
 
-def test_all_34_profiles_register():
-    """After discovery, the registry must contain exactly 34 distinct profiles."""
+def test_all_36_profiles_register():
+    """After discovery, the registry must contain exactly 36 distinct profiles."""
     _clear_provider_caches()
     from providers import list_providers
 
     profiles = list_providers()
     names = sorted(p.name for p in profiles)
-    assert len(names) == 34, f"Expected 34 profiles, got {len(names)}: {names}"
+    assert len(names) == 36, f"Expected 36 profiles, got {len(names)}: {names}"
 
     # Spot-check representative providers from different categories
     for required in (
         "openrouter", "anthropic", "custom", "bedrock", "openai-codex",
-        "minimax-oauth", "gmi", "xiaomi", "alibaba-coding-plan",
+        "minimax-oauth", "gmi", "evolink", "xiaomi", "alibaba-coding-plan",
     ):
         assert required in names, f"Missing profile: {required}"
 
