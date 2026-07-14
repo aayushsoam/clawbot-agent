@@ -1,0 +1,132 @@
+name: Build and Upload Release Binaries
+
+on:
+  release:
+    types: [published, created]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to attach binaries to (e.g. v2026.5.15)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-upload:
+    name: Build & Upload Binary for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: clawbot-linux
+          - os: macos-latest
+            artifact_name: clawbot-macos
+          - os: windows-latest
+            artifact_name: clawbot-windows.exe
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build web dashboard
+        run: |
+          cd web
+          npm ci
+          npm run build
+
+      - name: Build TUI bundle
+        run: |
+          cd ui-tui
+          npm ci
+          npm run build
+
+      - name: Bundle TUI and web assets into clawbot_cli
+        shell: bash
+        run: |
+          mkdir -p clawbot_cli/tui_dist
+          cp ui-tui/dist/entry.js clawbot_cli/tui_dist/entry.js
+          mkdir -p clawbot_cli/scripts
+          cp scripts/install.sh clawbot_cli/scripts/install.sh
+          cp scripts/install.ps1 clawbot_cli/scripts/install.ps1
+
+      - name: Verify frontend assets exist
+        shell: bash
+        run: |
+          test -f clawbot_cli/web_dist/index.html || { echo "ERROR: web_dist not built"; exit 1; }
+          test -f clawbot_cli/tui_dist/entry.js || { echo "ERROR: tui_dist not built"; exit 1; }
+
+      - name: Install dependencies and Clawbot
+        run: |
+          uv pip install --system -e .[all]
+          uv pip install --system pyinstaller
+
+      - name: Build binary with PyInstaller (Linux/macOS)
+        if: matrix.os != 'windows-latest'
+        run: |
+          pyinstaller --onefile --name ${{ matrix.artifact_name }} clawbot_cli/main.py \
+            --add-data "clawbot_cli/web_dist:clawbot_cli/web_dist" \
+            --add-data "clawbot_cli/tui_dist:clawbot_cli/tui_dist" \
+            --add-data "clawbot_cli/scripts:clawbot_cli/scripts"
+
+      - name: Build binary with PyInstaller (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          pyinstaller --onefile --name ${{ matrix.artifact_name }} clawbot_cli/main.py `
+            --add-data "clawbot_cli/web_dist;clawbot_cli/web_dist" `
+            --add-data "clawbot_cli/tui_dist;clawbot_cli/tui_dist" `
+            --add-data "clawbot_cli/scripts;clawbot_cli/scripts"
+
+      - name: Test executable
+        shell: bash
+        run: |
+          ./dist/${{ matrix.artifact_name }} version || ./dist/${{ matrix.artifact_name }} --version || true
+
+      - name: Upload Binary to Release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name || github.event.inputs.tag_name }}"
+          if [ -z "$TAG_NAME" ]; then
+            TAG_NAME="${{ github.ref_name }}"
+          fi
+          echo "Uploading to release: $TAG_NAME"
+          gh release upload "$TAG_NAME" dist/${{ matrix.artifact_name }} --repo "${{ github.repository }}" --clobber
+
+  generate-release-notes:
+    name: Generate & Update Release Notes
+    needs: build-and-upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update release description with auto-generated notes
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name || github.event.inputs.tag_name }}"
+          if [ -z "$TAG_NAME" ]; then
+            TAG_NAME="${{ github.ref_name }}"
+          fi
+          echo "Generating and updating release notes for tag: $TAG_NAME"
+          gh release edit "$TAG_NAME" --generate-notes --repo "${{ github.repository }}"

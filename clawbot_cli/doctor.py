@@ -649,6 +649,7 @@ def run_doctor(args):
                 "huggingface",
                 "lmstudio",
                 "soam",
+                "nvidia",
             }
             if (
                 default_model
