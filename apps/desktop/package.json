@@ -5,6 +5,7 @@
   "version": "0.15.1",
   "description": "Native desktop shell for Clawbot Agent.",
   "author": "Clawbot Agent",
+  "homepage": "https://github.com/aayushsoam/clawbot-agent",
   "type": "module",
   "main": "electron/main.cjs",
   "engines": {
