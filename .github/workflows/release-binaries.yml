@@ -75,8 +75,8 @@ jobs:
 
       - name: Install dependencies and Clawbot
         run: |
-          uv pip install --system -e .[all]
-          uv pip install --system pyinstaller
+          uv pip install -e .[all]
+          uv pip install pyinstaller
 
       - name: Build binary with PyInstaller (Linux/macOS)
         if: matrix.os != 'windows-latest'
