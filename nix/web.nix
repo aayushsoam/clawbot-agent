@@ -4,7 +4,7 @@ let
   src = ../web;
   npmDeps = pkgs.fetchNpmDeps {
     inherit src;
-    hash = "sha256-PYXGqVDACzPp0AkOB9DsyeB+0qcHxMp3IkO1S2WcJsE=";
+    hash = "sha256-S2NCYmh2A5PknWaztWJQ+PM8/b6AGyBRSec+Y+CJEdo=";
   };
 
   npm = clawbotNpmLib.mkNpmPassthru { folder = "web"; attr = "web"; pname = "clawbot-web"; };
