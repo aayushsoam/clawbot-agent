@@ -4,7 +4,7 @@ let
   src = ../ui-tui;
   npmDeps = pkgs.fetchNpmDeps {
     inherit src;
-    hash = "sha256-qGgxHTBJ2mFO2ETMU1Oqe20Kz30kpU97jsSuQ/EoIZA=";
+    hash = "sha256-PVO+SfdhuEUUs84MeFewVoA0FsOmUrBXXqe3KI8XFRg=";
   };
 
   npm = clawbotNpmLib.mkNpmPassthru { folder = "ui-tui"; attr = "tui"; pname = "clawbot-tui"; };
