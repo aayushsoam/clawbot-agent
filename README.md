@@ -2,99 +2,90 @@
   <img src="assets/banner.png" alt="Clawbot Agent" width="100%">
 </p>
 
-# Clawbot Agent ⚡
+# Clawbot Agent
 
 <p align="center">
-  <a href="https://clawbot-agent.aayushsoam.com/docs/"><img src="https://img.shields.io/badge/Docs-clawbot--agent.aayushsoam.com-FFD700?style=for-the-badge" alt="Documentation"></a>
+  <a href="https://clawbot-agent.vercel.app/docs/"><img src="https://img.shields.io/badge/Docs-clawbot--agent.aayushsoam.com-FFD700?style=for-the-badge" alt="Documentation"></a>
   <a href="https://discord.gg/Aayushsoam"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
   <a href="https://github.com/aayushsoam/clawbot-agent/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://github.com/aayushsoam"><img src="https://img.shields.io/badge/Built%20by-Soam%20Research-blueviolet?style=for-the-badge" alt="Built by Aayush soam"></a>
-  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/Lang-中文-red?style=for-the-badge" alt="中文"></a>
+  <a href="https://github.com/aayushsoam"><img src="https://img.shields.io/badge/Built%20by-Aayush%20soam-blueviolet?style=for-the-badge" alt="Built by Aayush Soam"></a>
 </p>
 
-**The self-improving AI agent built by [Aayush soam](https://github.com/aayushsoam).** It's the only agent with a built-in learning loop — it creates skills from experience, improves them during use, nudges itself to persist knowledge, searches its own past conversations, and builds a deepening model of who you are across sessions. Run it on a $5 VPS, a GPU cluster, or serverless infrastructure that costs nearly nothing when idle. It's not tied to your laptop — talk to it from Telegram while it works on a cloud VM.
+**Clawbot is a self-improving AI agent developed by [Aayush Soam](https://github.com/aayushsoam), combining the architecture of OpenClaw with the Hermes agent framework.** It features a built-in learning loop that generates skills from experience, refines them through use, retains knowledge proactively, searches its own conversation history, and builds a persistent model of the user over time. It can be deployed on infrastructure ranging from a $5 VPS to a GPU cluster, or on serverless environments that incur minimal cost when idle. Clawbot is not limited to local execution — it can be operated remotely, including via Telegram, while running on a cloud virtual machine.
 
-Use any model you want — [Soam Portal](https://portal.aayushsoam.com), [OpenRouter](https://openrouter.ai) (200+ models), [NovitaAI](https://novita.ai) (AI-native cloud for Model API, Agent Sandbox, and GPU Cloud), [NVIDIA NIM](https://build.nvidia.com) (Nemotron), [Xiaomi MiMo](https://platform.xiaomimimo.com), [z.ai/GLM](https://z.ai), [Kimi/Moonshot](https://platform.moonshot.ai), [MiniMax](https://www.minimax.io), [Hugging Face](https://huggingface.co), OpenAI, or your own endpoint. Switch with `clawbot model` — no code changes, no lock-in.
+Clawbot supports a wide range of model providers, including [Kimi/Moonshot](https://platform.moonshot.ai), [MiniMax](https://www.minimax.io), [OpenRouter](https://openrouter.ai) (200+ models), [NovitaAI](https://novita.ai), [NVIDIA NIM](https://build.nvidia.com), [Xiaomi MiMo](https://platform.xiaomimimo.com), [z.ai/GLM](https://z.ai), [Hugging Face](https://huggingface.co), OpenAI, or a custom endpoint. Providers can be switched using `clawbot model`, with no code changes or vendor lock-in required.
 
-<table>
-<tr><td><b>A real terminal interface</b></td><td>Full TUI with multiline editing, slash-command autocomplete, conversation history, interrupt-and-redirect, and streaming tool output.</td></tr>
-<tr><td><b>Lives where you do</b></td><td>Telegram, Discord, Slack, WhatsApp, Signal, and CLI — all from a single gateway process. Voice memo transcription, cross-platform conversation continuity.</td></tr>
-<tr><td><b>A closed learning loop</b></td><td>Agent-curated memory with periodic nudges. Autonomous skill creation after complex tasks. Skills self-improve during use. FTS5 session search with LLM summarization for cross-session recall. <a href="https://github.com/plastic-labs/honcho">Honcho</a> dialectic user modeling. Compatible with the <a href="https://agentskills.io">agentskills.io</a> open standard.</td></tr>
-<tr><td><b>Scheduled automations</b></td><td>Built-in cron scheduler with delivery to any platform. Daily reports, nightly backups, weekly audits — all in natural language, running unattended.</td></tr>
-<tr><td><b>Delegates and parallelizes</b></td><td>Spawn isolated subagents for parallel workstreams. Write Python scripts that call tools via RPC, collapsing multi-step pipelines into zero-context-cost turns.</td></tr>
-<tr><td><b>Runs anywhere, not just your laptop</b></td><td>Seven terminal backends — local, Docker, SSH, Singularity, Modal, Daytona, and Vercel Sandbox. Daytona and Modal offer serverless persistence — your agent's environment hibernates when idle and wakes on demand, costing nearly nothing between sessions. Run it on a $5 VPS or a GPU cluster.</td></tr>
-<tr><td><b>Research-ready</b></td><td>Batch trajectory generation, trajectory compression for training the next generation of tool-calling models.</td></tr>
-</table>
+## Key Capabilities
+
+| Capability | Description |
+|---|---|
+| **Full Terminal Interface** | A complete TUI supporting multiline editing, slash-command autocomplete, conversation history, interrupt-and-redirect, and streaming tool output. |
+| **Cross-Platform Availability** | Accessible via Telegram, Discord, Slack, WhatsApp, Signal, and CLI through a unified gateway process, with voice memo transcription and conversation continuity across platforms. |
+| **Closed Learning Loop** | Agent-curated memory with periodic prompts, autonomous skill creation following complex tasks, self-improving skills, FTS5 session search with LLM summarization, and [Honcho](https://github.com/plastic-labs/honcho) dialectic user modeling. Compatible with the [agentskills.io](https://agentskills.io) open standard. |
+| **Scheduled Automation** | A built-in cron scheduler supporting delivery to any platform, enabling unattended execution of recurring tasks such as daily reports, nightly backups, or weekly audits, defined in natural language. |
+| **Delegation and Parallelization** | Ability to spawn isolated subagents for parallel workstreams, and to write Python scripts that invoke tools via RPC, consolidating multi-step pipelines into low-overhead operations. |
+| **Flexible Runtime Environments** | Seven supported terminal backends — local, Docker, SSH, Singularity, Modal, Daytona, and Vercel Sandbox — with Daytona and Modal offering serverless persistence that hibernates when idle. |
+| **Research Support** | Batch trajectory generation and trajectory compression to support training of tool-calling models. |
 
 ---
 
-## Quick Install & Platform Support
+## Installation
 
-Choose the installation path for your Operating System:
+### 1. Linux, macOS, and WSL2 (Recommended)
 
-### 1. Linux, macOS, & WSL2 (Recommended)
-
-Run this one-liner in your terminal:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Aayushsoam/clawbot-agent/main/scripts/install.sh | bash
 ```
 
 ### 2. Android (Termux)
 
-Before installing, install required packages in Termux to build native dependencies:
+Install the required build dependencies first:
+
 ```bash
 pkg update && pkg upgrade -y
 pkg install git python binutils clang make rust pkg-config libffi openssl ca-certificates curl ripgrep ffmpeg -y
 ```
 
 Then run the Android-targeted installer:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Aayushsoam/clawbot-agent/main/scripts/install.sh | bash -s -- --target android
 ```
-> **Note:** The Android target uses the curated `.[termux]` extra and skips Node.js, web dashboard/browser tooling, and Playwright/Chromium downloads.
 
-### 3. Windows (Native PowerShell) — Early Beta
+> **Note:** The Android build uses the `.[termux]` extra and excludes Node.js, the web dashboard, browser tooling, and Playwright/Chromium downloads.
 
-Run this in PowerShell (no admin rights needed):
+### 3. Windows (Native PowerShell — Early Beta)
+
 ```powershell
-# 1.   
 irm https://raw.githubusercontent.com/Aayushsoam/clawbot-agent/main/scripts/install.ps1 -OutFile install.ps1
-
-# 2. 
 .\install.ps1
 ```
-The installer handles everything: uv, Python 3.11, Node.js, ripgrep, ffmpeg, and an isolated Git Bash (MinGit).
+
+This installer configures uv, Python 3.11, Node.js, ripgrep, ffmpeg, and an isolated Git Bash (MinGit) automatically.
 
 ### 4. Docker (All Platforms)
 
-Run Clawbot in a container:
 ```bash
-# Clone the repository
 git clone https://github.com/aayushsoam/clawbot-agent.git
 cd clawbot-agent
-
-# Build and start services
 docker-compose up -d
 ```
 
-### 5. Developer / Manual Git Clone
+### 5. Manual Installation from Source
 
-To build and run from source:
 ```bash
-# Clone the repository
 git clone https://github.com/aayushsoam/clawbot-agent.git
 cd clawbot-agent
-
-# Run the setup script (creates venv, installs dependencies and links command)
 ./setup-clawbot.sh
 ```
 
 ---
 
-After installing, reload your shell and start chatting:
+Once installed, reload your shell and launch the CLI:
+
 ```bash
-source ~/.bashrc    # Or source ~/.zshrc on macOS
-clawbot              # Start the interactive CLI!
+source ~/.bashrc    # or source ~/.zshrc on macOS
+clawbot
 ```
 
 ---
@@ -102,106 +93,106 @@ clawbot              # Start the interactive CLI!
 ## Getting Started
 
 ```bash
-clawbot              # Interactive CLI — start a conversation
-clawbot model        # Choose your LLM provider and model
-clawbot tools        # Configure which tools are enabled
-clawbot config set   # Set individual config values
-clawbot gateway      # Start the messaging gateway (Telegram, Discord, etc.)
-clawbot setup        # Run the full setup wizard (configures everything at once)
-clawbot claw migrate # Migrate from OpenClaw (if coming from OpenClaw)
-clawbot update       # Update to the latest version
-clawbot doctor       # Diagnose any issues
+clawbot              # Launch the interactive CLI
+clawbot model        # Select an LLM provider and model
+clawbot tools        # Configure enabled tools
+clawbot config set    # Set individual configuration values
+clawbot gateway       # Start the messaging gateway (Telegram, Discord, etc.)
+clawbot setup         # Run the full setup wizard
+clawbot claw migrate  # Migrate from OpenClaw
+clawbot update        # Update to the latest version
+clawbot doctor        # Diagnose configuration issues
 ```
 
-📖 **[Full documentation →](https://clawbot-agent.aayushsoam.com/docs/)**
+**[Full documentation →](https://clawbot-agent.vercel.app/docs/)**
 
-## CLI vs Messaging Quick Reference
+## CLI vs. Messaging: Command Reference
 
-Clawbot has two entry points: start the terminal UI with `clawbot`, or run the gateway and talk to it from Telegram, Discord, Slack, WhatsApp, Signal, or Email. Once you're in a conversation, many slash commands are shared across both interfaces.
+Clawbot can be accessed via the terminal (`clawbot`) or via the gateway, which connects to Telegram, Discord, Slack, WhatsApp, Signal, or Email. Many slash commands are shared across both interfaces.
 
-| Action | CLI | Messaging platforms |
-|---------|-----|---------------------|
-| Start chatting | `clawbot` | Run `clawbot gateway setup` + `clawbot gateway start`, then send the bot a message |
-| Start fresh conversation | `/new` or `/reset` | `/new` or `/reset` |
+| Action | CLI | Messaging Platforms |
+|---|---|---|
+| Start a conversation | `clawbot` | `clawbot gateway setup` + `clawbot gateway start`, then message the bot |
+| Start a new session | `/new` or `/reset` | `/new` or `/reset` |
 | Change model | `/model [provider:model]` | `/model [provider:model]` |
 | Set a personality | `/personality [name]` | `/personality [name]` |
-| Retry or undo the last turn | `/retry`, `/undo` | `/retry`, `/undo` |
-| Compress context / check usage | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]` |
+| Retry or undo last turn | `/retry`, `/undo` | `/retry`, `/undo` |
+| Manage context | `/compress`, `/usage`, `/insights [--days N]` | `/compress`, `/usage`, `/insights [days]` |
 | Browse skills | `/skills` or `/<skill-name>` | `/<skill-name>` |
-| Interrupt current work | `Ctrl+C` or send a new message | `/stop` or send a new message |
-| Platform-specific status | `/platforms` | `/status`, `/sethome` |
+| Interrupt execution | `Ctrl+C` or new message | `/stop` or new message |
+| Check platform status | `/platforms` | `/status`, `/sethome` |
 
-For the full command lists, see the [CLI guide](https://clawbot-agent.aayushsoam.com/docs/user-guide/cli) and the [Messaging Gateway guide](https://clawbot-agent.aayushsoam.com/docs/user-guide/messaging).
+For complete command references, see the [CLI Guide](https://clawbot-agent.vercel.app/docs/user-guide/cli) and [Messaging Gateway Guide](https://clawbot-agent.vercel.app/docs/user-guide/messaging).
 
 ---
 
 ## Documentation
 
-All documentation lives at **[clawbot-agent.aayushsoam.com/docs](https://clawbot-agent.aayushsoam.com/docs/)**:
+Full documentation is available at **[clawbot-agent-Docs](https://clawbot-agent.vercel.app/docs/)**
 
-| Section | What's Covered |
-|---------|---------------|
-| [Quickstart](https://clawbot-agent.aayushsoam.com/docs/getting-started/quickstart) | Install → setup → first conversation in 2 minutes |
-| [CLI Usage](https://clawbot-agent.aayushsoam.com/docs/user-guide/cli) | Commands, keybindings, personalities, sessions |
-| [Configuration](https://clawbot-agent.aayushsoam.com/docs/user-guide/configuration) | Config file, providers, models, all options |
-| [Messaging Gateway](https://clawbot-agent.aayushsoam.com/docs/user-guide/messaging) | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant |
-| [Security](https://clawbot-agent.aayushsoam.com/docs/user-guide/security) | Command approval, DM pairing, container isolation |
-| [Tools & Toolsets](https://clawbot-agent.aayushsoam.com/docs/user-guide/features/tools) | 40+ tools, toolset system, terminal backends |
-| [Skills System](https://clawbot-agent.aayushsoam.com/docs/user-guide/features/skills) | Procedural memory, Skills Hub, creating skills |
-| [Memory](https://clawbot-agent.aayushsoam.com/docs/user-guide/features/memory) | Persistent memory, user profiles, best practices |
-| [MCP Integration](https://clawbot-agent.aayushsoam.com/docs/user-guide/features/mcp) | Connect any MCP server for extended capabilities |
-| [Cron Scheduling](https://clawbot-agent.aayushsoam.com/docs/user-guide/features/cron) | Scheduled tasks with platform delivery |
-| [Context Files](https://clawbot-agent.aayushsoam.com/docs/user-guide/features/context-files) | Project context that shapes every conversation |
-| [Architecture](https://clawbot-agent.aayushsoam.com/docs/developer-guide/architecture) | Project structure, agent loop, key classes |
-| [Contributing](https://clawbot-agent.aayushsoam.com/docs/developer-guide/contributing) | Development setup, PR process, code style |
-| [CLI Reference](https://clawbot-agent.aayushsoam.com/docs/reference/cli-commands) | All commands and flags |
-| [Environment Variables](https://clawbot-agent.aayushsoam.com/docs/reference/environment-variables) | Complete env var reference |
+| Section | Contents |
+|---|---|
+| [Quickstart](https://clawbot-agent.vercel.app/docs/getting-started/quickstart) | Installation through first conversation |
+| [CLI Usage](https://clawbot-agent.vercel.app/docs/user-guide/cli) | Commands, keybindings, personalities, sessions |
+| [Configuration](https://clawbot-agent.vercel.app/docs/user-guide/configuration) | Config file, providers, models, options |
+| [Messaging Gateway](https://clawbot-agent.vercel.app/docs/user-guide/messaging) | Telegram, Discord, Slack, WhatsApp, Signal, Home Assistant |
+| [Security](https://clawbot-agent.vercel.app/docs/user-guide/security) | Command approval, DM pairing, container isolation |
+| [Tools & Toolsets](https://clawbot-agent.vercel.app/docs/user-guide/features/tools) | Tool catalog, toolset system, terminal backends |
+| [Skills System](https://clawbot-agent.vercel.app/docs/user-guide/features/skills) | Procedural memory, Skills Hub, skill creation |
+| [Memory](https://clawbot-agent.vercel.app/docs/user-guide/features/memory) | Persistent memory, user profiles, best practices |
+| [MCP Integration](https://clawbot-agent.vercel.app/docs/user-guide/features/mcp) | Connecting MCP servers for extended capability |
+| [Cron Scheduling](https://clawbot-agent.vercel.app/docs/user-guide/features/cron) | Scheduled tasks with platform delivery |
+| [Context Files](https://clawbot-agent.vercel.app/docs/user-guide/features/context-files) | Project context configuration |
+| [Architecture](https://clawbot-agent.vercel.app/docs/developer-guide/architecture) | Project structure, agent loop, key classes |
+| [Contributing](https://clawbot-agent.vercel.app/docs/developer-guide/contributing) | Development setup, PR process, code style |
+| [CLI Reference](https://clawbot-agent.vercel.app/docs/reference/cli-commands) | Complete command and flag reference |
+| [Environment Variables](https://clawbot-agent.vercel.app/docs/reference/environment-variables) | Complete environment variable reference |
 
 ---
 
 ## Migrating from OpenClaw
 
-If you're coming from OpenClaw, Clawbot can automatically import your settings, memories, skills, and API keys.
+Clawbot supports automatic migration of settings, memories, skills, and API keys from OpenClaw.
 
-**During first-time setup:** The setup wizard (`clawbot setup`) automatically detects `~/.openclaw` and offers to migrate before configuration begins.
+**During initial setup:** running `clawbot setup` automatically detects an existing `~/.openclaw` installation and offers migration prior to configuration.
 
-**Anytime after install:**
+**At any time after installation:**
 
 ```bash
-clawbot claw migrate              # Interactive migration (full preset)
-clawbot claw migrate --dry-run    # Preview what would be migrated
-clawbot claw migrate --preset user-data   # Migrate without secrets
-clawbot claw migrate --overwrite  # Overwrite existing conflicts
+clawbot claw migrate                     # Interactive migration (full preset)
+clawbot claw migrate --dry-run           # Preview migration without applying changes
+clawbot claw migrate --preset user-data  # Migrate without secrets
+clawbot claw migrate --overwrite         # Overwrite existing conflicts
 ```
 
-What gets imported:
-- **SOUL.md** — persona file
-- **Memories** — MEMORY.md and USER.md entries
-- **Skills** — user-created skills → `~/.clawbot/skills/openclaw-imports/`
+**Migrated data includes:**
+- **SOUL.md** — persona configuration
+- **Memories** — entries from MEMORY.md and USER.md
+- **Skills** — user-created skills, imported to `~/.clawbot/skills/openclaw-imports/`
 - **Command allowlist** — approval patterns
-- **Messaging settings** — platform configs, allowed users, working directory
-- **API keys** — allowlisted secrets (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
+- **Messaging settings** — platform configuration, allowed users, working directory
+- **API keys** — allowlisted credentials (Telegram, OpenRouter, OpenAI, Anthropic, ElevenLabs)
 - **TTS assets** — workspace audio files
-- **Workspace instructions** — AGENTS.md (with `--workspace-target`)
+- **Workspace instructions** — AGENTS.md (via `--workspace-target`)
 
-See `clawbot claw migrate --help` for all options, or use the `openclaw-migration` skill for an interactive agent-guided migration with dry-run previews.
+Run `clawbot claw migrate --help` for the full option list, or use the `openclaw-migration` skill for an interactive, agent-guided migration with dry-run previews.
 
 ---
 
 ## Contributing
 
-We welcome contributions! See the [Contributing Guide](https://clawbot-agent.aayushsoam.com/docs/developer-guide/contributing) for development setup, code style, and PR process.
+Contributions are welcome. See the [Contributing Guide](https://clawbot-agent.vercel.app/docs/developer-guide/contributing) for development setup, coding standards, and the PR process.
 
-Quick start for contributors — clone and go with `setup-clawbot.sh`:
+**Quick start for contributors:**
 
 ```bash
 git clone https://github.com/aayushsoam/clawbot-agent.git
 cd clawbot-agent
-./setup-clawbot.sh     # installs uv, creates venv, installs .[all], symlinks ~/.local/bin/clawbot
-./clawbot              # auto-detects the venv, no need to `source` first
+./setup-clawbot.sh     # Installs uv, creates a virtual environment, installs .[all], and symlinks ~/.local/bin/clawbot
+./clawbot              # Automatically detects the virtual environment
 ```
 
-Manual path (equivalent to the above):
+**Manual setup (equivalent to the above):**
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -215,23 +206,15 @@ scripts/run_tests.sh
 
 ## Community
 
-- 💬 [Discord](https://discord.gg/Aayushsoam)
-- 📚 [Skills Hub](https://agentskills.io)
-- 🐛 [Issues](https://github.com/aayushsoam/clawbot-agent/issues)
-- 🔌 [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — Linux desktop-control MCP server for Clawbot and other MCP hosts, with AT-SPI accessibility trees, Wayland/X11 input, screenshots, and compositor window targeting.
-- 🔌 [ClawbotClaw](https://github.com/aayushsoam/clawbotclaw) — Community WeChat bridge: Run Clawbot Agent and OpenClaw on the same WeChat account.
+- [computer-use-linux](https://github.com/avifenesh/computer-use-linux) — a Linux desktop-control MCP server for Clawbot and other MCP hosts, providing AT-SPI accessibility trees, Wayland/X11 input, screenshots, and compositor window targeting
+- [Discord](https://discord.gg/Aayushsoam)
+- [Skills Hub](https://agentskills.io)
+- [Issues](https://github.com/aayushsoam/clawbot-agent/issues)
 
 ---
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Released under the MIT License. See [LICENSE](LICENSE) for details.
 
-Built by [Aayush soam](https://github.com/aayushsoam).
-# clawbot-agent
-"# clawbot-agent" 
-"# clawbot-agent" 
-# clawbot-agent
-
-
-# clawbot-agent
+Developed by [Aayush Soam](https://github.com/aayushsoam).
