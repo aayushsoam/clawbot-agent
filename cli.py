@@ -6280,6 +6280,53 @@ class ClawbotCLI:
         # /sessions <id_or_title> behaves the same as /resume <id_or_title>.
         self._handle_resume_command(f"/resume {arg}")
 
+    def _handle_msoffice_command(self, cmd_original: str) -> None:
+        """Handle /msoffice <subcommand> [args] — run OfficeCLI operations directly from Clawbot CLI."""
+        parts = cmd_original.split(None, 1)
+        sub_args = parts[1].strip() if len(parts) > 1 else ""
+
+        if not sub_args or sub_args.lower() in {"help", "-h", "--help"}:
+            _cprint("  OfficeCLI Helper (/msoffice)")
+            _cprint("  Usage: /msoffice <command> [args]")
+            _cprint("  Examples:")
+            _cprint("    /msoffice --help                 Show OfficeCLI help")
+            _cprint("    /msoffice create presentation.pptx Create a blank PowerPoint")
+            _cprint("    /msoffice watch presentation.pptx  Start live browser preview")
+            _cprint("    /msoffice view document.docx       Render Word document to HTML/PNG")
+            return
+
+        office_cli_dir = Path(__file__).parent.parent / "OfficeCLI"
+        office_cli_src = office_cli_dir / "src" / "officecli"
+
+        # 1. Check if native binary or dotnet is available
+        dotnet_bin = shutil.which("dotnet")
+        npx_bin = shutil.which("npx")
+        office_bin = shutil.which("officecli")
+
+        if office_bin:
+            cmd = f"officecli {sub_args}"
+        elif dotnet_bin and office_cli_src.exists():
+            cmd = f"dotnet run --project \"{office_cli_src}\" -- {sub_args}"
+        elif npx_bin:
+            cmd = f"npx @officecli/officecli {sub_args}"
+        else:
+            _cprint("  [ERROR] Neither officecli binary, dotnet SDK, nor npx were found.")
+            _cprint("  Please install .NET SDK, Node.js/npx, or download officecli binary.")
+            return
+
+        _cprint(f"  Executing: {cmd}")
+        try:
+            import subprocess
+            res = subprocess.run(cmd, shell=True, text=True, capture_output=True)
+            if res.stdout:
+                _cprint(res.stdout)
+            if res.stderr:
+                _cprint(f"  [stderr]\n{res.stderr}")
+            if res.returncode != 0:
+                _cprint(f"  [Command failed with exit code {res.returncode}]")
+        except Exception as e:
+            _cprint(f"  [Execution Error]: {e}")
+
     def _handle_branch_command(self, cmd_original: str) -> None:
         """Handle /branch [name] — fork the current session into a new independent copy.
 
@@ -7871,6 +7918,8 @@ class ClawbotCLI:
             self._handle_resume_command(cmd_original)
         elif canonical == "sessions":
             self._handle_sessions_command(cmd_original)
+        elif canonical in {"msoffice", "office", "officecli"}:
+            self._handle_msoffice_command(cmd_original)
         elif canonical == "model":
             self._handle_model_switch(cmd_original)
         elif canonical == "codex-runtime":

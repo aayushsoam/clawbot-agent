@@ -698,3 +698,8 @@ def build_welcome_banner(console: Console, model: str, cwd: str,
         console.print(_logo)
         console.print()
     console.print(outer_panel)
+    console.print(" [bold #FF8C00]💡 OfficeCLI Quickstart:[/]")
+    console.print("   [dim]/msoffice --help[/]                 Show OfficeCLI help")
+    console.print("   [dim]/msoffice create presentation.pptx[/] Create a blank PowerPoint")
+    console.print("   [dim]/msoffice watch presentation.pptx[/]  Start live browser preview")
+    console.print("   [dim]/msoffice view document.docx[/]       Render Word document to HTML/PNG\n")

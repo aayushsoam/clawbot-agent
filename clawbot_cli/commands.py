@@ -185,6 +185,9 @@ COMMAND_REGISTRY: list[CommandDef] = [
     CommandDef("browser", "Connect browser tools to your live Chrome via CDP", "Tools & Skills",
                cli_only=True, args_hint="[connect|disconnect|status]",
                subcommands=("connect", "disconnect", "status")),
+    CommandDef("msoffice", "Execute OfficeCLI commands for Word, Excel, and PowerPoint", "Tools & Skills",
+               cli_only=True, args_hint="<command> [args]",
+               aliases=("office", "officecli")),
     CommandDef("plugins", "List installed plugins and their status",
                "Tools & Skills", cli_only=True),
 
